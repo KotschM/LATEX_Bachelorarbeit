@@ -1,0 +1,11 @@
+\chapter{Reflexion und Ausblick\label{chap4:Viertes-Kapitel}}
+
+Die gezeigte Analysemöglichkeit gibt Aufschluss darüber, welche Codeabschnitte während der Analysephase aufgerufen wurden und welche nicht aufgerufen wurden. Es ist jedoch nicht möglich anhand lediglich dieser Ergebnisse die vorhandene Codebasis in \glqq nützlichen Code\grqq{} und \glqq nutzlosen Code\grqq{} zu unterteilen.
+
+Zunächst muss die komplette Codebasis anhand der Ergebnisse aus der Analyse in die Kategorien \glqq nützlicher Code\grqq{} und \glqq vermutlich nutzloser Code\grqq{} eingeteilt werden. Hierfür ist es von Nöten, dass die Überwachung des Systems mindestens ein Jahr lang durchgeführt wird. Grund hierfür ist die Tatsache, dass es in größeren Systemen auch Features geben kann, welche nur in bestimmten Zeitabschnitten ausgeführt werden. Darunter zählen zum Beispiel die Inventur oder der Jahresabschluss.
+
+Zusätzlich ist zu beachten, dass es auch Codeabschnitte geben kann, welche nur im Falle eines Fehlers aufgerufen werden. Ein solches Beispiel ist die Fehlermeldung, welche erscheint, wenn sich ein Benutzer mit dem falschen Passwort angemeldet hat. Sollte sich kein Benutzer während des kompletten Analysezeitraums falsch angemeldet haben, wird dieser Teil der Codebasis auch nicht ausgeführt und somit fälschlicherweise als \glqq nutzloser Code\grqq{} eingeteilt.
+
+Aus genanten Gründen ist es deshalb unabdingbar nach erfolgter Analyse die Ergebnisse zu validieren um anschließend endgültig entscheiden zu können, ob ein gewisser Teil der Codebasis sicher entfernt werden kann.
+
+Da der zeitliche Rahmen dieser Praxisarbeit nur die Konzeption und Umsetzung einer dynamischen Codeanalyse zugelassen hat, gilt es die Konzeption und Umsetzung einer statischen Codeanalyse, für die Identifikation von ungenutzten Code, in einer weiteren Arbeit zu behandeln.
