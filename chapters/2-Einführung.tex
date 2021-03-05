@@ -1,27 +1,11 @@
 \chapter{Allgemeine Einführung\label{chap2:Zweites-Kapitel}}
 
-Jedes Unternehmen, welches Software entwickelt, ist damit bemüht die Qualität der Software stetig zu verbessern. Eine solche nachhaltige Qualitätssteigerung lässt sich durch die Kombination statischer und dynamischer Codeanalysen in einem kontinuierlichen Testprozess erzielen. Die Unterschiede der beiden Codeanalyse-Arten und die damit eingehende Frage, welche der beiden Codeanalyse-Arten geeigneter ist um ungenutzten Code zu identifizieren, werden in den folgenden Abschnitten erläutert.
+Inhalt
 
 \section{Statische Codeanalyse\label{sec2.1:Unterpunkt-1}}
 
-Bei der statischen Codeanalyse muss der Quellcode einer Software nicht ausgeführt werden. Die Analyse wird an der verfügbaren Codebasis der Software durchgeführt und liefert verschiedenste Metriken, wie zum Beispiel die Komplexität, Doppelungen, Wartbarkeit und Verlässlichkeit. Somit kann die statische Codeanalyse bereits in den frühen Phasen der Softwareentwicklung eingesetzt werden. \cite{SonarSourceS.A.2021}
-
-Eine weit verbreitete Variante der statischen Codeanalyse ist das manuelle Code-Review. Hierbei wird nach festgelegten Abständen, zum Beispiel nach jeder abgeschlossenen Implementierung eines neuen Features, gemeinsam die Codebasis betrachtet und bewertet. Um diesen Vorgang zu automatisieren gibt es heutzutage verschiedenste Werkzeuge, welche in der Lage sind verschiedenste Metriken zu erfassen und aufbereitet darzustellen. Ein Beispiel für solche Produkte bietet die Firma SonarSource mit den Produkten \glqq SonarLint\grqq{}, \glqq SonarCloud\grqq{} und \glqq SonarQube\grqq{}. \cite{SonarSourceS.A.2021}
-
-Da die statische Codeanalyse keinerlei Informationen über das System während der Laufzeit besitzt, müssen die statischen Metriken der Codebasis für die Identifikation von ungenutztem Code ausreichen. Eine Identifikation von \glqq nicht erreichbaren Code\grqq{} ist durch die statische Codeanalyse vollständig durchführbar, da hierbei lediglich die Codebasis nach Code durchsucht werden muss, welcher niemals von einem Ausführungsstrang aus aufgerufen wird.
-
-Um trotz fehlender Laufzeitinformationen des System eine Aussage über den ungenutzten Code eines Systems treffen zu können, bedarf man sich den Metriken \glqq Codestabilität\grqq{} und \glqq Codezentralität\grqq{} aus der statischen Codeanalyse. Der Grund hierfür ist die Annahme, dass ein stabiler und dezentraler Code eine höhere Wahrscheinlichkeit besitzt, als ungenutzter Code identifiziert zu werden. \cite{RomanHaas.}
+Inhalt
 
 \section{Dynamische Codeanalyse\label{sec2.2:Unterpunkt-2}}
 
-Bei der dynamischen Codeanalyse erfolgen die eigentlichen Analysen während der Ausführungszeit der Software. Dies bedeutet implizit, dass die Software für eine dynamische Codeanalyse bereits frei von Kompilierungs- und Build-Fehlern sein muss, damit die Software ausgeführt werden kann \cite{IlyaGainulin.2019}. Klassischerweise werden bei der dynamischen Codeanalyse ein zuvor ausgewählter Satz an Daten an einen bestimmten Teil der Software übergeben und anschließend die Ausgabewerte überprüft. Somit hängt die Effizienz der Analyse direkt von der Qualität und Quantität der Testdaten ab.
-
-Wie bei der statischen Codeanalyse, gibt es auch bei der dynamischen Codeanalyse verschiedene Werkzeuge und Frameworks, welche zum Einsatz kommen können. Ein Beispiel hierfür ist das Java-Test-Framework \glqq JUnit\grqq{}, welches besonders für automatisierte Unit-Tests einzelner Klassen oder Methoden geeignet ist. Es wird versucht mit den verschiedenen Tests eine vollständige Codeabdeckung zu erlangen.
-
-Eine Vorteil gegenüber der statischen Codeanalyse ist die Möglichkeit auch Speicherlecks und Fehler im Zusammenhang mit der Parallelität zu erkennen. So wird Multithread-Code zur Ausführungszeit analysiert und Probleme bezüglich dem Zugriff auf gemeinsam genutzte Ressourcen oder mögliche Deadlocks gefunden.
-
-Während es bei Test-Frameworks, wie \glqq JUnit\grqq{}, um die Frage geht, ob der zu untersuchende Codeabschnitt den vollen Funktionsumfang besitzt, geht es bei der Identifikation von ungenutztem Code um die Frage, welche Codeabschnitte aufgerufen werden und welche nicht.
-
-Um nun mithilfe der dynamischen Codeanalyse innerhalb des Systems ungenutzten Code zu finden, bedarf es einer Überwachungen des Systems. Hierbei wird über einen längeren Zeitraum jeder Aufruf einer Methode beziehungsweise Klasse erfasst. Anhand der Ergebnisse einer solchen Überwachung lässt sich mutmaßlich ungenutzter Code identifizieren.
-
-In \autoref{chap3:Drittes-Kapitel} (\nameref{chap3:Drittes-Kapitel}) wird für die dynamische Codeanalyse ein Konzept vorgestellt und die dazugehörige Umsetzung erläutert.
+Inhalt
