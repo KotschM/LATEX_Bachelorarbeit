@@ -1,9 +1,34 @@
 \chapter{Einleitung\label{chap1:Erstes-Kapitel}}
 
-\section{Aufgabenstellung und geplantes Vorgehen\label{sec1.1:Unterpunkt-1}}
+Im folgenden Kapitel wird die betreuende Firma mit dem dazugehörigem Kernprodukt, die Aufgabenstellung und das geplante Vorgehen erläutert. Um das Studieren der Arbeit zu erleichtern, wird ein Überblick über den Aufbau der Arbeit gegeben.
 
-Inhalt
+\section{ENisco und E-MES\label{sec1.1:unterpunkt-1}}
 
-\section{Überblick über die Arbeit\label{sec1.2:Unterpunkt-2}}
+Die vorliegende Arbeit wurde im Rahmen einer Bachelorarbeit bei der Firma Enisco verfasst. Enisco GmbH \& Co. KG wurde 2015 als Tochtergesellschaft der Eisenmann SE gegründet und ist mittlerweile ein eigenständiges Unternehmen, welches unter dem Namen \glqq Enisco by Forcam GmbH\footnote{Im Folgenden wird aus Gründen der Lesbarkeit auf die Rechtsform der ENisco by Forcam GmbH verzichtet}\grqq{} agiert.
 
-Inhalt
+Als Kernprodukt vertreibt die Firma ENisco das Produktionsleitsystem \glqq \gls{emes}\grqq{}. Dieses wird für die Überwachung und Steuerung von Produktionsanlagen eingesetzt. E-MES vernetzt dabei die Anlage horizontal, über den gesamten Fertigungsprozess, als auch vertikal, über alle Prozessebenen hinweg und bildet so ein System, welches zwischen Unternehmensebene (ERP, engl. für Enterprise Ressource Planning) und Steuerungsebene (PLC, engl. für Programmable Logic
+Controller) agiert. \cite{EniscobyForcamGmbH.2021}
+
+E-MES ist dafür modular aufgebaut und besitzt als Basis ein Platform-Modul. Dieses beinhaltet alle Grundlagen und Schnittstellen für die Installation weiterer Module. Die zusätzlichen Module (engl. Add-Ons) ergänzen E-MES um bestimmte Funktionen und können kundenspezifisch installiert und konfiguriert werden.
+
+\section{Aufgabenstellung und geplantes Vorgehen\label{sec1.2:Unterpunkt-2}}
+
+Derzeit erfährt das aktuelle Produktionsleitsystem E-MES eine Neugestaltung. Dabei wird von einer monolithischen 3-Schichten-Architektur auf eine verteilte Microservice-Architektur gewechselt. Ein Wechsel der Architektur beruht auf dem Eintritt der Muttergesellschafft Forcam GmbH in die \glqq Open Industry 4.0 Alliance\grqq{}. Durch den Zusammenschluss von mehreren Unternehmen aus dem Bereich \glqq Industrie 4.0\grqq{}, können einheitliche Schnittstellen definiert werden, um so die Interoperabilität zwischen den Softwarelösungen der beteiligten Firmen zu stärken \cite{OpenIndustry4.0Alliance.2021}. Um die benötigte Interoperabilität zu ermöglichen, setzen die beteiligten Unternehmen vermehrt auf Technologien, wie Docker und Kubernetes. Um nun auch E-MES in diesem Umfeld anzubieten, wurde sich für eine verteilte Microservice-Architektur entschieden.
+
+In modernen Informationssystemen sind die Benutzer den Komfort gewohnt, eine auftretende Problemstellung mit der Eingabe einer Suchabfrage zu lösen. Solch ein System bietet dem Benutzer anschließend eine Liste mit Optionen an, aus welcher der Benutzer dann wählen kann. Auch bei der Neugestaltung des Produktionsleitsystems E-MES, soll solch eine Suchfunktion dem Benutzer zur Verfügung gestellt werden.
+
+Um solch eine Suchfunktion im Rahmen eines \gls{mes} umzusetzen, muss festgelegt werden, welche Funktionen und Inhalte eines MES Systems „suchbar“ gemacht werden sollen. So soll es zum Beispiel möglich sein, mit der Eingabe einer eindeutigen Auftrags-ID oder Maschinen-ID, die dazugehörigen Informationen zu erhalten. Also eine Suche nicht nur nach Funktionalitäten, sondern auch nach Objekten innerhalb eines MES.
+
+Bei der Neugestaltung von E-MES wird von einer monolithischen 3-Schichten-Architektur auf eine verteilte Microservice-Architektur gewechselt. Dieser Wechsel der Architektur resultiert aus dem Wandel des Marktes und der Kunden in eine einheitliche Richtung bezüglich Technologien, wie Docker und Kubernetes. Durch den Eintritt der Forcam GmbH in die „Open Industry 4.0 Alliance“, werden durch den Einsatz solcher Technologien Schnittstellen geschaffen, um mit anderen Firmen im Bereich „Industrie 4.0“ zu interagieren. Durch den Wechsel der Architektur werden zudem die Problematiken mit der horizontalen Skalierbarkeit gelöst. Für die Integration einer Suchfunktionalität in eine verteilte Microservice-Architektur gibt es jedoch besondere Anforderungen. Diese Anforderungen gilt es zu erfassen, um so eine Missachtung der Prinzipien der Microservice-Architektur zu vermeiden.
+
+So ist es von Nöten, für die Integration einer Search Engine in ein verteiltes MES, die unterschiedlichen Anforderungen näher zu beleuchten. Zum einen die Anforderungen an die Arten der Abfragen und deren Granularität und zum anderen die technischen Anforderungen an die Konzeption, um monolithische Seiteneffekte bei der Integration einer Search Engine zu vermeiden.
+
+\section{Überblick über die Arbeit\label{sec1.3:Unterpunkt-3}}
+
+Die vorliegende Arbeit gliedert sich in die drei Hauptteile \glqq \textbf{Definieren des Suchumfangs}\grqq{}, \glqq \textbf{Konzeption der Integration}\grqq{} und \glqq \textbf{Prototypische Implementierung}\grqq{}.
+
+Der Suchumfang für eine Search Engine in einem \gls{mes} wird in \autoref{chap3:Drittes-Kapitel} \textbf{(\nameref{chap3:Drittes-Kapitel})} definiert. Hierbei wird definiert, welche Funktionen und Objekte innherhalb eines Produktionsleitsystems, durch eine Suchfunktionalität mithilfe einer Search Engine gefunden werden sollen.
+
+Die eigentliche Konzeption für die Integration einer Search Engine in \gls{mcc} ist in \autoref{chap4:Viertes-Kapitel} \textbf{(\nameref{chap4:Viertes-Kapitel})} erläutert. Es werden hierbei verschiedene Search Engines anhand von technischen und lizenzbezogenen Kriterien miteinander verglichen. Ebenso werden verschiedene Möglichkeiten der Datenaktualisierung zwischen einer Search Engine und den Datenhaltungsschichten der einzelnen Service erläutert und anhand von Kriterien miteinander verglichen.
+
+Anschließend an die Konzeption folgt in \autoref{chap5:Fuenftes-Kapitel} \textbf{(\nameref{chap5:Fuenftes-Kapitel})} die prototypische Umsetzung anhand einer Proof of Concept - Anwendung.
