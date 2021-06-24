@@ -1,4 +1,8 @@
-\chapter{Suchumfang innerhalb von MCC\label{chap3:Drittes-Kapitel}}
+\chapter{Umfang der Suchfunktionalität\label{chap3:Drittes-Kapitel}}
+
+Im folgenden Kapitel wird definiert, welchen Umfang die Suchfunktionalität in der zukünftigen MES-Lösung der Firma Enisco besitzen soll. Dabei wird sich am Produktumfang der bestehenden MES-Lösung E-MES orientiert. Hierzu wird näher betrachtet, welche Funktionalitäten und Anwendungsfälle von E-MES abgedeckt werden und in MCC übernommen werden. 
+
+\section{Produktumfang von E-MES\label{sec3.1:unterpunkt-1}}
 
 \section{SCADA\label{sec3.1:unterpunkt-1}}
 Bei SCADA (Supervisory Control and Data Acquisition) geht es um die Überwachung und Steuerung von automatisierten Fertigungen. Dabei werden Daten von Maschinen und Sensoren empfangen und somit deren Zustand überwacht. Sammelt man diese Daten, kann man eine zeitliche Statistik über die verschiedenen Maschinen und Sensoren anfertigen und so einen Stillstand der Anlage durch frühzeitige Erkennung von Unregelmäßigkeiten verhindern.
@@ -8,7 +12,7 @@ Aus SCADA-Sicht hat man zwei Möglichkeiten auf die Anlage zu schauen.
 \subsection{Elektrische/Technische Sicht\label{subsec3.1.1:Unterunterpunkt-1}}
 Jene Sicht ist vor allem für die Mitarbeiter sinnvoll, welche direkt an den Maschinen arbeiten. Entweder bei der Steuerung der Maschinen oder deren Wartung. Hierbei ist jeder Maschine und jedem Sensor eine eindeutige anlageninterne Codierung zugeteilt.
 
-Zum Beispiel => T1C041:Visu.P11.1CI1.States.Automatic.Value
+Zum Beispiel => \textbf{T1C041:Visu.P11.1CI1.States.Automatic.Value}
 
 Ein Mitarbeiter kann mithilfe der Codierung direkt heraus lesen, in welchem Bereich der Anlage beziehungsweise in welchem Schaltschrank und an welcher SPS die Maschine oder der Sensor angeschlossen ist. So fällt es dem Mitarbeiter leichter Fehler zu finden und die Anlage zu warten.
 
@@ -22,7 +26,7 @@ Zwischen den Assets gibt es jedoch nicht nur die hierarchischen Beziehungen. So 
 \subsection{Suchumfang im SCADA-Umfeld\label{subsec3.1.3:Unterunterpunkt-3}}
 Im SCADA Bereich von E-MES lassen sich nun verschiedene Objekte herausfiltern, nach welchen mithilfe einer Suchfunktionalität gesucht werden kann.
 
-Durch die hierarchische Aufteilung der Anlage in verschiedene Assets, ist eine Suche nach den Assets ein auftretender Use-Case und sollte durch die neue Suchfunktionalität abgedeckt werden. So kann ein Mitarbeiter zum Beispiel nach den Begriffen "Lackierbereich", "Trocknungsofen" oder "Rollenbahn" suchen und bekommt eine Auswahl an Funktionen angeboten, welche anhand der Assets ausgeführt werden können. Sollte demnach ein Asset mit der Bezeichnung "Rollenbahn" im System zu finden sein, sollen dem Mitarbeiter Funktionalitäten, wie die Anzeige von Fehlermeldungen (Alarming) und Auswertung von Prozesswerten (Trending) angeboten werden. Auch die Suche nach Schaltschränken oder Pultbereichen kann durch die hierarchische Asset Abbildung realisiert werden.
+Durch die hierarchische Aufteilung der Anlage in verschiedene Assets, ist eine Suche nach den Assets ein auftretender Use-Case und sollte durch die neue Suchfunktionalität abgedeckt werden. So kann ein Mitarbeiter zum Beispiel nach den Begriffen "Lackierbereich", "Trockenofen" oder "Rollenbahn" suchen und bekommt eine Auswahl an Funktionen angeboten, welche anhand der Assets ausgeführt werden können. Sollte demnach ein Asset mit der Bezeichnung "Rollenbahn" im System zu finden sein, sollen dem Mitarbeiter Funktionalitäten, wie die Anzeige von Fehlermeldungen (Alarming) und Auswertung von Prozesswerten (Trending) angeboten werden. Auch die Suche nach Schaltschränken oder Pultbereichen kann durch die hierarchische Asset Abbildung realisiert werden.
 
 Neben der Verwendung der Assets kann auch nach den technischen beziehungsweise elektrischen Bezeichnungen der Maschinen und Sensoren gesucht werden. So kann ein Mitarbeiter, welcher lediglich die Codierungen zur Hilfe hat trotzdem nach zum Beispiel letzten Warnungen oder nach einer Auswertung der gemessenen Werte suchen. Auch eine Informationsgewinnung im Bezug zur Zugehörigkeit der Maschine oder des Sensors zu Anlagenbereichen, Pultbereichen oder Schaltschränken kann im Interesse eines Mitarbeiters sein, welcher lediglich eine Codierung einer Maschine oder eines Sensors zur Verfügung hat.
 
