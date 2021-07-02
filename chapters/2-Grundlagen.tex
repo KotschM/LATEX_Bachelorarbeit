@@ -6,8 +6,6 @@ Aufbauend auf den Architektur-Prinzipien wird die verwendete Microservice-Archit
 
 Abschließend wird anhand von verschiedenen modernen Informationssystemen die Funktionalitäten der Volltextsuche gezeigt. Neben den unterschiedlichsten Anwendungsfällen für eine Volltextsuche werden auch die technischen Besonderheiten von Search Engines vorgestellt.
 
-% Zum Verständnis und zur prototypischen Umsetzung der Integration einer Search Engine in \gls{mcc} werden die Grundlagen der Themen \glqq Microservice-Architektur\grqq{} und \glqq Search Engine\grqq{} benötigt. Diese werden in den folgenden Abschnitten behandelt. Zusätzlich zu den allgemeinen Grundlagen wird der Entwicklungsstand von \gls{mcc} vorgestellt, welcher für die Implementierung der Proof of Concept - Anwendung von Bedeutung ist.
-
 \section{Software-Architekturen\label{sec2.1:Unterpunkt-1}}
 
 \begin{quote}
@@ -18,31 +16,54 @@ Wie aus der Definition von Len Bass zu entnehmen ist, beschreibt eine Software-A
 
 \subsection{Architektur-Prinzipien\label{subsec2.1.1:Unterunterpunkt-1}}
 
-Für das Erstellen einer guten Software-Architektur wurden von Vogel \cite{Vogel.2009} einige Grundprinzipien definiert. Diese Prinzipien sollten bei der Erstellung einer Software-Architektur beachtet werden.
+Für das Erstellen einer guten Software-Architektur wurden von Vogel \cite{Vogel.2009} einige Grundprinzipien definiert. Diese Prinzipien sollten bei der Erstellung einer Software-Architektur beachtet werden: \cite{Vogel.2009}
 
 \begin{description}
     \item[Lose Kopplung:]\hfill \\
-    Inhalt
+    Der Kern einer Software-Architektur besteht aus der Beschreibung der Bausteine eines Software-Systems und deren Interaktionen zueinander. Unter dem Begriff Kopplung versteht man hierbei die Beziehung unter den Bausteinen einer Software-Architektur. Eine Kopplung charakterisiert demnach die Interaktionen der Bausteine.
+
+    Eine starke Kopplung von Systembausteinen hat zur Folge, dass beim Verstehen und Ändern eines Bausteines auch zwingend weitere Bausteine verstanden und geändert werden müssen. Um jenes Problem zu umgehen, besagt das Prinzip der losen Kopplung, dass die Kopplung zwischen Systembausteinen möglichst niedrig gehalten werden sollen.
+
+    Um eine lose Kopplung in einer Architektur zu erreichen, ist die Einführung von Schnittstellenabstraktionen ein wichtiger Aspekt. Dabei werden die Implementierungsinformationen hinter den Schnittstellen verborgen. Durch die Begrenzung von Schnittstellenelementen und der Häufigkeit des Austauschs der Schnittstellenelemente kann eine Kopplung von Systembausteinen kontrollierbar gemacht werden.
 
     \item[Hohe Kohäsion:]\hfill \\
-    Inhalt
+    Im Gegensatz zur Kopplung, in welcher die Beziehungen zwischen Systembausteinen gemeint ist, versteht man unter dem Begriff Kohäsion die Abhängigkeiten innerhalb eines Systembausteins.
 
-    \item[Entwurf für die Veränderung:]\hfill \\
-    Inhalt
+    Beim Prinzip der hohen Kohäsion ist das Ziel die Abhängigkeiten innerhalb eines Systembausteins möglichst hoch zu gestalten. Wie bei der losen Kopplung geht es auch hier um die lokale Änderbarkeit und Verstehbarkeit von Systembausteinen.
+    
+    Wie in \autoref{fig:kopplung_and_kohaesion} zu erkenne stehen Kopplung und Kohäsion normalerweise miteinander in einer Wechselbeziehung. Hierbei gilt, dass je höher die Kohäsion individueller Bausteine einer Architektur ist, desto geringer ist die Kopplung zwischen den Bausteinen. Schematisch ist dieser Zusammenhang in \autoref{fig:kopplung_and_kohaesion} abgebildet, worin zu erkennen ist, das eine Gesamtstruktur mit einer hohen Kohäsion und einer losen Kopplung (rechte Seite) eine höhere Übersichtlichkeit besitzt.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.7\linewidth]{images/Kopplung_und_Kohäsion.png}
+        \caption{Zusammenspiel von loser Kopplung und hoher Kohäsion \cite{Vogel.2009}}
+        \label{fig:kopplung_and_kohaesion}
+    \end{figure}
+
+    \item[Entwurf für Veränderung:]\hfill \\
+    Durch den stetigen Wandel von Software-Systemen in Form von Anforderungen und Technologien, ist es von Vorteil solche Änderungen bereits in der Phase der architekturellen Konzeption zu berücksichtigen. Das Prinzip des Entwurfs für Veränderung (englisch: Design for Change) sieht nun vor, dass man vorhersehbare Änderungen architektonisch vorausplant. Dabei sollte man versuchen, die Architektur so zu entwerfen, dass man leicht mit den wahrscheinlichen Änderungen eines Software-Systems umgehen kann.
 
     \item[Separation of Concerns:]\hfill \\
-    Inhalt
+    Abgeleitet von dem römischen Prinzip \glqq Teile und herrsche\grqq{} wird beim Prinzip Separation of Concerns ausgesagt, dass ein Software-System in individuelle Systembausteine zerlegt werden soll.
+
+    Separation of Concerns unterstützt hierbei die Modularisierung eines Software-Systems. Es geht darum Teile eines Software-Systems zu identifizieren, welche für bestimmte Angelegenheiten, Aspekte und Aufgaben verantwortlich sind. Jene Teile werden dann als eigene Systembausteine gekapselt. Eine Zerteilung des Gesamtsystems in relativ unabhängige Einzelteile ermöglicht zudem noch die Verteilung von Verantwortlichkeiten für verschiedene Systembausteine und auch das parallele Arbeiten an dem Software-System durch mehrere Entwickler wird dadurch ermöglicht.
+
+    Durch das Aufteilen des Software-Systems in relativ unabhängige Systembausteine werden auch die Prinzipien lose Kopplung und hohe Kohäsion begünstigt.
 
     \item[Information Hiding:]\hfill \\
-    Inhalt
+    Das Prinzip Information Hiding sagt aus, dass man einem Klienten nur die für die Bearbeitung eines Problems notwendigen Informationen zeigen soll. Dies erleichtert die Gliederung und das Verständnis von komplexen Software-Systemen. Die restlichen Informationen sollen nach außen hin verborgen bleiben. Ermöglicht wird solch ein geheim halten von Informationen durch die Bereitstellung von definierten Schnittstellen, über welche nur bestimmte Informationen zu erreichen sind.
 
     \item[Abstraktion:]\hfill \\
-    Inhalt
+    Als übergeordnetes Prinzip dient eine Abstraktion dazu, ein komplexes System verständlicher zu machen. Dazu werden wichtige Aspekte identifiziert und unwichtige Details vernachlässigt. Im Bereich der Software-Architektur gilt die Schnittstellenabstraktion als Teilprinzip der Abstraktion. Hierbei liegen die Schnittstellen im Fokus, welche für das Zustandekommen und die Qualität von Beziehungen verantwortlich sind.
+
+    Solch eine Schnittstellenabstraktion in einem Software-System ist eng verbunden mit dem Prinzip der losen Kopplung und dem Information Hiding. Ein Aspekt für den starken Zusammenhang zwischen der Abstraktion und dem Information Hiding ist die Portabilität von Software-Systemen. So sollte eine Architektur oder ihre Systembausteine auch in anderen Umgebungen verwendbar sein. Um solch eine Plattformunabhängigkeit sicherzustellen, werden Abstraktionen verwendet, die ein Information Hiding der Platform-Details leisten.
 
     \item[Modularität:]\hfill \\
-    Inhalt
+    Das Modularitätsprinzip, welches bereits auch in den Beschreibungen der anderen Prinzipien vorkam, definiert die Aufteilung eines Systems in klar definierte Bausteine mit abgegrenzten funktionalen Verantwortlichkeiten. Die Modularität ist dabei eine Kombination aus den Prinzipien Abstraktion, Separation of Concerns und Information Hiding, welche bei der Umsetzung der Prinzipien der losen Kopplung und der hohen Kohäsion kombiniert werden.
 
 \end{description}
+
+Auch für die spätere Konzeption einer Search Engine in einer Microservice-Architektur werden die eingeführten Prinzipien als Grundlage dienen.
 
 \subsection{Monolithische und verteilte Architekturen\label{subsec2.1.2:Unterunterpunkt-2}}
 
