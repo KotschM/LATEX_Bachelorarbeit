@@ -67,30 +67,38 @@ Auch für die spätere Konzeption einer Search Engine in einer Microservice-Arch
 
 \subsection{Monolithische und verteilte Architekturen\label{subsec2.1.2:Unterunterpunkt-2}}
 
-Inhalt
+Bei der Neugestaltung von E-MES wird von einer monolithischen 3-Schichten-Architektur auf eine verteilte Microservice-Architektur gewechselt.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.7\linewidth]{images/monolithic-vs-microservices.png}
-    \caption{3-Schichten-Architektur vs. Microservice-Architektur \cite{RedHatLimited.2021}}
-    \label{fig:mono_vs_micro}
-\end{figure}
+Dabei besaß die ehemalige E-MES Architektur eine monolithische Struktur. In einer solchen monolithische Architektur wird die gesamte Architektur in nur einem Systembaustein zusammengefasst. Dadurch erfolgt keine explizite Gliederung in Teilsysteme und Architektur-Prinzipien, wie lose Kopplung und Separation of Concerns sind nur schwer umsetzbar \cite{Vogel.2009}. Zu finden sind monolithische Architekturen oftmals in Altsystemen, welche oft über Jahrzehnte gewachsen sind. Aufgrund der mangelnden Modularisierung steigt die Kompliziertheit des Systems und eine Wartung und Anpassung des Quellcodes wird erschwert \cite{Prof.Dr.AndreasFink.2012b}. Ein weiterer Nachteil der mangelnden Modularisierung ist die kaum mögliche nebenläufige Ausführung von Teilen des Systems auf verschiedenen Rechnern \cite{Prof.Dr.AndreasFink.2012b}. Somit kann eine horizontale Skalierung nicht ermöglicht werden und eine effiziente, lastverteilende Programmausführung ist nicht gegeben.
+
+Die Architektur von MCC wird eine verteilte Struktur aufweisen. Hierbei werden Teile des Gesamtsystems in unterschiedliche Systembausteine aufgeteilt. Eine Modularisierung der Software ist dadurch möglich und Architekturen-Prinzipien, wie lose Kopplung und Separation of Concerns sind umsetzbar \cite{Vogel.2009}. Durch die strikte Aufteilung der Geschäftslogik kann auch die Komplexität aufgeteilt werden. Somit können die einzelnen Systembausteine mit wenig Aufwand angepasst oder erweitert werden. Durch die Modularisierung von verteilten Architektur kann die Ausführung bestimmter Aufgaben auf redundanter Hardware nebenläufig erfolgen \cite{Prof.Dr.AndreasFink.2012}. Durch jene horizontale Skalierung kann eine effiziente und lastverteilende Programmausführung erfolgen, welche auch zur Ausfallsicherheit des Gesamtsystems beiträgt \cite{Prof.Dr.AndreasFink.2012}.
+
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.7\linewidth]{images/monolithic-vs-microservices.png}
+%     \caption{3-Schichten-Architektur vs. Microservice-Architektur \cite{RedHatLimited.2021}}
+%     \label{fig:mono_vs_micro}
+% \end{figure}
 
 \section{Microservice-Architektur\label{sec2.2:Unterpunkt-2}}
 
-Für die Neugestaltung des \gls{mes} der Firma Enisco wird die Software auf einer verteilten Microservices-Architektur aufgebaut.
+Als eine Architektur mit einer verteilten Struktur, wird die Software bei der Neugestaltung des \gls{mes} der Firma Enisco, auf einer Microservice-Architektur aufgebaut.
 
-Die Kernelemente dieser Architektur sind die Microservices, welche der Modularisierung der Software dienen. Hierbei ist das unabhängige Deployment der Microservices eine wesentliche Eigenschaft. Die Möglichkeit Software modular aufzubauen, gibt es auch in monolithischen Architekturen. So helfen Ansätze, wie Klassen, Packages oder JARs in den Java-Umgebungen dafür eine Software in kleine Einheiten aufzuteilen und dadurch erweiterbar und wartbar zu machen. Das Problem ist jedoch, dass auch diese modularen Einheiten eine starke Abhängigkeit untereinander aufweisen und gemeinsam in einem Produktionsumfeld agieren müssen.
+Die Kernelemente dieser Architektur sind die Microservices, welche der Modularisierung der Software dienen. Somit ist eine Aufteilung des Gesamtsystems in verschiedene Systembausteine möglich. Ein Systembaustein stellt dabei jeweils eine Funktionalität des Gesamtsystems dar. Im Gegensatz zu einer monolithischen Architektur läuft das Gesamtsystem nicht innerhalb eines Prozesses, sondern auf verschiedenen Prozessen. Dabei wird jedem Systembaustein ein eigener Prozess zugeordnet. Jene Prozesse können nun nahezu beliebig auf verschiedene Rechner verteilt und durch Replizierung ausfallsicher gemacht werden. \cite{GaryCalcott.2018}
+
+Neben den Vorteilen der horizontalen Skalierung, ergeben sich aus der Aufteilung des Gesamtsystems in unterschiedliche Systembausteine auch Auswirkungen auf die Entwicklungsorganisation. So wird beim Umgang mit Microservices nach der Unix-Philosophie von Ken Thompson \glqq Do one thing and do ot well\grqq{} \cite{IONOSSE.2021} gearbeitet. Durch die Modularität von Microservices untereinander können die Microservices von unterschiedlichen Entwicklerteams unabhängig voneinander entwickelt werden. Durch die Abstraktion der Microservices, können diese mit unterschiedlichen Technologien und Programmiersprachen implementiert werden. Auch der Datenhaushalt kann von jedem Microservice separat verwaltet werden. Zudem wird die Einarbeitung eines Entwicklers in die Codebasis reduziert, da durch die Aufteilung weniger Code verstanden werden muss.
+
+Die Microservice-Architektur berücksichtigt die Architektur-Prinzipien Separation of Concerns, Information Hiding und Modularität und gewährleisten somit eine lose Kopplung zwischen den Microservices. Innerhalb der Microservices entsteht dadurch eine hohe Kohäsion.
+
+Da die jeweiligen Microservices repliziert auf verschiedenen Rechnern laufen können, ist die Kommunikation zwischen den Microservices schwieriger als bei einem monolithischen System. Auf die Kommunikation zwischen Microservices wird in \autoref{subsec2.2.1:Unterunterpunkt-1} näher eingegangen.
+
+Eine Herausforderung bei der Entwicklung einer Microservice-Architektur ist die Vermeidung von Abhängigkeiten, welche eine lose Kopplung der Microservices verhindern. Um solche monolithischen Seiteneffekten zu vermeiden, werden in \autoref{subsec2.2.2:Unterunterpunkt-2} die häufigsten Microservice-Antipattern aufgezeigt.
 
 \subsection{Kommunikation zwischen Microservices\label{subsec2.2.1:Unterunterpunkt-1}}
 
 Inhalt
 
-\subsection{Vorteile\label{subsec2.2.2:Unterunterpunkt-2}}
-
-Inhalt
-
-\subsection{Microservice - Antipattern\label{subsec2.2.3:Unterunterpunkt-3}}
+\subsection{Microservice - Antipattern\label{subsec2.2.2:Unterunterpunkt-2}}
 
 Inhalt
 
