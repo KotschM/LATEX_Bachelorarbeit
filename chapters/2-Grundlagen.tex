@@ -96,7 +96,26 @@ Eine Herausforderung bei der Entwicklung einer Microservice-Architektur ist die 
 
 \subsection{Kommunikation zwischen Microservices\label{subsec2.2.1:Unterunterpunkt-1}}
 
-Inhalt
+Auch wenn das Ziel einer Microservice-Architektur ist, dass einzelne Funktionalitäten des Gesamtsystems in getrennte Microservices gekapselt werden, müssen jene miteinander kommunizieren. Aufgrund der Modularität können die Microservices horizontal skaliert werden und auf verschiedenen Rechnern betrieben werden. Dies erhöht die Komplexität bei der Kommunikation der Microservices untereinander. \cite{MichaelSchwab.2019}
+
+Bei der Wahl der Kommunikation zwischen Microservices kann zwischen einer synchronen und asynchronen Kommunikation entschieden werden.
+
+\subsubsection*{Synchrone Kommunikation}
+
+Bei der synchronen Kommunikation handelt es sich um eine eins-zu-eins Kommunikation, bei der eine Anfrage geschickt und auf eine Antwort gewartet wird. Klassischerweise erfolgt die Kommunikation über HTTP mit einer REST-Schnittstelle. \gls{rest} ist hierbei eine Spezifikation, wie eine über HTTP kommunizierende API konzipiert werden soll \cite{MichaelSchwab.2019}. Eine solche API sollte demnach vordefinierte HTTP-Methoden implementiert haben. Unter anderem sind das Methoden wie GET, POST, PUT und DELETE. Bei einer GET-Anfrage werden hierbei Ressourcen angefragt. Möchte man einen neuen Datensatz übermitteln wird die POST-Methode verwendet und wenn man einen bestehenden Datensatz ändern möchte, verwendet man die PUT-Methode. Mit der DELETE-Methode kann man einen expliziten Datensatz löschen. Jeder Datensatz bekommt hierbei einen eigenen Endpunkt und die jeweiligen Anfragen können mit URL-Parametern und Query-Parametern spezifiziert werden. Das Standard-Datenformat bei REST ist JSON.
+
+Bei der Kommunikation von zwei Microservices über die jeweiligen REST-Schnittstellen, muss die Adresse des anderen Microservice bekannt sein. Durch die Verteilung der Microservices auf unterschiedliche Rechner in Folge einer horizontalen Skalierung kann es während dem Betrieb vorkommen, dass einzelne Microservices auf zum Beispiel Rechner A gestoppt und auf Rechner B wieder gestartet werden. Dadurch ändern sich auch die Adressen der Microservices. Da die Verwaltung der Adressen ab einer Vielzahl an Microservices nicht mehr trivial ist, wird in einer Microservice-Architektur eine sogenannte Service-Discovery eingesetzt. Die Service-Discovery ist eine Software, bei der sich alle neuen Microservice registrieren. Bei einem REST-Aufruf wird dann zuerst eine Liste mit allen verfügbaren Adressen abgerufen.
+
+Wie in \autoref{fig:service_discovery} zu abgebildet ist, wird bei einer Anfrage eines Services, jene Anfrage zunächst an einen Router-Service geleitet. Nach dem Abfragen der Adresse mithilfe der Service-Discovery wird gezielt der entsprechende Service mit einer REST-Anfrage angesprochen.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\linewidth]{images/service-discovery.png}
+    \caption{Ablauf einer Anfrage mit der Service-Discovery - in Anlehnung an \cite{MichaelSchwab.2019}}
+    \label{fig:service_discovery}
+\end{figure}
+
+\subsubsection*{Asynchrone Kommunikation}
 
 \subsection{Microservice - Antipattern\label{subsec2.2.2:Unterunterpunkt-2}}
 
