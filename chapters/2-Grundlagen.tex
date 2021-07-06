@@ -4,7 +4,7 @@ Um eine Konzeption und eine prototypische Umsetzung einer Search Engine in \gls{
 
 Aufbauend auf den Architektur-Prinzipien wird die verwendete Microservice-Architektur erläutert, wobei neben einer allgemeinen Einführung in die Architektur auch auf die Kommunikation von Microservices untereinander eingegangen wird. Um mögliche Fehlkonzeptionen zu vermeiden, werden häufig auftretende Anti-Pattern aufgezeigt, welche unter Umständen zu monolithischen Seiteneffekten führen könnten.
 
-Abschließend wird anhand von verschiedenen modernen Informationssystemen die Funktionalitäten der Volltextsuche gezeigt. Neben den unterschiedlichsten Anwendungsfällen für eine Volltextsuche werden auch die technischen Besonderheiten von Search Engines vorgestellt.
+% Abschließend wird anhand von verschiedenen modernen Informationssystemen die Funktionalitäten der Volltextsuche gezeigt. Neben den unterschiedlichsten Anwendungsfällen für eine Volltextsuche werden auch die technischen Besonderheiten von Search Engines vorgestellt.
 
 \section{Software-Architekturen\label{sec2.1:Unterpunkt-1}}
 
@@ -36,7 +36,7 @@ Für das Erstellen einer guten Software-Architektur wurden von Vogel \cite{Vogel
     \begin{figure}[H]
         \centering
         \includegraphics[width=0.7\linewidth]{images/Kopplung_und_Kohäsion.png}
-        \caption{Zusammenspiel von loser Kopplung und hoher Kohäsion \cite{Vogel.2009}}
+        \caption{Zusammenspiel von loser Kopplung und hoher Kohäsion - \cite{Vogel.2009}}
         \label{fig:kopplung_and_kohaesion}
     \end{figure}
 
@@ -106,7 +106,7 @@ Bei der synchronen Kommunikation handelt es sich um eine eins-zu-eins Kommunikat
 
 Bei der Kommunikation von zwei Microservices über die jeweiligen REST-Schnittstellen, muss die Adresse des anderen Microservice bekannt sein. Durch die Verteilung der Microservices auf unterschiedliche Rechner in Folge einer horizontalen Skalierung kann es während dem Betrieb vorkommen, dass einzelne Microservices auf zum Beispiel Rechner A gestoppt und auf Rechner B wieder gestartet werden. Dadurch ändern sich auch die Adressen der Microservices. Da die Verwaltung der Adressen ab einer Vielzahl an Microservices nicht mehr trivial ist, wird in einer Microservice-Architektur eine sogenannte Service-Discovery eingesetzt. Die Service-Discovery ist eine Software, bei der sich alle neuen Microservice registrieren. Bei einem REST-Aufruf wird dann zuerst eine Liste mit allen verfügbaren Adressen abgerufen.
 
-Wie in \autoref{fig:service_discovery} zu abgebildet ist, wird bei einer Anfrage eines Services, jene Anfrage zunächst an einen Router-Service geleitet. Nach dem Abfragen der Adresse mithilfe der Service-Discovery wird gezielt der entsprechende Service mit einer REST-Anfrage angesprochen.
+Wie in \autoref{fig:service_discovery} abgebildet ist, wird bei einer Anfrage eines Services, jene Anfrage zunächst an einen Router-Service geleitet. Nach dem Abfragen der Adresse mithilfe der Service-Discovery wird gezielt der entsprechende Service beziehungsweise dessen Instanz mit einer REST-Anfrage angesprochen.
 
 \begin{figure}[H]
     \centering
@@ -117,18 +117,45 @@ Wie in \autoref{fig:service_discovery} zu abgebildet ist, wird bei einer Anfrage
 
 \subsubsection*{Asynchrone Kommunikation}
 
+Anders als bei der synchronen Kommunikation wird bei der asynchronen Kommunikation nicht auf jede Anfrage eine Antwort erwartet. Kern einer asynchronen Kommunikation ist ein zentraler Nachrichtenkanal, auf dem Nachrichten ausgetauscht werden. Ein Service schickt Nachrichten an solch einen Nachrichtenkanal, auch Message Broker genannt, und wenn ein andere Service an der Nachricht interessiert ist, kann er diese konsumieren. Eine Nachricht kann dabei auch von mehreren Services konsumiert werden.
+
+Zu den bekanntesten Message Brokern zählen RabbitMQ und Apache Kafka. Während RabbitMQ leichtgewichtiger ist als Apache Kafka, hat letzteres mehr Features und weist eine größere Stabilität auf. Die Verantwortlichkeiten innerhalb des Systems werden bei der Verwendung eines Message Brokers umgedreht. Ein Service wird nun nicht mehr explizit von einem anderen Service aufgerufen, sondern schickt seine Nachrichten an den Message Broker, ohne zu wissen, wer dies Nachrichten konsumiert. Sender und Empfänger sind somit lose gekoppelt.
+
+Zur Einteilung der Nachrichten werden in Message Brokern sogenannte Message Queues verwendet. Über eine Message Queue, welche einen bestimmten Topic besitzt, können Service dann entweder Nachrichten senden oder sich als Konsumenten an diesem Topic registrieren. In \autoref{fig:Message_Broker_Queue} ist die Funktionsweise von Apache Kafka abgebildet. Durch den Publish/Subscribe-Mechanismus kann Service A in diesem Beispiel sowohl Publisher von zwei Topics sein, als auch Konsument von einem Topic.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\linewidth]{images/apache-kafka.png}
+    \caption{Funktion eines Message Brokers - \cite{MichaelSchwab.2019}}
+    \label{fig:Message_Broker_Queue}
+\end{figure}
+
+Die Nachrichten werden in der Message Queue zwischengespeichert, bis die registrierten Konsumenten diese Nachrichten gelesen haben. Wenn ein Service sich an einer Message Queue registriert, können verschiedene Servicequalitäten für die Übertragung der Nachrichten angegeben werden. Folgende drei \glqq \gls{qos}\grqq{} können angegeben werden: \cite{ApacheSoftwareFoundation.2021}
+
+\begin{description}
+    \item[QoS 0 \glqq At most once\grqq{}:]\hfill \\
+    Eine Nachricht wird genau einmal versendet. Nach dem Prinzip \glqq fire and forget\grqq{} wird keine Rückbestätigung erwartet. Verwendet wird diese Servicequalität meist für Nachrichten, welche mit einer hohen Frequenz versendet werden. So ist es für viele Sensoren in einer IoT-Umgebung nicht erforderlich, dass jeder gemessene Wert erfolgreich übermittelt werden muss.
+    
+    \item[QoS 1 \glqq At least once\grqq{}:]\hfill \\
+    Es wird sichergestellt, dass eine Nachricht genau einmal beim Empfänger ankommt. Hierzu werden die Nachrichten beim Sender solange zwischengespeichert, bis vom Empfänger eine Bestätigung (PUBACK) empfangen wird. Wird über eine gewisse Zeitspanne keine Bestätigung empfangen, wird die Nachricht erneut versendet. Hierbei kann es vorkommen, dass ein Empfänger eine Nachricht mehrfach erhält. \cite{FlorianRaschbichler.2017}
+    
+    \item[QoS 2 \glqq Exactly once\grqq{}:]\hfill \\
+    Eine Nachricht wird genau einmal zugesendet. Hierbei wird ein 4-Wege-Handshake zwischen Sender und Empfänger verwendet. Durch diesen Ablauf ist eine sichere Übertragung der Nachricht gewährleistet. Durch den großen Overhead ist jedoch diese Servicequalität die langsamste Übertragungsmöglichkeit.
+
+\end{description}
+
 \subsection{Microservice - Antipattern\label{subsec2.2.2:Unterunterpunkt-2}}
 
 Inhalt
 
-\section{Volltextsuche in modernen Informationssystemen\label{sec2.3:Unterpunkt-3}}
+% \section{Volltextsuche in modernen Informationssystemen\label{sec2.3:Unterpunkt-3}}
 
-Inhalt
+% Inhalt
 
-\subsection{Anwendungsfälle\label{subsec2.3.1:Unterunterpunkt-1}}
+% \subsection{Anwendungsfälle\label{subsec2.3.1:Unterunterpunkt-1}}
 
-Inhalt
+% Inhalt
 
-\subsection{Search Engines\label{subsec2.3.2:Unterunterpunkt-2}}
+% \subsection{Search Engines\label{subsec2.3.2:Unterunterpunkt-2}}
 
-Inhalt
+% Inhalt
