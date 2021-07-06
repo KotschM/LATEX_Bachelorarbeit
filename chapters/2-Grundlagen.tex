@@ -4,8 +4,6 @@ Um eine Konzeption und eine prototypische Umsetzung einer Search Engine in \gls{
 
 Aufbauend auf den Architektur-Prinzipien wird die verwendete Microservice-Architektur erläutert, wobei neben einer allgemeinen Einführung in die Architektur auch auf die Kommunikation von Microservices untereinander eingegangen wird. Um mögliche Fehlkonzeptionen zu vermeiden, werden häufig auftretende Anti-Pattern aufgezeigt, welche unter Umständen zu monolithischen Seiteneffekten führen könnten.
 
-% Abschließend wird anhand von verschiedenen modernen Informationssystemen die Funktionalitäten der Volltextsuche gezeigt. Neben den unterschiedlichsten Anwendungsfällen für eine Volltextsuche werden auch die technischen Besonderheiten von Search Engines vorgestellt.
-
 \section{Software-Architekturen\label{sec2.1:Unterpunkt-1}}
 
 \begin{quote}
@@ -73,13 +71,6 @@ Dabei besaß die ehemalige E-MES Architektur eine monolithische Struktur. In ein
 
 Die Architektur von MCC wird eine verteilte Struktur aufweisen. Hierbei werden Teile des Gesamtsystems in unterschiedliche Systembausteine aufgeteilt. Eine Modularisierung der Software ist dadurch möglich und Architekturen-Prinzipien, wie lose Kopplung und Separation of Concerns sind umsetzbar \cite{Vogel.2009}. Durch die strikte Aufteilung der Geschäftslogik kann auch die Komplexität aufgeteilt werden. Somit können die einzelnen Systembausteine mit wenig Aufwand angepasst oder erweitert werden. Durch die Modularisierung von verteilten Architektur kann die Ausführung bestimmter Aufgaben auf redundanter Hardware nebenläufig erfolgen \cite{Prof.Dr.AndreasFink.2012}. Durch jene horizontale Skalierung kann eine effiziente und lastverteilende Programmausführung erfolgen, welche auch zur Ausfallsicherheit des Gesamtsystems beiträgt \cite{Prof.Dr.AndreasFink.2012}.
 
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=0.7\linewidth]{images/monolithic-vs-microservices.png}
-%     \caption{3-Schichten-Architektur vs. Microservice-Architektur \cite{RedHatLimited.2021}}
-%     \label{fig:mono_vs_micro}
-% \end{figure}
-
 \section{Microservice-Architektur\label{sec2.2:Unterpunkt-2}}
 
 Als eine Architektur mit einer verteilten Struktur, wird die Software bei der Neugestaltung des \gls{mes} der Firma Enisco, auf einer Microservice-Architektur aufgebaut.
@@ -104,7 +95,7 @@ Bei der Wahl der Kommunikation zwischen Microservices kann zwischen einer synchr
 
 Bei der synchronen Kommunikation handelt es sich um eine eins-zu-eins Kommunikation, bei der eine Anfrage geschickt und auf eine Antwort gewartet wird. Klassischerweise erfolgt die Kommunikation über HTTP mit einer REST-Schnittstelle. \gls{rest} ist hierbei eine Spezifikation, wie eine über HTTP kommunizierende API konzipiert werden soll \cite{MichaelSchwab.2019}. Eine solche API sollte demnach vordefinierte HTTP-Methoden implementiert haben. Unter anderem sind das Methoden wie GET, POST, PUT und DELETE. Bei einer GET-Anfrage werden hierbei Ressourcen angefragt. Möchte man einen neuen Datensatz übermitteln wird die POST-Methode verwendet und wenn man einen bestehenden Datensatz ändern möchte, verwendet man die PUT-Methode. Mit der DELETE-Methode kann man einen expliziten Datensatz löschen. Jeder Datensatz bekommt hierbei einen eigenen Endpunkt und die jeweiligen Anfragen können mit URL-Parametern und Query-Parametern spezifiziert werden. Das Standard-Datenformat bei REST ist JSON.
 
-Bei der Kommunikation von zwei Microservices über die jeweiligen REST-Schnittstellen, muss die Adresse des anderen Microservice bekannt sein. Durch die Verteilung der Microservices auf unterschiedliche Rechner in Folge einer horizontalen Skalierung kann es während dem Betrieb vorkommen, dass einzelne Microservices auf zum Beispiel Rechner A gestoppt und auf Rechner B wieder gestartet werden. Dadurch ändern sich auch die Adressen der Microservices. Da die Verwaltung der Adressen ab einer Vielzahl an Microservices nicht mehr trivial ist, wird in einer Microservice-Architektur eine sogenannte Service-Discovery eingesetzt. Die Service-Discovery ist eine Software, bei der sich alle neuen Microservice registrieren. Bei einem REST-Aufruf wird dann zuerst eine Liste mit allen verfügbaren Adressen abgerufen.
+\label{service_discovery}Bei der Kommunikation von zwei Microservices über die jeweiligen REST-Schnittstellen, muss die Adresse des anderen Microservice bekannt sein. Durch die Verteilung der Microservices auf unterschiedliche Rechner in Folge einer horizontalen Skalierung kann es während dem Betrieb vorkommen, dass einzelne Microservices auf zum Beispiel Rechner A gestoppt und auf Rechner B wieder gestartet werden. Dadurch ändern sich auch die Adressen der Microservices. Da die Verwaltung der Adressen ab einer Vielzahl an Microservices nicht mehr trivial ist, wird in einer Microservice-Architektur eine sogenannte Service-Discovery eingesetzt. Die Service-Discovery ist eine Software, bei der sich alle neuen Microservice registrieren. Bei einem REST-Aufruf wird dann zuerst eine Liste mit allen verfügbaren Adressen abgerufen.
 
 Wie in \autoref{fig:service_discovery} abgebildet ist, wird bei einer Anfrage eines Services, jene Anfrage zunächst an einen Router-Service geleitet. Nach dem Abfragen der Adresse mithilfe der Service-Discovery wird gezielt der entsprechende Service beziehungsweise dessen Instanz mit einer REST-Anfrage angesprochen.
 
@@ -146,16 +137,76 @@ Die Nachrichten werden in der Message Queue zwischengespeichert, bis die registr
 
 \subsection{Microservice - Antipattern\label{subsec2.2.2:Unterunterpunkt-2}}
 
-Inhalt
+Um die Vorteile einer Microservice-Architektur im Bezug zur losen Kopplung und der damit eingehenden Unabhängigkeit der Microservices bezüglich Wartbarkeit und Erweiterbarkeit zu gewährleisten, ist es von Nöten die möglichen Antipattern einer Microservice-Architektur zu kennen. Mit hilfe von Antipattern können nach Roth und Hafner \cite{StephanRoth.2019} wiederkehrende Fehler bei der Softwareentwicklung identifiziert und in generalisierter Form dokumentiert werden. So können Antipattern dabei helfen häufig auftretende Fehler im vornherein zu vermeiden.
 
-% \section{Volltextsuche in modernen Informationssystemen\label{sec2.3:Unterpunkt-3}}
+In einer Studie von Tighilt et al. \cite{Tighilt.072020} wurden 27 Paper und 67 Open-Source Anwendungen, welche alle Bezug zur Microservice-Architektur haben, untersucht. Die Ergebnisse der Studie \cite{Tighilt.072020} ergeben eine Sammlung von häufig aufgetretenen Antipatterns, welche durch Tighilt et al. in vier Kategorien unterteilt wurden. Folgend werden aus jeder Kategorie zwei Antipattern näher erläutert.
 
-% Inhalt
+\subsubsection*{Design Antipattern}
 
-% \subsection{Anwendungsfälle\label{subsec2.3.1:Unterunterpunkt-1}}
+In diese Kategorie gehören Antipattern, welche bereits in der architektonischen Entwurfsphase einer Microservice-Architektur zu Fehlern führen. Beispiele sind hierfür das \glqq Falscher Schnitt\grqq{}-Antipattern und das \glqq Zyklische Abhängigkeiten\grqq{}-Antipattern.
 
-% Inhalt
+\begin{description}
+    \item[Wrong Cut:]\hfill \\
+    Beim \glqq Falscher Schnitt\grqq{}-Antipattern, wird die Aufteilung des Gesamtsystems in unterschiedliche Microservices nicht nach Geschäftsfunktionen, sondern nach technischen Aspekten durchgeführt. Ähnlich wie bei einer monolithischen 3-Schichten-Architektur übernehmen dann ein Teil der Microservices die Präsentationsschicht, andere Microservices wiederum bedienen die Geschäftsschicht und die anderen bedienen die Datenzugriffsschicht. Durch dieses Vorgehen verliert die Architekturen die lose Kopplung zwischen den Microservices und die Modularität geht verloren. Auch müssen bei einer Änderung einer Geschäftslogik mehrere Microservice abgeändert werden, was zu einem Mehraufwand führt.
 
-% \subsection{Search Engines\label{subsec2.3.2:Unterunterpunkt-2}}
+    Verhindert werden kann dieses Antipattern indem man die Trennung des Gesamtsystems anhand der Geschäftsfunktionen durchführt. Jedes Microservices sollte von einem Team implementiert und gewartet werden können. Die Abhängigkeiten zu anderen Microservices sollte so gering, wie möglich ausfallen, um eine lose Kopplung und die Modularität der Architektur zu gewährleisten.
+    
+    \item[Zyklische Abhängigkeiten:]\hfill \\
+    Ein weiterer Fehler ist die Missachtung der losen Kopplung, indem man mit zyklischen Abhängigkeiten eine zu große Abhängigkeit mit anderen Microservices verursacht. Bei sowohl der Implementierung als auch der Wartung solcher Microservices sind die abhängigen Microservices auch zu berücksichtigen. Dies erhöht die Komplexität und die Wahrscheinlichkeit, dass Fehler auftreten.
 
-% Inhalt
+    Eine zyklische Abhängigkeit zwischen solchen Microservices kann verhindert werden, indem man stark voneinander abhängige Microservices in einen gemeinsamen Microservice zusammenfasst. 
+
+\end{description}
+
+\subsubsection*{Implementation Antipattern}
+
+Implementation Antipattern entstehen aus der Art und Weise, wie Microservices implementiert werden. Beispiele sind hierfür das \glqq Gemeinsame Bibliotheken\grqq{}-Antipattern und das \glqq Festcodierte Endpunkte\grqq{}-Antipattern.
+
+\begin{description}
+    \item[Gemeinsame Bibliotheken:]\hfill \\
+    Bei der Verwendung von gemeinsam benutzen Bibliotheken entstehen starke Abhängigkeiten und die Bibliotheken stellen einen sogenannten \glqq Single point of failure\grqq{} dar.
+
+    Um dieses Problem zu umgehen, kann man jedem Microservice seine eigene Bibliothek zur Verfügung stellen. Dieser Ansatz wiederum führt zu einer Komplexität bei der Wartbarkeit der Microservice. Ein weitere Ansatz wäre es die Bibliotheken durch einen Bibliothek-Service zu abstrahieren. Die Microservices bleiben lose gekoppelt und die Komplexität bei der Wartung bleibt Überschaubar.
+    
+    \item[Festcodierte Endpunkte:]\hfill \\
+    Bei der synchronen Kommunikation zwischen Microservices werden in der Regel Anfragen über REST APIs gestellt. Hierfür müssen die IP-Adresse und der Port des anderen Microservices bekannt sein. Ein Ansatz für schnelle Laufzeiten und eine schnelle Implementierung ist es, die Endpunkte fest im Quellcode zu hinterlegen. Jener Ansatz ist jedoch bei einer größeren Anzahl von Microservices nicht mehr wartbar. Sobald sich ein Endpunkt eines Microservice ändert, müssen alle abhängigen Microservices geändert und neu deployed werden.
+
+    Abhilfe bringt die Einführung einer Service-Discovery (siehe \autoref{service_discovery}).
+
+\end{description}
+
+\subsubsection*{Deployment Antipattern}
+
+Auch in der Bereitstellungsphase einer Microservice-Architektur können Fehler auftreten. Jene Antipattern werden Deployment Antipattern genannt. Beispiele sind hierfür das \glqq Manuelle Konfiguration\grqq{}-Antipattern und das \glqq Zeitüberschreitungen\grqq{}-Antipattern.
+
+\begin{description}
+    \item[Manuelle Konfiguration:]\hfill \\
+    In einer Microservice-Architektur müssen aufgrund der Verteilung der Microservices auf unterschiedlichen Rechner verschiedene Konfigurationen durchgeführt werden. Eine manuelle Konfiguration von jedem Microservice führt zu unzähligen Konfigurationsdateien und Abhängigkeiten zu Umgebungsvariablen. Mit wachsender Anzahl von Microservices führt die manuelle Konfiguration zu einer ansteigenden Komplexität bei der Wartung der Konfigurationen.
+
+    Vermieden werden kann das Antipattern durch die Einführung eines Konfigurations-Servers. Durch geeignete Konfigurationsmanagement-Tools können sämtliche Konfiguration zentral verwaltet werden.
+    
+    \item[Zeitüberschreitungen:]\hfill \\
+    In einer verteilten Microservice-Architektur kann es vorkommen, dass einzelne Service ausfallen und nicht mehr zur Verfügung stehen. Hat nun ein anderer Microservice eine Anfrage über eine REST API gestellt, kann es vorkommen, dass unter Umständen gar keine Antwort kommt. Hierfür kann der Entwickler Timeouts festlegen, nach welchen einem anfragenden Service mitgeteilt wird, dass ein anderer Service nicht erreichbar ist. Den richtigen Wert für solch einen Timeout zu wählen, hängt von der Art des Service ab. Ein zu kurzer Timeout kann dazu führen, dass langsame Service frühzeitig beendet werden und bei einer zu langen Wahl des Timeouts kann es vorkommen, dass der Endnutzer zu lange warten muss, bis ihm signalisiert wird, dass der gewünschte Service nicht verfügbar ist.
+
+    Um dem entgegen zu wirken verwendet man in einer Microservice-Architektur üblicherweise einen Circuit Breaker. Ein Circuit Breaker überwacht hierbei alle Instanzen einzelner Microservices und stellt fest, ob einzelne Timeouts bei der Kommunikation mit der jeweiligen Instanz überschritten wurden. Da solch ein Circuit Breaker als Proxy für alle Kommunikationskanäle verwendet wird, werden alle Anfragen an einen ausgefallenen Service mit einer Fehlermeldung beantwortet. Die Anfragen werden solange durch den Circuit Breaker blockiert, bis der ausgefallene Service wieder zur Verfügung steht. Auch der Timeout des Circuit Breaker muss vom Entwickler festgelegt werden. Jedoch liegt der Vorteil beim Blockieren der Anfragen an einen ausgefallenen Service, um so die Last von diesem zu nehmen.
+
+\end{description}
+
+\subsubsection*{Monitoring Antipattern}
+
+Zu dem Betrieb einer Microservice-Architektur gehört auch die Überwachung der Änderungen im System. Hierbei kann es auch zu häufig auftretenden Antipattern kommen. Beispiele sind hierfür das \glqq Kein Gesundheitscheck\grqq{}-Antipattern und das \glqq Lokale Protokollierung\grqq{}-Antipattern.
+
+\begin{description}
+    \item[Kein Gesundheitscheck:]\hfill \\
+    In der Natur der Microservices kann es vorkommen, dass einige Services über gewisse Zeitspannen nicht erreichbar sind. Um ein kompletten Systemausfall zu vermeiden, dienen Mechanismen, wie der Circuit Breaker dazu die anfragenden Service, nach dem überschreiten von Timeouts, zu benachrichtigen.
+
+    Mit der Integration von Gesundheitschecks können solche Ausfälle von einzelnen Services im Vorraus erkannt und abhängige Microservices darüber informiert werden, dass das Senden von Anfragen zu unterlassen ist. Für solche Gesundheitschecks bietet es sich an API-Endpoints anzubieten, welche periodisch abgefragt werden können.
+    
+    \item[Lokale Protokollierung:]\hfill \\
+    Um eine spätere Fehlerdiagnose zu ermöglichen, speichern Microservices einige Informationen über Änderungen in Log-Dateien. Ein häufiger Fehler ist, dass solch eine Protokollierung lokal in den Datenbanken der einzelnen Microservices gespeichert werden. Die Herausforderung liegt nun bei der Analyse und Abfrage von Logs aus verschiedenen Microservices.
+
+    Mit einem verteilten Logging-Mechanismus können die Logs der unterschiedlichen Microservices in einem zentralen Speicherort gespeichert werden. Durch eine einheitliche Formatierung der Log-Einträge kann auch deren Abfrage und Analyse vereinfacht werden.
+
+\end{description}
+
+Auch bei der Integration einer Search Engine, in solch eine Microservice-Architektur, gilt es die vorgestellten Antipattern zu beachten, um so monolithische Seiteneffekte zu vermeiden.

@@ -1,58 +1,62 @@
 \chapter{Umfang der Suchfunktionalität\label{chap3:Drittes-Kapitel}}
 
-Im folgenden Kapitel wird definiert, welchen Umfang die Suchfunktionalität in der zukünftigen MES-Lösung der Firma Enisco besitzen soll. Dabei wird sich am Produktumfang der bestehenden MES-Lösung E-MES orientiert. Hierzu wird näher betrachtet, welche Funktionalitäten und Anwendungsfälle von E-MES abgedeckt werden und in MCC übernommen werden. 
+%Im folgenden Kapitel wird definiert, welchen Umfang die Suchfunktionalität in der zukünftigen MES-Lösung der Firma Enisco besitzen soll. Dabei wird sich am Produktumfang der bestehenden MES-Lösung E-MES orientiert. Hierzu wird näher betrachtet, welche Funktionalitäten und Anwendungsfälle von E-MES abgedeckt werden und in MCC übernommen werden.
+
+\section{Volltextsuche in modernen Informationssystemen\label{sec2.3:Unterpunkt-3}}
+
+%Inhalt
 
 \section{Produktumfang von E-MES\label{sec3.1:unterpunkt-1}}
 
 \section{SCADA\label{sec3.2:unterpunkt-2}}
-Bei SCADA (Supervisory Control and Data Acquisition) geht es um die Überwachung und Steuerung von automatisierten Fertigungen. Dabei werden Daten von Maschinen und Sensoren empfangen und somit deren Zustand überwacht. Sammelt man diese Daten, kann man eine zeitliche Statistik über die verschiedenen Maschinen und Sensoren anfertigen und so einen Stillstand der Anlage durch frühzeitige Erkennung von Unregelmäßigkeiten verhindern.
+%Bei SCADA (Supervisory Control and Data Acquisition) geht es um die Überwachung und Steuerung von automatisierten Fertigungen. Dabei werden Daten von Maschinen und Sensoren empfangen und somit deren Zustand überwacht. Sammelt man diese Daten, kann man eine zeitliche Statistik über die verschiedenen Maschinen und Sensoren anfertigen und so einen Stillstand der Anlage durch frühzeitige Erkennung von Unregelmäßigkeiten verhindern.
 
-Aus SCADA-Sicht hat man zwei Möglichkeiten auf die Anlage zu schauen.
+%Aus SCADA-Sicht hat man zwei Möglichkeiten auf die Anlage zu schauen.
 
 \subsection{Elektrische/Technische Sicht\label{subsec3.2.1:Unterunterpunkt-1}}
-Jene Sicht ist vor allem für die Mitarbeiter sinnvoll, welche direkt an den Maschinen arbeiten. Entweder bei der Steuerung der Maschinen oder deren Wartung. Hierbei ist jeder Maschine und jedem Sensor eine eindeutige anlageninterne Codierung zugeteilt.
+%Jene Sicht ist vor allem für die Mitarbeiter sinnvoll, welche direkt an den Maschinen arbeiten. Entweder bei der Steuerung der Maschinen oder deren Wartung. Hierbei ist jeder Maschine und jedem Sensor eine eindeutige anlageninterne Codierung zugeteilt.
 
-Zum Beispiel => \textbf{T1C041:Visu.P11.1CI1.States.Automatic.Value}
+%Zum Beispiel => \textbf{T1C041:Visu.P11.1CI1.States.Automatic.Value}
 
-Ein Mitarbeiter kann mithilfe der Codierung direkt heraus lesen, in welchem Bereich der Anlage beziehungsweise in welchem Schaltschrank und an welcher SPS die Maschine oder der Sensor angeschlossen ist. So fällt es dem Mitarbeiter leichter Fehler zu finden und die Anlage zu warten.
+%Ein Mitarbeiter kann mithilfe der Codierung direkt heraus lesen, in welchem Bereich der Anlage beziehungsweise in welchem Schaltschrank und an welcher SPS die Maschine oder der Sensor angeschlossen ist. So fällt es dem Mitarbeiter leichter Fehler zu finden und die Anlage zu warten.
 
 \subsection{Asset Sicht\label{subsec3.2.2:Unterunterpunkt-2}}
-Eine Möglichkeit ist es die Anlage als Assets zu sehen. Hierbei kann der Begriff "Asset" von den einzelnen Maschinen und Sensoren bis hin zur kompletten Anlage reichen. Im Gegensatz zur elektrischen Sichtweise auf die Anlage, können Assets auch gruppiert werden. Es ist zum Beispiel nicht immer notwendig auf der Ebene der einzelnen Maschinen und Geräte zu interagieren. Die Notwendigkeit den Zustand von zum Beispiel einem hydraulischem Ventil zu erfassen ist im Falle der Wartungsdokumentation gerechtfertigt. Jedoch aus Sicht eines Mitarbeiters, der einen großen Teil der Anlage überwachen und steuern muss, ungeeignet.
+%Eine Möglichkeit ist es die Anlage als Assets zu sehen. Hierbei kann der Begriff "Asset" von den einzelnen Maschinen und Sensoren bis hin zur kompletten Anlage reichen. Im Gegensatz zur elektrischen Sichtweise auf die Anlage, können Assets auch gruppiert werden. Es ist zum Beispiel nicht immer notwendig auf der Ebene der einzelnen Maschinen und Geräte zu interagieren. Die Notwendigkeit den Zustand von zum Beispiel einem hydraulischem Ventil zu erfassen ist im Falle der Wartungsdokumentation gerechtfertigt. Jedoch aus Sicht eines Mitarbeiters, der einen großen Teil der Anlage überwachen und steuern muss, ungeeignet.
 
-So ist es hilfreich die Assets nach physikalischen Standorten zu gruppieren. So können zum Beispiel verschiedene Antriebsmotoren und Sensoren als Rollenbahn zusammengefasst werden und dem Mitarbeiter als ein zusammengefasstes Asset dargestellt werden. Die Gruppierungen in dem Sinne immer gröber werden. So können mehrere Rollenbahnen Bestandteil einer Bearbeitungsstation sein. Und mehrere Bearbeitungsstationen können zu Anlagen-Bereichen gruppiert werden. Die dadurch entstandene Hierarchie von Assets kann den kompletten Aufbau der Produktionsanlage widerspiegeln.
+%So ist es hilfreich die Assets nach physikalischen Standorten zu gruppieren. So können zum Beispiel verschiedene Antriebsmotoren und Sensoren als Rollenbahn zusammengefasst werden und dem Mitarbeiter als ein zusammengefasstes Asset dargestellt werden. Die Gruppierungen in dem Sinne immer gröber werden. So können mehrere Rollenbahnen Bestandteil einer Bearbeitungsstation sein. Und mehrere Bearbeitungsstationen können zu Anlagen-Bereichen gruppiert werden. Die dadurch entstandene Hierarchie von Assets kann den kompletten Aufbau der Produktionsanlage widerspiegeln.
 
-Zwischen den Assets gibt es jedoch nicht nur die hierarchischen Beziehungen. So kann es sein, dass mehrere Geräte am selben Bedienfeld angeschlossen sind und darüber eine Beziehungen zueinander haben. Auch eine Gruppierung nach Schaltschränken für die Stromversorgung kann vorkommen. Eine weitere Beziehung zwischen den Assets sind die Materialflüsse, welche beschreiben, wie Produktionseinheiten durch die Produktionsanlage bewegt werden können. Es gibt demnach verschiedene Arten von Beziehungen zwischen Assets, welche auf physikalischen Verbindungen, wie Zusammensetzung oder Stromversorgung oder auf logischen Verbindungen, wie Materialflüssen beruhen können.
+%Zwischen den Assets gibt es jedoch nicht nur die hierarchischen Beziehungen. So kann es sein, dass mehrere Geräte am selben Bedienfeld angeschlossen sind und darüber eine Beziehungen zueinander haben. Auch eine Gruppierung nach Schaltschränken für die Stromversorgung kann vorkommen. Eine weitere Beziehung zwischen den Assets sind die Materialflüsse, welche beschreiben, wie Produktionseinheiten durch die Produktionsanlage bewegt werden können. Es gibt demnach verschiedene Arten von Beziehungen zwischen Assets, welche auf physikalischen Verbindungen, wie Zusammensetzung oder Stromversorgung oder auf logischen Verbindungen, wie Materialflüssen beruhen können.
 
 \subsection{Suchumfang im SCADA-Umfeld\label{subsec3.2.3:Unterunterpunkt-3}}
-Im SCADA Bereich von E-MES lassen sich nun verschiedene Objekte herausfiltern, nach welchen mithilfe einer Suchfunktionalität gesucht werden kann.
+%Im SCADA Bereich von E-MES lassen sich nun verschiedene Objekte herausfiltern, nach welchen mithilfe einer Suchfunktionalität gesucht werden kann.
 
-Durch die hierarchische Aufteilung der Anlage in verschiedene Assets, ist eine Suche nach den Assets ein auftretender Use-Case und sollte durch die neue Suchfunktionalität abgedeckt werden. So kann ein Mitarbeiter zum Beispiel nach den Begriffen "Lackierbereich", "Trockenofen" oder "Rollenbahn" suchen und bekommt eine Auswahl an Funktionen angeboten, welche anhand der Assets ausgeführt werden können. Sollte demnach ein Asset mit der Bezeichnung "Rollenbahn" im System zu finden sein, sollen dem Mitarbeiter Funktionalitäten, wie die Anzeige von Fehlermeldungen (Alarming) und Auswertung von Prozesswerten (Trending) angeboten werden. Auch die Suche nach Schaltschränken oder Pultbereichen kann durch die hierarchische Asset Abbildung realisiert werden.
+%Durch die hierarchische Aufteilung der Anlage in verschiedene Assets, ist eine Suche nach den Assets ein auftretender Use-Case und sollte durch die neue Suchfunktionalität abgedeckt werden. So kann ein Mitarbeiter zum Beispiel nach den Begriffen "Lackierbereich", "Trockenofen" oder "Rollenbahn" suchen und bekommt eine Auswahl an Funktionen angeboten, welche anhand der Assets ausgeführt werden können. Sollte demnach ein Asset mit der Bezeichnung "Rollenbahn" im System zu finden sein, sollen dem Mitarbeiter Funktionalitäten, wie die Anzeige von Fehlermeldungen (Alarming) und Auswertung von Prozesswerten (Trending) angeboten werden. Auch die Suche nach Schaltschränken oder Pultbereichen kann durch die hierarchische Asset Abbildung realisiert werden.
 
-Neben der Verwendung der Assets kann auch nach den technischen beziehungsweise elektrischen Bezeichnungen der Maschinen und Sensoren gesucht werden. So kann ein Mitarbeiter, welcher lediglich die Codierungen zur Hilfe hat trotzdem nach zum Beispiel letzten Warnungen oder nach einer Auswertung der gemessenen Werte suchen. Auch eine Informationsgewinnung im Bezug zur Zugehörigkeit der Maschine oder des Sensors zu Anlagenbereichen, Pultbereichen oder Schaltschränken kann im Interesse eines Mitarbeiters sein, welcher lediglich eine Codierung einer Maschine oder eines Sensors zur Verfügung hat.
+%Neben der Verwendung der Assets kann auch nach den technischen beziehungsweise elektrischen Bezeichnungen der Maschinen und Sensoren gesucht werden. So kann ein Mitarbeiter, welcher lediglich die Codierungen zur Hilfe hat trotzdem nach zum Beispiel letzten Warnungen oder nach einer Auswertung der gemessenen Werte suchen. Auch eine Informationsgewinnung im Bezug zur Zugehörigkeit der Maschine oder des Sensors zu Anlagenbereichen, Pultbereichen oder Schaltschränken kann im Interesse eines Mitarbeiters sein, welcher lediglich eine Codierung einer Maschine oder eines Sensors zur Verfügung hat.
 
-Im Grund kann man nach folgenden Objekten suchen:
+%Im Grund kann man nach folgenden Objekten suchen:
 
-\begin{itemize}
-    \item Maschinen/Sensoren (durch deren Codierung)
-    \item Assets
-    \item Pultbereiche
-    \item Schaltschränke
-\end{itemize}
+%\begin{itemize}
+%    \item Maschinen/Sensoren (durch deren Codierung)
+%    \item Assets
+%    \item Pultbereiche
+%    \item Schaltschränke
+%\end{itemize}
 
 \section{PCS\label{sec3.3:unterpunkt-3}}
-Bei PCS (Process Control System) geht es um die Aufbereitung der Produktionsaufträge für die jeweilige Anlage. Hierfür können Mitarbeiter der Anlage neue Produktionsaufträge einspeisen, welche anschließend durch die Bereitstellung von Templates zu entsprechenden Arbeitsschritten umgeformt werden. Auch ist das Vordefinieren von sich ständig wiederholenden Arbeitsschritten möglich. Dabei wird festgelegt, wann, wo und welcher Arbeitsschritt mit welchem Bauteil und passendem Warenträger ausgeführt werden muss. Mithilfe solch einer Planung, kann eine Koordination der Arbeitsstationen mit den Aufträgen stattfinden und Stillstände einzelner Anlagenbereiche werden minimiert.
+%Bei PCS (Process Control System) geht es um die Aufbereitung der Produktionsaufträge für die jeweilige Anlage. Hierfür können Mitarbeiter der Anlage neue Produktionsaufträge einspeisen, welche anschließend durch die Bereitstellung von Templates zu entsprechenden Arbeitsschritten umgeformt werden. Auch ist das Vordefinieren von sich ständig wiederholenden Arbeitsschritten möglich. Dabei wird festgelegt, wann, wo und welcher Arbeitsschritt mit welchem Bauteil und passendem Warenträger ausgeführt werden muss. Mithilfe solch einer Planung, kann eine Koordination der Arbeitsstationen mit den Aufträgen stattfinden und Stillstände einzelner Anlagenbereiche werden minimiert.
 
-Ein weiterer Use-Case ist die Aufzeichnung von Produktionsdaten bezüglich den einzelnen Aufträgen. So kann beispielsweise vermerkt werden, wie Dick oder Lange eine Lackierung auf dem Werkstück XY appliziert wurde. Im Nachgang können dann, zu jedem Werkstück oder auch Arbeitsauftrag, sämtliche Produktionsdaten nachvollzogen werden.
+%Ein weiterer Use-Case ist die Aufzeichnung von Produktionsdaten bezüglich den einzelnen Aufträgen. So kann beispielsweise vermerkt werden, wie Dick oder Lange eine Lackierung auf dem Werkstück XY appliziert wurde. Im Nachgang können dann, zu jedem Werkstück oder auch Arbeitsauftrag, sämtliche Produktionsdaten nachvollzogen werden.
 
 \subsection{Suchumfang im PCS-Umfeld\label{subsec3.3.1:Unterunterpunkt-1}}
-Für eine Suchfunktionalität gibt es im PCS-Umfeld verschiedene Anwendungsfälle. Die Aufträge, welche von der Anlage abgearbeitet werden haben in der Regel eine eindeutige Identifikationsnummer. Wenn ein Mitarbeiter solch eine Identifikationsnummer in das Suchfeld eingibt, erwartet dieser eine Auflistung an Funktionen, welche ich auf den jeweiligen Produktionsauftrag anwenden kann. Zum Beispiel möchte ich einsehen können, welchen Status mein Auftrag gerade hat und welche Arbeitsschritte noch ausstehen. Auch möchte man eventuell gezielt nach verschiedenen Warenträgern suchen, um herauszufinden, welche Aufträge mit dem Warenträger transportiert worden sind.
+%Für eine Suchfunktionalität gibt es im PCS-Umfeld verschiedene Anwendungsfälle. Die Aufträge, welche von der Anlage abgearbeitet werden haben in der Regel eine eindeutige Identifikationsnummer. Wenn ein Mitarbeiter solch eine Identifikationsnummer in das Suchfeld eingibt, erwartet dieser eine Auflistung an Funktionen, welche ich auf den jeweiligen Produktionsauftrag anwenden kann. Zum Beispiel möchte ich einsehen können, welchen Status mein Auftrag gerade hat und welche Arbeitsschritte noch ausstehen. Auch möchte man eventuell gezielt nach verschiedenen Warenträgern suchen, um herauszufinden, welche Aufträge mit dem Warenträger transportiert worden sind.
 
-Im Grund kann man nach folgenden Objekten suchen:
+%Im Grund kann man nach folgenden Objekten suchen:
 
-\begin{itemize}
-    \item Bauteile
-    \item Aufträge
-    \item Warenträger
-    \item Maschinen
-    \item Arbeitsschritte
-\end{itemize}
+%\begin{itemize}
+%    \item Bauteile
+%    \item Aufträge
+%    \item Warenträger
+%    \item Maschinen
+%    \item Arbeitsschritte
+%\end{itemize}
