@@ -40,6 +40,7 @@
         "case",
         "chapterformat",
         "color",
+        "commerce",
         "concept",
         "concerns",
         "constant",
@@ -47,7 +48,9 @@
         "dbms",
         "dkgreen",
         "docker",
+        "e",
         "endparpenalty",
+        "experience",
         "explanation",
         "fire",
         "gaiser",
@@ -106,6 +109,7 @@
         "verstehbarkeit",
         "visu",
         "void",
-        "wrong"
+        "wrong",
+        "zettabyte"
     ]
 }

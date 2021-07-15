@@ -1,8 +1,10 @@
 \chapter{Grundlagen\label{chap2:Zweites-Kapitel}}
 
-Um eine Konzeption und prototypische Umsetzung einer Search Engine in \gls{mcc} zu ermöglichen, wird in folgendem Kapitel auf die architekturellen Hintergründe von \gls{mcc} eingegangen. Hierfür werden zu Beginn allgemein gültige Architektur-Prinzipien erläutert, welche auch bei der Integration einer Search Engine berücksichtigt werden müssen und somit bei der Auswahl eines geeigneten Konzeptes von Bedeutung sind.
+Um eine Konzeption und prototypische Umsetzung einer Volltextsuche in \gls{mcc} zu ermöglichen, wird in folgendem Kapitel auf die architekturellen Hintergründe von \gls{mcc} eingegangen. Hierfür werden zu Beginn allgemein gültige Architektur-Prinzipien erläutert, welche auch bei der Integration einer Volltextsuche berücksichtigt werden müssen und somit bei der Auswahl eines geeigneten Konzeptes von Bedeutung sind.
 
 Aufbauend auf den Architektur-Prinzipien wird die verwendete Microservice-Architektur erläutert, wobei neben einer allgemeinen Einführung in die Architektur auch auf die Kommunikation von Microservices untereinander eingegangen wird. Um mögliche Fehlkonzeptionen zu vermeiden, werden häufig auftretende Anti-Pattern aufgezeigt, welche unter Umständen zu monolithischen Seiteneffekten führen können.
+
+Grundlegend wird noch der Begriff \glqq Volltextsuche\grqq{} vorgestellt. Hierfür wird auf den Mehrwert und die verschiedenen Umsetzungsmöglichkeiten eingegangen. Ergänzend wird in \textbf{\autoref{chap3:Drittes-Kapitel}} auf eine Volltextsuche im Umfeld von MCC eingegangen. Neben dem Umfang der Suchergebnisse wird auch deren Relevanzbestimmung erläutert.
 
 \section{Software-Architekturen\label{sec2.1:Unterpunkt-1}}
 
@@ -61,7 +63,7 @@ Für das Erstellen einer guten Software-Architektur wurden von Vogel \cite[S. 12
 
 \end{description}
 
-Auch für die spätere Konzeption einer Search Engine in einer Microservice-Architektur werden die eingeführten Prinzipien als Grundlage dienen.
+Auch für die spätere Konzeption einer Volltextsuche in einer Microservice-Architektur werden die eingeführten Prinzipien als Grundlage dienen.
 
 \subsection{Monolithische und verteilte Architekturen\label{subsec2.1.2:Unterunterpunkt-2}}
 
@@ -188,7 +190,7 @@ Auch in der Bereitstellungsphase einer Microservice-Architektur können Fehler a
     \item[Zeitüberschreitungen:]\hfill \\
     In einer verteilten Microservice-Architektur kann es vorkommen, dass einzelne Services ausfallen und nicht mehr zur Verfügung stehen. Hat nun ein anderer Microservice eine Anfrage über eine REST API gestellt, kann es vorkommen, dass unter Umständen gar keine Antwort kommt. Hierfür kann der Entwickler Timeouts festlegen, nach welchen einem anfragenden Service mitgeteilt wird, dass ein anderer Service nicht erreichbar ist. Den richtigen Wert für solch einen Timeout zu wählen, hängt von der Art des Service ab. Ein zu kurzer Timeout kann dazu führen, dass langsame Service frühzeitig beendet werden. Bei einer zu langen Wahl des Timeouts kann es vorkommen, dass der Endnutzer zu lange warten muss, bis ihm signalisiert wird, dass der gewünschte Service nicht verfügbar ist.
 
-    Um dem entgegen zu wirken, verwendet man in einer Microservice-Architektur üblicherweise einen Circuit Breaker. Ein Circuit Breaker überwacht hierbei alle Instanzen einzelner Microservices und stellt fest, ob einzelne Timeouts bei der Kommunikation mit der jeweiligen Instanz überschritten wurden. Da solch ein Circuit Breaker als Proxy für alle Kommunikationskanäle verwendet wird, werden alle Anfragen an einen ausgefallenen Service mit einer Fehlermeldung beantwortet. Die Anfragen werden solange durch den Circuit Breaker blockiert, bis der ausgefallene Service wieder zur Verfügung steht. Auch der Timeout des Circuit Breaker muss vom Entwickler festgelegt werden.% Jedoch liegt der Vorteil beim Blockieren der Anfragen an einen ausgefallenen Service, um so die Last von diesem zu nehmen.
+    Um dem entgegen zu wirken, verwendet man in einer Microservice-Architektur üblicherweise einen Circuit Breaker. Ein Circuit Breaker überwacht hierbei alle Instanzen einzelner Microservices und stellt fest, ob einzelne Timeouts bei der Kommunikation mit der jeweiligen Instanz überschritten wurden. Da solch ein Circuit Breaker als Proxy für alle Kommunikationskanäle verwendet wird, werden alle Anfragen an einen ausgefallenen Service mit einer Fehlermeldung beantwortet. Die Anfragen werden solange durch den Circuit Breaker blockiert, bis der ausgefallene Service wieder zur Verfügung steht. Auch der Timeout des Circuit Breaker muss vom Entwickler festgelegt werden.
 
 \end{description}
 
@@ -209,13 +211,19 @@ Zu dem Betrieb einer Microservice-Architektur gehört auch die Überwachung der 
 
 \end{description}
 
-Auch bei der Integration einer Search Engine in eine Microservice-Architektur gilt es die vorgestellten Anti-Pattern zu beachten, um so monolithische Seiteneffekte zu vermeiden.
+Auch bei der Integration einer Volltextsuche in eine Microservice-Architektur gilt es die vorgestellten Anti-Pattern zu beachten, um so monolithische Seiteneffekte zu vermeiden.
 
 \section{Volltextsuche in modernen Informationssystemen\label{sec2.3:Unterpunkt-3}}
 
-Text
+Aufgrund der fortlaufenden Digitalisierung und Themen wie \glqq Industrie 4.0\grqq{} und \glqq Internet of Things\grqq{} steigt die jährlich anfallende Datenmenge im weltweiten Internet. Das aufkommende Datenvolumen wird bereits für das Jahr 2025 auf 175 Zettabyte prognostiziert \cite{F.Tenzer.2018}. Dies wäre ein Wachstum, vom Jahr 2018 bis zum Jahr 2025, um mehr als den Faktor fünf.
 
-\subsection{Mehrwert einer Volltextsuche\label{subsec2.3.1:Unterunterpunkt-1}}
+Neben den reinen Daten wachsen zunehmend auch die Anzahl der Websites und Web-Inhalten. So gibt es Stand 2021 rund 1,83 Milliarden Websites \cite{GuyFawkes.2021}, welche durch Suchmaschinen, wie Google durchsucht werden können. Ein Nutzer kann hierbei einen Volltext als Sucheingabe eingeben und erhält eine Liste mit den entsprechenden Treffern sortiert nach der Relevanz für den Nutzer.
+
+Solche Suchfunktionalitäten werden auch direkt auf den Websites angeboten, um den Besuchern so das Navigieren durch die Website und das Auffinden von Produkten und Dienstleistungen zu erleichtern. Nach einer Studie des eCommerce-Leitfadens \cite{AaronSchrettenbrunner.} geben 80\% der Shopbesitzer an, dass die Suchfunktion auf ihrer Website ihnen \glqq sehr wichtig\grqq{} ist. Demnach geben 97\% der Befragten an, dass sie eine Suchfunktion im Shop anbieten.
+
+Einen großen Beitrag zu einer hohen User Experience in modernen Informationssystemen liefert die Suchfunktionalität, mit welcher Websites und Softwaresysteme durchsucht werden können.
+
+\subsection{Beispiele für die Volltextsuche\label{subsec2.3.1:Unterunterpunkt-1}}
 
 Text
 
