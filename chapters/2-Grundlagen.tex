@@ -213,21 +213,38 @@ Zu dem Betrieb einer Microservice-Architektur gehört auch die Überwachung der 
 
 Auch bei der Integration einer Volltextsuche in eine Microservice-Architektur gilt es die vorgestellten Anti-Pattern zu beachten, um so monolithische Seiteneffekte zu vermeiden.
 
-\section{Volltextsuche in modernen Informationssystemen\label{sec2.3:Unterpunkt-3}}
+\section{Suchfunktionen in modernen Informationssystemen\label{sec2.3:Unterpunkt-3}}
 
 Aufgrund der fortlaufenden Digitalisierung und Themen wie \glqq Industrie 4.0\grqq{} und \glqq Internet of Things\grqq{} steigt die jährlich anfallende Datenmenge im weltweiten Internet. Das aufkommende Datenvolumen wird bereits für das Jahr 2025 auf 175 Zettabyte prognostiziert \cite{F.Tenzer.2018}. Dies wäre ein Wachstum, vom Jahr 2018 bis zum Jahr 2025, um mehr als den Faktor fünf.
 
-Neben den reinen Daten wachsen zunehmend auch die Anzahl der Websites und Web-Inhalten. So gibt es Stand 2021 rund 1,83 Milliarden Websites \cite{GuyFawkes.2021}, welche durch Suchmaschinen, wie Google durchsucht werden können. Ein Nutzer kann hierbei einen Volltext als Sucheingabe eingeben und erhält eine Liste mit den entsprechenden Treffern sortiert nach der Relevanz für den Nutzer.
+Neben den reinen Daten wachsen zunehmend auch die Anzahl der Websites und Web-Inhalten. So gibt es Stand 2021 rund 1,83 Milliarden Websites \cite{GuyFawkes.2021}, welche durch Suchmaschinen, wie Google gefunden werden können. Ein Nutzer kann hierbei einen Volltext als Sucheingabe eingeben und erhält eine Liste mit den entsprechenden Treffern sortiert nach der Relevanz für den Nutzer.
 
 Solche Suchfunktionalitäten werden auch direkt auf den Websites angeboten, um den Besuchern so das Navigieren durch die Website und das Auffinden von Produkten und Dienstleistungen zu erleichtern. Nach einer Studie des eCommerce-Leitfadens \cite{AaronSchrettenbrunner.} geben 80\% der Shopbesitzer an, dass die Suchfunktion auf ihrer Website ihnen \glqq sehr wichtig\grqq{} ist. Demnach geben 97\% der Befragten an, dass sie eine Suchfunktion im Shop anbieten.
 
-Einen großen Beitrag zu einer hohen User Experience in modernen Informationssystemen liefert die Suchfunktionalität, mit welcher Websites und Softwaresysteme durchsucht werden können.
+\subsection{Mehrwert einer Suchfunktion\label{subsec2.3.1:Unterunterpunkt-1}}
 
-\subsection{Beispiele für die Volltextsuche\label{subsec2.3.1:Unterunterpunkt-1}}
+Der Mehrwert bei der Einführung einer Suchfunktion in einer Website oder in einem Software-Produkt, wie \gls{mcc}, liegt bei der Unterstützung der Benutzer beim Navigieren. So können auch neue Benutzer bei der Suche nach Produkten oder Informationen unterstützt werden, obwohl diese den eigentlichen Umfang der Website beziehungsweise Software nicht kennen.
 
-Text
+Je nach Art und Umfang der Produkte und Informationen bieten sich verschiedene Möglichkeiten einer Suchfunktion an. Der Benutzer hat die Möglichkeit entweder einen Volltext einzugeben und somit eine List mit Treffern zu erhalten oder durch die Filterung von Facetten zum gewünschten Treffer zu gelangen.
 
-\subsection{Umsetzungsmöglichkeiten einer Volltextsuche\label{subec2.3.2:Unterunterpunkt-2}}
+\subsection{Volltextsuche\label{subsec2.3.1:Unterunterpunkt-1}}
+
+Eine Möglichkeit nach Produkten oder anderen Informationen zu suchen, ist die Volltextsuche. Hierbei kann der Benutzer einen beliebigen Text in ein Suchfeld eingeben und erhält eine Auflistung der Treffer, welche den eingegebenen Text enthalten.
+
+Eine Volltextsuche wird von den Benutzern als gewohnter Komfort wahrgenommen, da auch Suchmaschinen wie Google, mit dieser Art der Suchfunktion agieren.
+
+Eine Volltextsuche wird nicht nur klassischerweise in eCommerce-Websites angeboten, sondern auch für die Navigation und Suche in Software-Produkten. Ein Beispiel hierfür ist die Wiki-Software \glqq Atlassian Confluence\grqq{}, welche standardmäßig eine Suchfunktion zur Verfügung stellt. Für die Wissensaufnahme und Weitergabe der Firma Enisco wird genau diese Wiki-Software verwendet.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\linewidth]{images/Suchleiste_Confluence.png}
+    \caption{Ergebnisse der Suchanfrage \glqq Studenten\grqq{}}
+    \label{fig:search_confluence}
+\end{figure}
+
+Grundlage für die technische Umsetzung einer Volltextsuche ist die Erstellung eines invertierten Index.
+
+\subsection{Facettierte Suche\label{subec2.3.2:Unterunterpunkt-2}}
 
 Text
 
