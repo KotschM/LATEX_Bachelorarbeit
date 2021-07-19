@@ -211,7 +211,7 @@ Zu dem Betrieb einer Microservice-Architektur gehört auch die Überwachung der 
 
 \end{description}
 
-Auch bei der Integration einer Volltextsuche in eine Microservice-Architektur gilt es die vorgestellten Anti-Pattern zu beachten, um so monolithische Seiteneffekte zu vermeiden.
+Auch bei der Integration einer Suchfunktion in eine Microservice-Architektur gilt es die vorgestellten Anti-Pattern zu beachten, um so monolithische Seiteneffekte zu vermeiden.
 
 \section{Suchfunktionen in modernen Informationssystemen\label{sec2.3:Unterpunkt-3}}
 
@@ -221,37 +221,64 @@ Neben den reinen Daten wachsen zunehmend auch die Anzahl der Websites und Web-In
 
 Solche Suchfunktionalitäten werden auch direkt auf den Websites angeboten, um den Besuchern so das Navigieren durch die Website und das Auffinden von Produkten und Dienstleistungen zu erleichtern. Nach einer Studie des eCommerce-Leitfadens \cite{AaronSchrettenbrunner.} geben 80\% der Shopbesitzer an, dass die Suchfunktion auf ihrer Website ihnen \glqq sehr wichtig\grqq{} ist. Demnach geben 97\% der Befragten an, dass sie eine Suchfunktion im Shop anbieten.
 
+Je nach Art der Benutzer und Umfang der Produkte und Informationen stehen bei der Umsetzung einer Suchfunktion zwei Möglichkeiten zur Verfügung. Eine Möglichkeit ist die Suche mit Hilfe einer Volltextsuche. Für einen Benutzer stellt solch eine Art der Suchfunktion einen bekannten Komfort dar, da diese Art bereits aus Web-Suchmaschinen, wie zum Beispiel Google bekannt ist. Eine weitere Möglichkeit bietet die Suche über verschiedene Filter. Hierbei werden die Details der Informationen über verschiedene Facetten definiert. Durch Filterung der Facetten können dann die Informationen gefunden werden.
+
+Oft zu finden ist eine Kombination aus einer Volltextsuche und einer facettierten Suche. Hierbei wird dem Benutzer primär eine Volltextsuche in Form eines Eingabefeldes angeboten und anschließend kann über eine \glqq Erweiterte Suche\grqq{} die Facettierung vorgenommen werden. Ein bekanntes Beispiel für die Verwendung einer Kombination beider Möglichkeiten ist der Onlineversandhändler \glqq Amazon\grqq{}. Durch die Eingabe eines Suchbegriffes wird dem Benutzer eine Auswahl geeigneter Suchtreffer angezeigt. Für eine weitere Eingrenzung der Suchergebnisse kann der Benutzer die Ergebnisse zum Beispiel anhand der Preise, Bewertungen oder Hersteller filtern.
+
 \subsection{Mehrwert einer Suchfunktion\label{subsec2.3.1:Unterunterpunkt-1}}
 
-Der Mehrwert bei der Einführung einer Suchfunktion in einer Website oder in einem Software-Produkt, wie \gls{mcc}, liegt bei der Unterstützung der Benutzer beim Navigieren. So können auch neue Benutzer bei der Suche nach Produkten oder Informationen unterstützt werden, obwohl diese den eigentlichen Umfang der Website beziehungsweise Software nicht kennen.
+Der Mehrwert bei der Einführung einer Suchfunktion in einer Website oder in einem Software-Produkt, wie \gls{mcc}, liegt bei der Unterstützung der Benutzer beim Navigieren.
 
-Je nach Art und Umfang der Produkte und Informationen bieten sich verschiedene Möglichkeiten einer Suchfunktion an. Der Benutzer hat die Möglichkeit entweder einen Volltext einzugeben und somit eine List mit Treffern zu erhalten oder durch die Filterung von Facetten zum gewünschten Treffer zu gelangen.
+Aufgrund der wachsenden Anzahl der Websites und Web-Inhalten \cite{GuyFawkes.2021} ist ein eigenständiges Navigieren durch das World Wide Web nicht mehr möglich. Durch die Verwendung von Suchmaschinen können Benutzer mit beliebigen Suchbegriffen nach expliziten Websites oder Web-Inhalten suchen.
 
-\subsection{Volltextsuche\label{subsec2.3.1:Unterunterpunkt-1}}
+Der Benutzerkreis von Software-Produkten, wie \gls{mcc}, besteht überwiegend aus einem expliziten Benutzerkreis. Im Umfeld von \gls{mcc} sind dies vor allem die Betreiber der jeweiligen Anlagen. Damit sich auch neue und unerfahrene Benutzer in einer solchen umfangreichen Software zurechtfinden, kann eine Suchfunktionalität den Einstieg erleichtern. So kann der Produktumfang von \gls{mcc} benutzt werden, ohne die genaue Struktur und den kompletten Funktionsumfang zu kennen.
 
-Eine Möglichkeit nach Produkten oder anderen Informationen zu suchen, ist die Volltextsuche. Hierbei kann der Benutzer einen beliebigen Text in ein Suchfeld eingeben und erhält eine Auflistung der Treffer, welche den eingegebenen Text enthalten.
+\subsection{Volltextsuche\label{subsec2.3.2:Unterunterpunkt-2}}
 
-Eine Volltextsuche wird von den Benutzern als gewohnter Komfort wahrgenommen, da auch Suchmaschinen wie Google, mit dieser Art der Suchfunktion agieren.
+Eine Möglichkeit nach Produkten oder Informationen zu suchen, ist die Volltextsuche. Hierbei kann der Benutzer einen beliebigen Freitext in ein Suchfeld eingeben und erhält eine Auflistung der Suchtreffer, welche den eingegebenen Freitext enthalten.
 
-Eine Volltextsuche wird nicht nur klassischerweise in eCommerce-Websites angeboten, sondern auch für die Navigation und Suche in Software-Produkten. Ein Beispiel hierfür ist die Wiki-Software \glqq Atlassian Confluence\grqq{}, welche standardmäßig eine Suchfunktion zur Verfügung stellt. Für die Wissensaufnahme und Weitergabe der Firma Enisco wird genau diese Wiki-Software verwendet.
+Da auch Suchmaschinen wie Google auf einer Volltextsuche basieren, ist diese Möglichkeit der Suchfunktion, für die Benutzer ein gewohnter Komfort. Eine Volltextsuche wird dabei nicht nur in den Suchmaschinen oder direkt in auf den Websites angeboten, sondern auch für die Navigation und Suche in Software-Produkten. Ein Beispiel hierfür ist die Wiki-Software \glqq Atlassian Confluence\grqq{}, welche standardmäßig eine Suchfunktion zur Verfügung stellt. Für die Wissensaufnahme und Weitergabe der Firma Enisco wird diese Wiki-Software verwendet.
+
+In \autoref{fig:search_confluence_fulltextsearch} ist beispielhaft die Trefferauflistung des Suchbegriffes \glqq Studenten\grqq{} abgebildet. Hierbei dursucht die Suchfunktion den Datenbestand der Confluence-Anwendung der Firma Enisco und gibt als Ergebnis alle Seiten aus, welche mit dem Suchbegriff übereinstimmen. In der gezeigten Ansicht erscheinen dabei alle Seiten, welche einen Treffer im Titel aufweisen. Durch die Schaltfläche \glqq Suche nach \textbf{Studenten}\grqq{}, welche in der Ansicht unten angezeigt wird, werden auch Confluence-Seiten angezeigt, in welchen der Suchbegriff auch im eigentlichen Inhalt der Seite gefunden wird.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.4\linewidth]{images/Suchleiste_Confluence.png}
-    \caption{Ergebnisse der Suchanfrage \glqq Studenten\grqq{}}
-    \label{fig:search_confluence}
+    \caption{Ergebnisse der Suchanfrage \glqq Studenten\grqq{} - entnommen aus \cite{EniscobyForcamGmbH.2021}\protect\footnotemark}
+    \label{fig:search_confluence_fulltextsearch}
 \end{figure}
 
-Grundlage für die technische Umsetzung einer Volltextsuche ist die Erstellung eines invertierten Index.
+\footnotetext{Quelle aus dem Intranet (nicht öffentlich zugänglich) von Enisco}
+Grundlage für die technische Umsetzung einer Volltextsuche ist die Erstellung eines Suchindexes. Ein Suchindex für die Volltextsuche wird hierbei als invertierter Index umgesetzt. Die Funktionsweise von einem invertierten Index ist vergleichbar mit dem Stichwortverzeichnis in Büchern. Möchte man in Büchern nach einem bestimmten Wort oder Begriff suchen, so ist eine Suche durch das gesamte Buch umständlich und mit einem langen Zeitaufwand verbunden. Durch die Einführung eines Stichwortverzeichnis, wie in \autoref{fig:inverted_index} abgebildet, werden die Begriffe aus dem Buch den einzelnen Seiten zugewiesen. Eine Suche im Stichwortverzeichnis ist aufgrund der Vorsortierung schneller und man kann direkt an sie entsprechende Stelle im Buch springen.
 
-\subsection{Facettierte Suche\label{subec2.3.2:Unterunterpunkt-2}}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\linewidth]{images/Stichwortverzeichnis.png}
+    \caption{Beispiel für ein Stichwortverzeichnis \cite{weka.de.2014}}
+    \label{fig:inverted_index}
+\end{figure}
 
-Text
+Bei der Eingabe von Freitexten durch Menschen ist das Aufkommen von Fehleingaben nicht auszuschließen. Aus diesem Grund müssen sowohl beim Aufbau des invertierten Indexes, als auch beim Bearbeiten der Suchanfrage gewisse Transformationsschritte berücksichtigt werden. Die Transformationsschritte sorgen für eine Fehlertoleranz innerhalb der Suchfunktion und verbessern die User Experience bei der Benutzung der Suchfunktion.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{images/Index_Analyzer.png}
+    \caption{Beispielhafter Ablauf der Transformationsschritte - in Anlehnung an \cite{SebastianRuss.2017}}
+    \label{fig:index_analyzer}
+\end{figure}
 
 \subsubsection{Search Engine}
 
-Text
-
 \subsubsection{DBMS-interne Volltextsuche}
 
-Text
+\subsection{Facettierte Suche\label{subec2.3.3:Unterunterpunkt-3}}
+
+- Beispiele
+
+\subsection{Anforderungen an eine Suchfunktion\label{subec2.3.4:Unterunterpunkt-4}}
+
+\subsubsection{Auto-Suggest versus Auto-Complete}
+
+\subsubsection{Fehlertoleranz}
+
+\subsubsection{Relevanzbestimmung}
