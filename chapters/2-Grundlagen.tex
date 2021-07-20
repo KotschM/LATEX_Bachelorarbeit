@@ -237,7 +237,7 @@ Der Benutzerkreis von Software-Produkten, wie \gls{mcc}, besteht überwiegend au
 
 Eine Möglichkeit nach Produkten oder Informationen zu suchen, ist die Volltextsuche. Hierbei kann der Benutzer einen beliebigen Freitext in ein Suchfeld eingeben und erhält eine Auflistung der Suchtreffer, welche den eingegebenen Freitext enthalten.
 
-Da auch Suchmaschinen wie Google auf einer Volltextsuche basieren, ist diese Möglichkeit der Suchfunktion, für die Benutzer ein gewohnter Komfort. Eine Volltextsuche wird dabei nicht nur in den Suchmaschinen oder direkt in auf den Websites angeboten, sondern auch für die Navigation und Suche in Software-Produkten. Ein Beispiel hierfür ist die Wiki-Software \glqq Atlassian Confluence\grqq{}, welche standardmäßig eine Suchfunktion zur Verfügung stellt. Für die Wissensaufnahme und Weitergabe der Firma Enisco wird diese Wiki-Software verwendet.
+Da auch Suchmaschinen wie Google auf einer Volltextsuche basieren, ist diese Art der Suchfunktion, für die Benutzer ein gewohnter Komfort. Eine Volltextsuche wird dabei nicht nur in den Suchmaschinen oder direkt in auf den Websites angeboten, sondern auch für die Navigation und Suche in Software-Produkten. Ein Beispiel hierfür ist die Wiki-Software \glqq Atlassian Confluence\grqq{}, welche standardmäßig eine Suchfunktion zur Verfügung stellt. Für die Wissensaufnahme und Weitergabe der Firma Enisco wird diese Wiki-Software verwendet.
 
 In \autoref{fig:search_confluence_fulltextsearch} ist beispielhaft die Trefferauflistung des Suchbegriffes \glqq Studenten\grqq{} abgebildet. Hierbei dursucht die Suchfunktion den Datenbestand der Confluence-Anwendung der Firma Enisco und gibt als Ergebnis alle Seiten aus, welche mit dem Suchbegriff übereinstimmen. In der gezeigten Ansicht erscheinen dabei alle Seiten, welche einen Treffer im Titel aufweisen. Durch die Schaltfläche \glqq Suche nach \textbf{Studenten}\grqq{}, welche in der Ansicht unten angezeigt wird, werden auch Confluence-Seiten angezeigt, in welchen der Suchbegriff auch im eigentlichen Inhalt der Seite gefunden wird.
 
@@ -249,7 +249,7 @@ In \autoref{fig:search_confluence_fulltextsearch} ist beispielhaft die Trefferau
 \end{figure}
 
 \footnotetext{Quelle aus dem Intranet (nicht öffentlich zugänglich) von Enisco}
-Grundlage für die technische Umsetzung einer Volltextsuche ist die Erstellung eines Suchindexes. Ein Suchindex für die Volltextsuche wird hierbei als invertierter Index umgesetzt. Die Funktionsweise von einem invertierten Index ist vergleichbar mit dem Stichwortverzeichnis in Büchern. Möchte man in Büchern nach einem bestimmten Wort oder Begriff suchen, so ist eine Suche durch das gesamte Buch umständlich und mit einem langen Zeitaufwand verbunden. Durch die Einführung eines Stichwortverzeichnis, wie in \autoref{fig:inverted_index} abgebildet, werden die Begriffe aus dem Buch den einzelnen Seiten zugewiesen. Eine Suche im Stichwortverzeichnis ist aufgrund der Vorsortierung schneller und man kann direkt an sie entsprechende Stelle im Buch springen.
+Grundlage für die technische Umsetzung einer Volltextsuche ist die Erstellung eines Suchindexes. Ein Suchindex für die Volltextsuche wird hierbei als invertierter Index umgesetzt \cite{SebastianRuss.2017}. Die Funktionsweise von einem invertierten Index ist vergleichbar mit dem Stichwortverzeichnis in Büchern. Bei der Suche in Büchern nach einem bestimmten Wort oder Begriff, ist eine Suche durch das gesamte Buch umständlich und mit einem hohen Zeitaufwand verbunden. Durch die Einführung eines Stichwortverzeichnis, wie in \autoref{fig:inverted_index} abgebildet, werden die Begriffe aus dem Buch den einzelnen Seiten zugewiesen. Eine Suche im Stichwortverzeichnis ist aufgrund der Vorsortierung schneller und man kann direkt an die entsprechende Stelle im Buch springen.
 
 \begin{figure}[H]
     \centering
@@ -258,27 +258,58 @@ Grundlage für die technische Umsetzung einer Volltextsuche ist die Erstellung e
     \label{fig:inverted_index}
 \end{figure}
 
-Bei der Eingabe von Freitexten durch Menschen ist das Aufkommen von Fehleingaben nicht auszuschließen. Aus diesem Grund müssen sowohl beim Aufbau des invertierten Indexes, als auch beim Bearbeiten der Suchanfrage gewisse Transformationsschritte berücksichtigt werden. Die Transformationsschritte sorgen für eine Fehlertoleranz innerhalb der Suchfunktion und verbessern die User Experience bei der Benutzung der Suchfunktion.
+Bei der Eingabe von Freitexten durch menschliche Benutzer ist das Aufkommen von Fehleingaben nicht auszuschließen. Aus diesem Grund müssen sowohl beim Aufbau des invertierten Indexes, als auch beim Bearbeiten der Suchanfrage gewisse Transformationsschritte berücksichtigt werden \cite{SebastianRuss.2017}. Die Transformationsschritte sorgen für eine Fehlertoleranz innerhalb der Suchfunktion und verbessern die User Experience bezüglich der Benutzung der Suchfunktion.
+
+Die Transformationsschritte werden benötigt, um die Vielzahl der unterschiedlichen Suchanfragen korrekt zu beantworten \cite{SebastianRuss.2017}. Hierbei werden je nach Anforderungen verschiedene Tokenizer und Analyzer verwendet. In \autoref{fig:index_analyzer} ist eine beispielhafte Abfolge von Transformationsschritten aufgezeigt. Ziel ist es die variantenreiche Suchphrase in ein einheitliches Format zu überführen. Dadurch kann eine ausreichende Fehlertoleranz geschaffen werden. Neben der Suchphrase müssen die Transformationsschritte auch bei der Erstellung des Indexes berücksichtigt werden \cite{SebastianRuss.2017}.
+
+Die in \autoref{fig:index_analyzer} aufgezeigten Transformationsschritte werden nachfolgend näher erläutert.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\linewidth]{images/Index_Analyzer.png}
+    \includegraphics[width=0.65\linewidth]{images/Index_Analyzer.png}
     \caption{Beispielhafter Ablauf der Transformationsschritte - in Anlehnung an \cite{SebastianRuss.2017}}
     \label{fig:index_analyzer}
 \end{figure}
 
-\subsubsection{Search Engine}
+\subsubsection{Tokenizer}
 
-\subsubsection{DBMS-interne Volltextsuche}
+Hierbei wird die komplette Suchphrase in verschiedene Suchbegriffe (auch Tokens genannt) aufgeteilt. So wird beispielsweise aus der Suchphrase \glqq Hose Blau\grqq{} die Tokens \glqq Hose\grqq{} und \glqq Blau\grqq{}. Neben der Trennung der Tokens anhand von Leerzeichen, ist auch eine Trennung anhand von bestimmten Zeichen möglich. Solche Zeichen können zum Beispiel das Subtraktionszeichen \glqq -\grqq{} oder Semikolonzeichen \glqq ;\grqq{} sein. Die Aufteilung in Tokens ist hierbei die Vorbereitung für die Verwendung von einigen Analyzern.
 
-\subsection{Facettierte Suche\label{subec2.3.3:Unterunterpunkt-3}}
+\subsubsection{Analyzer}
+
+Die Analyzer agieren bei der Transformation der Suchanfrage als Filter und ersetzen, löschen oder verändern einzelne Tokens. Darunter zählen unteranderem Filter bezüglich der Groß- und Kleinschreibung und eventuellen Sonderzeichen. Durch dieses Vorgehen wird eine gewisse Fehlertoleranz gegenüber den Eingaben der Benutzer gewährt. Zu den Sonderzeichen gehöhren zum Beispiel Symbole wie die Kennzeichnung für eingetragene Handelsmarken \glqq \textregistered\grqq{}.
+
+Eine weitere Möglichkeit die Suchphrase zu filtern ist das Entfernen von Stopwords. Dies sind Begriffe, welche für eine Suche nicht relevant sind oder nicht relevant sein sollen \cite{SebastianRuss.2017}. Die Stopwords werden als Liste angelegt, welche überwiegend aus Füllwörtern wie zum Beispiel \glqq mit\grqq{}, \glqq für\grqq{} und \glqq von\grqq{} besteht. Lediglich bei der Verwendung einer semantischen Suche, werden die Stopwords benötigt, um die Bedeutung zu erkennen \cite{SebastianRuss.2017}. Die Funktionsweise einer semantischen Suche wird in \autoref{subsec2.3.4:Unterunterpunkt-4} erläutert.
+
+Um die Fehlertoleranz zu erhöhen muss auch die morphologische Varianz der einzelnen Begriffe berücksichtigt werden. So können Begriffe in unterschiedlichsten Zeitformen und Numeri vom Benutzer eingegeben werden. Ein Verfahren für dieses Problem ist das \glqq Stemming\grqq{} (zu deutsch Stammformreduktion). Beim Stemming werden die unterschiedlichen morphologischen Varianten eines Begriffes auf einen gemeinsamen Wortstamm zurückgeführt. Als ein Arbeitsschritt aus dem \gls{nlp}, wird Stemming auch in Suchmaschinen verwendet \cite{StefanLuber.2020}. Hierbei muss dieses Verfahren sowohl bei der Behandlung der Suchphrase, als auch bei der Erstellung des Indexes berücksichtigt werden \cite{SebastianRuss.2017}. Folgend sind ein paar Beispiele für Stemming aufgelistet \cite{SebastianRuss.2017}:
+
+\begin{itemize}
+    \item \glqq rot\grqq{}, \glqq rotes\grqq{}, \glqq roter\grqq{}, \glqq rote\grqq{} $\rightarrow$ \glqq rot\grqq{}
+    \item \glqq schuh\grqq{}, \glqq schuhe\grqq{} $\rightarrow$ \glqq schuh\grqq{}
+    \item \glqq töpfe\grqq{}, \glqq topf\grqq{} $\rightarrow$ \glqq topf\grqq{}
+\end{itemize}
+
+Hier steht ganz viel sinnvoller Text :)
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{images/Query_Index_Time.png}
+    \caption{Analyzer bei Indexierung und Abfrage - in Anlehnung an \cite{SebastianRuss.2017}}
+    \label{fig:final_index_ablauf}
+\end{figure}
+
+\subsection{Facettierte Suche\label{subsec2.3.3:Unterunterpunkt-3}}
 
 - Beispiele
 
-\subsection{Anforderungen an eine Suchfunktion\label{subec2.3.4:Unterunterpunkt-4}}
+\subsection{Semantische Suche\label{subsec2.3.4:Unterunterpunkt-4}}
 
-\subsubsection{Auto-Suggest versus Auto-Complete}
+- Beispiele
 
-\subsubsection{Fehlertoleranz}
+% \subsection{Anforderungen an eine Suchfunktion\label{subsec2.3.4:Unterunterpunkt-4}}
 
-\subsubsection{Relevanzbestimmung}
+% \subsubsection{Auto-Suggest versus Auto-Complete}
+
+% \subsubsection{Fehlertoleranz}
+
+% \subsubsection{Relevanzbestimmung}
