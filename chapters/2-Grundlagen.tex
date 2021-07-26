@@ -141,7 +141,7 @@ Die Nachrichten werden in der Message Queue zwischengespeichert, bis die registr
 
 Um die Vorteile einer Microservice-Architektur im Bezug auf lose Kopplung und der damit eingehenden Unabhängigkeit der Microservices bezüglich Wartbarkeit und Erweiterbarkeit zu gewährleisten, ist es von Nöten die möglichen Anti-Pattern einer Microservice-Architektur zu kennen. Mit Hilfe von Anti-Pattern können nach Roth und Hafner \cite{StephanRoth.2019} wiederkehrende Fehler bei der Softwareentwicklung identifiziert und in generalisierter Form dokumentiert werden. So können Anti-Pattern dabei helfen häufig auftretende Fehler von vornherein zu vermeiden.
 
-In einer Studie von Tighilt et al. \cite{Tighilt.072020} wurden 27 Paper und 67 Open-Source Anwendungen, welche alle Bezug zur Microservice-Architektur haben, untersucht. Die Ergebnisse der Studie \cite{Tighilt.072020} ergeben eine Sammlung von häufig aufgetretenen Anti-Pattern, welche durch Tighilt et al. in vier Kategorien unterteilt wurden. Folgend werden aus jeder Kategorie zwei Anti-Pattern näher erläutert.
+In einer Studie von Tighilt et al. \cite{Tighilt.072020} wurden 27 Paper und 67 Open-Source Anwendungen, welche alle Bezug zur Microservice-Architektur haben, untersucht. Die Ergebnisse der Studie \cite{Tighilt.072020} ergeben eine Sammlung von häufig aufgetretenen Anti-Pattern, welche durch Tighilt et al. in vier Kategorien unterteilt wurden. Folgend werden die Kategorien mit Beispielen erläutert:
 
 \subsubsection*{Design Anti-Pattern}
 
@@ -162,18 +162,28 @@ In diese Kategorie gehören Anti-Pattern, welche bereits in der architektonische
 
 \subsubsection*{Implementation Anti-Pattern}
 
-Implementation Anti-Pattern entstehen aus der Art und Weise wie Microservices implementiert werden. Beispiele sind hierfür das \glqq Gemeinsame Bibliotheken\grqq{} - Anti-Pattern und das \glqq Festcodierte Endpunkte\grqq{} - Anti-Pattern.
+% Implementation Anti-Pattern entstehen aus der Art und Weise wie Microservices implementiert werden. Beispiele sind hierfür das \glqq Gemeinsame Bibliotheken\grqq{} - Anti-Pattern und das \glqq Festcodierte Endpunkte\grqq{} - Anti-Pattern.
+
+Implementation Anti-Pattern entstehen aus der Art und Weise wie Microservices implementiert werden. Beispiele sind hierfür das \glqq Festcodierte Endpunkte\grqq{} - Anti-Pattern.
 
 \begin{description}
-    \item[Gemeinsame Bibliotheken:]\hfill \\
-    Bei der Verwendung von gemeinsam genutzten Bibliotheken entstehen starke Abhängigkeiten, und die Bibliotheken stellen einen sogenannten \glqq Single point of failure\grqq{} dar.
+    % \item[Gemeinsame Bibliotheken:]\hfill \\
+    % Bei der Verwendung von Bibliotheken in einer Microservice-Umgebung gilt es zwischen den Prinzipien \glqq \gls{dry}\grqq{} und \glqq Lose Kopplung\grqq{} abzuwägen.
 
-    Um dieses Problem zu umgehen, kann jedem Microservice seine eigene Bibliothek zur Verfügung gestellt werden. Dieser Ansatz wiederum führt zu einer Komplexität bei der Wartbarkeit der Microservice. Ein weiterer Ansatz wäre es, die Bibliotheken durch einen Bibliothek-Service zu abstrahieren. Die Microservices bleiben lose gekoppelt und die Komplexität bei der Wartung bleibt überschaubar.
+    % Durch die gemeinsame Nutzung von Services, wird eine mehrfache Implementierung vermieden. Die Services werden dadurch aber stärker aneinander gekoppelt.
+
+    % Werden einzelne Bibliotheken von mehreren Services verwendet, vermeidet man eine mehrfache Implementierung. 
+
+    % Bei der Verwendung von gemeinsam genutzten Bibliotheken entstehen starke Abhängigkeiten, und die Bibliotheken stellen einen sogenannten \glqq Single point of failure\grqq{} dar.
+
+    % Um dieses Problem zu umgehen, kann jedem Microservice seine eigene Bibliothek zur Verfügung gestellt werden. Dieser Ansatz wiederum führt zu einer Komplexität bei der Wartbarkeit der Microservice.
+    
+    % Ein weiterer Ansatz wäre es, die Bibliotheken durch einen Bibliothek-Service zu abstrahieren. Die Microservices bleiben lose gekoppelt und die Komplexität bei der Wartung bleibt überschaubar.
     
     \item[Festcodierte Endpunkte:]\hfill \\
     Bei der synchronen Kommunikation zwischen Microservices werden in der Regel Anfragen über REST APIs gestellt. Hierfür müssen die IP-Adresse und der Port des anderen Microservices bekannt sein. Ein Ansatz für schnelle Laufzeiten und eine einfache Implementierung ist es, die Endpunkte fest im Quellcode zu hinterlegen. Dieser Ansatz ist jedoch bei einer größeren Anzahl von Microservices nicht mehr wartbar. Sobald sich ein Endpunkt eines Microservice ändert, müssen alle abhängigen Microservices geändert und neu deployed werden.
 
-    Abhilfe bringt die Einführung einer Service-Discovery (siehe \autoref{service_discovery}).
+    Abhilfe bringt die Einführung einer Service-Discovery (Siehe auch \autoref{service_discovery}), bei welcher sich die einzelnen Services registrieren. Ein anfragender Service kann nun über diese Service-Discovery die aktuelle Adresse des anderen Services erhalten.
 
 \end{description}
 
@@ -185,7 +195,7 @@ Auch in der Bereitstellungsphase einer Microservice-Architektur können Fehler a
     \item[Manuelle Konfiguration:]\hfill \\
     In einer Microservice-Architektur müssen aufgrund der Verteilung der Microservices auf unterschiedliche Rechner verschiedene Konfigurationen durchgeführt werden. Eine manuelle Konfiguration von jedem Microservice führt zu unzähligen Konfigurationsdateien und Abhängigkeiten zu Umgebungsvariablen. Mit wachsender Anzahl von Microservices führt die manuelle Konfiguration zu einer ansteigenden Komplexität bei der Wartung der Konfigurationen.
 
-    Vermieden werden kann das Anti-Pattern durch die Einführung eines Konfigurations-Servers. Durch geeignete Konfigurationsmanagement-Tools können sämtliche Konfigurationen zentral verwaltet werden.
+    Durch die Einführung eines Konfigurations-Servers kann dieses Anti-Pattern vermieden werden. Durch geeignete Konfigurationsmanagement-Tools können sämtliche Konfigurationen zentral verwaltet werden.
     
     \item[Zeitüberschreitungen:]\hfill \\
     In einer verteilten Microservice-Architektur kann es vorkommen, dass einzelne Services ausfallen und nicht mehr zur Verfügung stehen. Hat nun ein anderer Microservice eine Anfrage über eine REST API gestellt, kann es vorkommen, dass unter Umständen gar keine Antwort kommt. Hierfür kann der Entwickler Timeouts festlegen, nach welchen einem anfragenden Service mitgeteilt wird, dass ein anderer Service nicht erreichbar ist. Den richtigen Wert für solch einen Timeout zu wählen, hängt von der Art des Service ab. Ein zu kurzer Timeout kann dazu führen, dass langsame Service frühzeitig beendet werden. Bei einer zu langen Wahl des Timeouts kann es vorkommen, dass der Endnutzer zu lange warten muss, bis ihm signalisiert wird, dass der gewünschte Service nicht verfügbar ist.
@@ -285,9 +295,9 @@ Eine weitere Möglichkeit die Suchphrase zu filtern ist das Entfernen von Stopwo
 Um die Fehlertoleranz zu erhöhen muss auch die morphologische Varianz der einzelnen Begriffe berücksichtigt werden. So können Begriffe in unterschiedlichsten Zeitformen und Numeri vom Benutzer eingegeben werden. Ein Verfahren für dieses Problem ist das \glqq Stemming\grqq{} (zu deutsch Stammformreduktion). Beim Stemming werden die unterschiedlichen morphologischen Varianten eines Begriffes auf einen gemeinsamen Wortstamm zurückgeführt. Als ein Arbeitsschritt aus dem \gls{nlp}, wird Stemming auch in Suchmaschinen verwendet \cite{StefanLuber.2020}. Hierbei muss dieses Verfahren sowohl bei der Behandlung der Suchphrase, als auch bei der Erstellung des Indexes berücksichtigt werden \cite{SebastianRuss.2017}. Folgend sind ein paar Beispiele für Stemming aufgelistet \cite{SebastianRuss.2017}:
 
 \begin{itemize}
-    \item \glqq rot\grqq{}, \glqq rotes\grqq{}, \glqq roter\grqq{}, \glqq rote\grqq{} $\rightarrow$ \glqq rot\grqq{}
-    \item \glqq schuh\grqq{}, \glqq schuhe\grqq{} $\rightarrow$ \glqq schuh\grqq{}
-    \item \glqq töpfe\grqq{}, \glqq topf\grqq{} $\rightarrow$ \glqq topf\grqq{}
+    \item rot, rotes, roter, rote $\rightarrow$ rot
+    \item schuh, schuhe $\rightarrow$ schuh
+    \item töpfe, topf $\rightarrow$ topf
 \end{itemize}
 
 Ein beispielhafter Ablauf der Transformation sowohl beim Zeitpunkt der Abfrage, als auch zum Zeitpunkt der Erzeugung des Indexes ist in \autoref{fig:final_index_ablauf} abgebildet. Hierbei wird deutlich, dass bei der technischen Umsetzung eines invertierten Indexes die Wahl der Analyzer sowohl für die Bearbeitung der Suchphrasen, als auch für die Erstellung des Indexes von Bedeutung ist.
@@ -318,8 +328,40 @@ Bei der praktischen Umsetzung einer facettierten Suche müssen die logischen Ver
 
 \subsection{Semantische Suche\label{subsec2.3.4:Unterunterpunkt-4}}
 
+Während die Varianten \glqq Volltextsuche\grqq{} und \glqq Facettierte Suche\grqq{} lediglich auf einer syntaktischen und statistischen Auswertung von einzelnen Suchbegriffen basieren, greift eine semantische Suche zusätzlich noch auf ein semantisches Modell zurück \cite[S. 4f]{Hoppe.2020}. Solch ein, auch als \glqq Wissensmodell\grqq{} bezeichnetes, semantisches Modell, beschreibt die begrifflichen Zusammenhänge und Beziehungen. Dadurch ist es möglich neben syntaktisch ähnlichen, auch inhaltlich verwandte Treffer zu finden \cite[S. 3]{Hoppe.2020}. Nach Hoppe \cite[S. 3]{Hoppe.2020} kann demnach eine semantische Suche, im Sprachgebrauch der Künstlichen Intelligenz, als wissensbasiert bezeichnet werden.
+
+Ziel ist es die Suchfunktion weiter der menschlichen Sprache anzunähern. So liegt es, laut Tamblé \cite{MelanieTamble.2012}, in der Natur der menschlichen Sprache, dass mit verschiedenen Wörtern inhaltlich gleiche oder ähnliche Bedeutungen gemeint sind. So kann eine Landfläche in der deutschen Sprache auch mit den Begriffen \glqq Bereich\grqq{}, \glqq Gebiet\grqq{} oder \glqq Areal\grqq{} beschrieben werden. Neben Synonymen werden Begriffe auch durch Assoziationen miteinander verbunden. So wird der Begriff \glqq Rot\grqq{} mit dem Begriff \glqq Liebe\grqq{} assoziiert.
+
+Für die Umsetzung einer semantischen Suche bedarf es einer Wissensdatenbank, in welcher Entitäten und deren Beziehungen untereinander abgespeichert werden. Mit dem Knowledge Graphen betreibt Google seit 2012 solch eine Wissensdatenbank, um Funktionen einer semantischen Suche bereitzustellen \cite{OlafKopp.2021}. Der Knowledge Graph wird dabei in drei Ebenen unterteilt: \cite{OlafKopp.2021}
+
+\begin{description}
+    \item[Entitäten-Katalog:]\hfill \\
+    Die unterste Ebene ist eine reine Auflistung der verschiedenen Entitäten, welche über die Zeit hinweg identifiziert wurden. Die Art der Entitäten ist abhängig vom Kontext der Anwendung, in welcher eine Suchfunktion integriert ist. Allgem,ein handelt es sich um Objekte und Konzepte, welche eindeutig identifiziert werden können. Darunter zählen zum Beispiel Persönlichkeiten, Orte, Organisationen oder auch Farben und Gefühle.
+    \item[Knowledge Repository:]\hfill \\
+    Die unterschiedlichen Entitäten aus dem Entitäten-Katalog werden im Knowledge Repository mit Informationen beziehungsweise Attributen erweitert. Neben dem Ergänzen der Entitäten um Beschreibungen, werden diese auch in semantische Klassen und Gruppen eingeteilt. Die Gruppierungen werden auch Entitätstypen genannt.
+    \item[Knowledge Graph:]\hfill \\
+    Im eigentlichen Graphen werden die Beziehungen zwischen den unterschiedlichen Entitäten hergestellt.
+\end{description}
+
+In \autoref{fig:baby_yoda_google} ist das Ergebnis einer semantische Suchanfrage von Google abgebildet. Gesucht wurde mit der Suchphrase \glqq \textbf{small green guy with lightsaber as child}\grqq{}. Als Ergebnis erhält der Benutzer eine sofortige Übersicht über das wahrscheinlichste Ergebnis. In diesem Beispiel wurden die einzelnen Begriffe aus der Suchphrase mit dem Knowledge-Graphen von Google verglichen. Dabei erwiesen die Beziehungen der Begriffe untereinander, dass der fiktive Charakter \glqq Grogu\grqq{} am wahrscheinlichsten gesucht wird. 
+
+Während bei einer reinen syntaktischen Suchfunktion die einzelnen Begriffe durch Transformationsschritte vereinheitlicht und anschließend mit einem invertierten Index verglichen werden, kann die semantische Suche nun auch mit Synonymen und Assoziationen umgehen. So würde die Suchmaschine Google das gleiche Ergebnis, wie in \autoref{fig:baby_yoda_google}, liefern, wenn statt dem Begriff \glqq small\grqq{} das Synonym \glqq little\grqq{} verwendet wird.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{images/baby_yoda.png}
+    \caption{Ergebnis einer semantischen Suche in Google}
+    \label{fig:baby_yoda_google}
+\end{figure}
+
+Um genauere und personalisierte Suchergebnisse zu erhalten, verwendet Google bei der semantischen Suche zusätzlich noch die persönlichen Daten und den Suchverlauf der Benutzer \cite{MichalPecanek.2020b}. So ist ein Programmierer mit der Suchphrase \glqq Python\grqq{} eher daran interessiert Suchergebnisse über die selbige Programmiersprache zu erhalten, anstatt über  das Tier.
+
+% - Grenzen: Suche nur so gut, wie Eingabe
+
+\subsection{Relevanzbestimmung\label{subsec2.3.5:Unterunterpunkt-5}}
+
+Unabhängig, ob eine Volltextsuche, facettierte Suche, semantische Suche oder eine Kombination zum Einsatz kommt, müssen die Ergebnisse der Suchanfrage in einer geeigneten Reihenfolge angezeigt werden. Es gilt die einzelnen Treffer der Suche mit einer Relevanz zu versehen und dem Benutzer die Treffer mit der höchsten Relevanz als erstes anzuzeigen.
+
 - Beispiele
 
 % \subsubsection{Auto-Suggest versus Auto-Complete}
-
-% \subsubsection{Relevanzbestimmung}
