@@ -288,11 +288,11 @@ Hierbei wird die komplette Suchphrase in verschiedene Suchbegriffe (auch Tokens 
 
 \subsubsection{Analyzer}
 
-Die Analyzer agieren bei der Transformation der Suchanfrage als Filter und ersetzen, löschen oder verändern einzelne Tokens. Darunter zählen unteranderem Filter bezüglich der Groß- und Kleinschreibung und eventuellen Sonderzeichen. Durch dieses Vorgehen wird eine gewisse Fehlertoleranz gegenüber den Eingaben der Benutzer gewährt. Zu den Sonderzeichen gehöhren zum Beispiel Symbole wie die Kennzeichnung für eingetragene Handelsmarken \glqq \textregistered\grqq{}.
+Die Analyzer agieren bei der Transformation der Suchanfrage als Filter und ersetzen, löschen oder verändern einzelne Tokens. Darunter zählen unteranderem Filter bezüglich der Groß- und Kleinschreibung und eventuellen Sonderzeichen. Durch dieses Vorgehen wird eine gewisse Fehlertoleranz gegenüber den Eingaben der Benutzer gewährt. Zu den Sonderzeichen gehöhren zum Beispiel Symbole, wie die Kennzeichnung für eingetragene Handelsmarken \glqq \textregistered\grqq{}, oder Trennzeichen für verschiedene Begriffe. So sollen die Terme \glqq USA\grqq{} und \glqq U.S.A\grqq{} auf einen gemeinsamen Term gemappt.
 
-Eine weitere Möglichkeit die Suchphrase zu filtern ist das Entfernen von Stopwords. Dies sind Begriffe, welche für eine Suche nicht relevant sind oder nicht relevant sein sollen \cite{SebastianRuss.2017}. Die Stopwords werden als Liste angelegt, welche überwiegend aus Füllwörtern wie zum Beispiel \glqq mit\grqq{}, \glqq für\grqq{} und \glqq von\grqq{} besteht. Lediglich bei der Verwendung einer semantischen Suche, werden die Stopwords benötigt, um die Bedeutung zu erkennen \cite{SebastianRuss.2017}. Die Funktionsweise einer semantischen Suche wird in \autoref{subsec2.3.4:Unterunterpunkt-4} erläutert.
+Eine weitere Möglichkeit die Suchphrase zu filtern ist das Entfernen von Stopwords. Dies sind häufig auftretende Begriffe, welche eine geringe semantische Relevanz für die Suchphrase besitzen \cite{SebastianRuss.2017}. Die Stopwords werden als Liste angelegt, welche überwiegend aus Füllwörtern wie zum Beispiel \glqq mit\grqq{}, \glqq für\grqq{} und \glqq von\grqq{} besteht. Lediglich bei der Verwendung einer semantischen Suche, werden die Stopwords benötigt, um die Bedeutung zu erkennen \cite{SebastianRuss.2017}. Die Funktionsweise einer semantischen Suche wird in \autoref{subsec2.3.4:Unterunterpunkt-4} erläutert.
 
-Um die Fehlertoleranz zu erhöhen muss auch die morphologische Varianz der einzelnen Begriffe berücksichtigt werden. So können Begriffe in unterschiedlichsten Zeitformen und Numeri vom Benutzer eingegeben werden. Ein Verfahren für dieses Problem ist das \glqq Stemming\grqq{} (zu deutsch Stammformreduktion). Beim Stemming werden die unterschiedlichen morphologischen Varianten eines Begriffes auf einen gemeinsamen Wortstamm zurückgeführt. Als ein Arbeitsschritt aus dem \gls{nlp}, wird Stemming auch in Suchmaschinen verwendet \cite{StefanLuber.2020}. Hierbei muss dieses Verfahren sowohl bei der Behandlung der Suchphrase, als auch bei der Erstellung des Indexes berücksichtigt werden \cite{SebastianRuss.2017}. Folgend sind ein paar Beispiele für Stemming aufgelistet \cite{SebastianRuss.2017}:
+Um die Fehlertoleranz zu erhöhen, muss auch die morphologische Varianz der einzelnen Begriffe berücksichtigt werden. So können Begriffe in unterschiedlichsten Zeitformen und Numeri vom Benutzer eingegeben werden. Um die Varianz der menschlichen Sprache zu beseitigen, müssen die Begriffe durch Normalisierung vereinheitlicht werden. Ein Verfahren für die Normalisierung ist das \glqq Stemming\grqq{} (zu deutsch Stammformreduktion). Beim Stemming werden die unterschiedlichen morphologischen Varianten eines Begriffes auf einen gemeinsamen Wortstamm zurückgeführt. Als ein Arbeitsschritt aus dem \gls{nlp}, wird Stemming auch in Suchmaschinen verwendet \cite{StefanLuber.2020}. Hierbei muss dieses Verfahren sowohl bei der Behandlung der Suchphrase, als auch bei der Erstellung des Indexes berücksichtigt werden \cite{SebastianRuss.2017}. Folgend sind ein paar Beispiele für Stemming aufgelistet \cite{SebastianRuss.2017}:
 
 \begin{itemize}
     \item rot, rotes, roter, rote $\rightarrow$ rot
@@ -324,7 +324,7 @@ Wie in \autoref{fig:schubert_search} zu erkennen ist, kann man diese Filter mit 
     \label{fig:schubert_search}
 \end{figure}
 
-Bei der praktischen Umsetzung einer facettierten Suche müssen die logischen Verknüpfungen zwischen den einzelnen Filter konfiguriert werden \cite{Martin.2018}. Aus den Ergebnissen der unterschiedlichen Filter müssen Vereinigungs- oder Schnittmengen gebildet werden, welche wiederum sortiert, durch eine Relevanzbestimmung, dem Benutzer präsentiert werden. Zum Einsatz kommen hierfür neben \glqq UND\grqq{}- auch \glqq ODER\grqq{}- Verknüpfungen. Die Wahl der richtigen Verknüpfung ist vom jeweiligen Kontext abhängig. So ist die Intention eines Benutzers bei der Benutzung der Facette \glqq Farbe\grqq{}, dass die einzelnen Ergebnisse mit einer ODER-Verknüpfungen miteinander kombiniert werden. Ein Benutzer erhält somit beispielsweise als Ergebnis alle Produkte der Farbe rot \textbf{UND} blau. Verwendet man jedoch mehrere Facetten bei der Suche, wie zum Beispiel die \glqq Farbe\grqq{} und \glqq Größe\grqq{}, ist die Schnittmenge aus den Ergebnissen von Vorteil. Hier ist eine UND-Verknüpfungen vorgesehen.
+Bei der praktischen Umsetzung einer facettierten Suche müssen die logischen Verknüpfungen zwischen den einzelnen Filter konfiguriert werden \cite{Martin.2018}. Aus den Ergebnissen der unterschiedlichen Filter müssen Vereinigungs- oder Schnittmengen gebildet werden, welche wiederum sortiert, durch eine Relevanzbestimmung, dem Benutzer präsentiert werden. Zum Einsatz kommen hierfür neben \glqq UND\grqq{}- auch \glqq ODER\grqq{}- Verknüpfungen. Die Wahl der richtigen Verknüpfung ist vom jeweiligen Kontext abhängig. So ist die Intention eines Benutzers bei der Benutzung der Facette \glqq Farbe\grqq{}, dass die einzelnen Ergebnisse mit einer ODER-Verknüpfungen miteinander kombiniert werden. Ein Benutzer erhält somit beispielsweise als Ergebnis alle Produkte der Farbe rot \textbf{UND} blau. Verwendet man jedoch mehrere Facetten bei der Suche, wie zum Beispiel die \glqq Farbe\grqq{} und \glqq Größe\grqq{}, ist die Schnittmenge aus den Ergebnissen von Vorteil. Hier ist eine UND-Verknüpfungen notwendig.
 
 \subsection{Semantische Suche\label{subsec2.3.4:Unterunterpunkt-4}}
 
@@ -354,14 +354,55 @@ Während bei einer reinen syntaktischen Suchfunktion die einzelnen Begriffe durc
     \label{fig:baby_yoda_google}
 \end{figure}
 
-Um genauere und personalisierte Suchergebnisse zu erhalten, verwendet Google bei der semantischen Suche zusätzlich noch die persönlichen Daten und den Suchverlauf der Benutzer \cite{MichalPecanek.2020b}. So ist ein Programmierer mit der Suchphrase \glqq Python\grqq{} eher daran interessiert Suchergebnisse über die selbige Programmiersprache zu erhalten, anstatt über  das Tier.
-
-% - Grenzen: Suche nur so gut, wie Eingabe
+Um genauere und personalisierte Suchergebnisse zu erhalten, verwendet Google bei der semantischen Suche zusätzlich noch die persönlichen Daten und den Suchverlauf der Benutzer \cite{MichalPecanek.2020b}. So ist ein Programmierer mit der Suchphrase \glqq Python\grqq{} eher daran interessiert Suchergebnisse über die selbige Programmiersprache zu erhalten, anstatt über das Tier.
 
 \subsection{Relevanzbestimmung\label{subsec2.3.5:Unterunterpunkt-5}}
 
-Unabhängig, ob eine Volltextsuche, facettierte Suche, semantische Suche oder eine Kombination zum Einsatz kommt, müssen die Ergebnisse der Suchanfrage in einer geeigneten Reihenfolge angezeigt werden. Es gilt die einzelnen Treffer der Suche mit einer Relevanz zu versehen und dem Benutzer die Treffer mit der höchsten Relevanz als erstes anzuzeigen.
+Unabhängig, ob eine Volltextsuche, facettierte Suche, semantische Suche oder eine Kombination zum Einsatz kommt, müssen die Ergebnisse der Suchanfrage in einer geeigneten Reihenfolge angezeigt werden. Es gilt die einzelnen Treffer der Suche mit einer Relevanz zu gewichten und dem Benutzer die Treffer mit der höchsten Relevanz als erstes anzuzeigen.
 
-- Beispiele
+Eine Möglichkeit der praktischen Umsetzung einer Relevanzbestimmung ist die Durchführung einer Termgewichtung mit dem \glqq TF-IDF\grqq{}-Modell. \glqq \gls{tf-idf}\grqq{} ist dabei ein statistisches Maß, welches angibt, wie relevant ein Begriff für ein Dokument in einer Sammlung von Dokumenten ist \cite{BrunoStecanella.2019}. Durch die Multiplikation der beiden Metriken \glqq \gls{tf}\grqq{} und \glqq \gls{idf}\grqq{} kann eine Sortierung der Suchergebnisse nach Relevanz erfolgen.
 
-% \subsubsection{Auto-Suggest versus Auto-Complete}
+\subsubsection{Term Frequency - TF}
+
+Eine der Metrik bezieht sich auf die Häufigkeit eines Begriffes in einem Dokument. Um diese Häufigkeit zu bestimmen, gibt es verschiedene Möglichkeiten. Das einfachste Vorgehen ist die reine Zählung des Vorkommens des Begriffes in einem Dokument \cite{BrunoStecanella.2019}. Weitergehend kann man die Häufigkeit auch nach der Länge des Dokumentes oder nach der Häufigkeit des häufigsten Wortes abhängig machen \cite{BrunoStecanella.2019}.
+
+Unter der Einbeziehung der Gesamtzahl aller Terme eines Dokumentes, wird mit folgender Formel \cite{JensFrohlich.2020} die Begriffshäufigkeit eines Begriffes berechnet:
+
+\begin{equation}
+    \nonumber
+    TF\textsubscript{(i)} = \frac{\log_2 (Freq(i,j) + 1)}{\log_2 (L)}
+\end{equation}
+
+\begin{itemize}
+    \item i = Term
+    \item j = Dokument
+    \item L = Gesamtzahl aller Terme im Dokument j
+    \item Freq(i,j) = Häufigkeit des Terms i im Dokument j
+\end{itemize}
+
+\subsubsection{Inverse Document Frequency - IDF}
+
+Multipliziert wird die erste Metrik mit der inversen Dokumentenhäufigkeit. Darunter versteht man die Häufigkeit des Vorkommens eines Begriffes über die gesamte Dokumentenmenge hinweg. Einem Begriff wird hierbei ein größerer IDF-Wert zugeordnet, wenn der Begriff seltener vorkommt. Stopwords würden hierbei einen niedrigen IDF-Wert erhalten, da diese Begriffe in vielen Dokumenten vorkommen.
+
+Für die Berechnung der invertierten Dokumentenhäufigkeit wird folgende Formel \cite{JensFrohlich.2020} verwendet: 
+
+\begin{equation}
+    \nonumber
+    IDF\textsubscript{t} = \log (\frac{N\textsubscript{D}}{f\textsubscript{t}})
+\end{equation}
+
+\begin{itemize}
+    \item t = Term
+    \item N\textsubscript{D} = Gesamtzahl der Dokumente in der Dokumentensammlung D
+    \item f\textsubscript{t} = Anzahl aller Dokumente, die t enthalten
+\end{itemize}
+
+Für die Bestimmung der Relevanz eines Begriffes in einem Dokument, wird die Multiplikation beider Metriken benötigt. Bei lediglich der Bestimmung der Begriffshäufigkeit, würden Stopwords eine große Relevanz bekommen. Erst durch die Einbeziehung der inversen Dokumentenhäufigkeit werden solche Begriffe, wie Stopwords mit einer niedrigeren Relevanz versehen.
+
+\subsubsection{Beispiel}
+
+Bei der Anwendung des TF-IDF - Wertes für die Relevanzbestimmung der Suchtreffer, werden die IDF-Werte der einzelnen Begriffe aus der Suchphrase miteinander verglichen. Sucht der Benutzer zum Beispiel nach der Suchphrase \glqq Website Analytics\grqq{}, wird vermutlich dem Begriff \glqq Website\grqq{} ein niedriger IDF-Wert zugeordnet, da dieser Begriff in vielen Dokumenten vorkommt.
+
+Weitergehend werden dann die jeweiligen TF-Werte bestimmt. Hierbei wird jeder Begriff aus der Suchphrase mit jedem Dokument aus der Trefferliste in die TF-Formel eingegeben. So wird ein Dokument, welches den Begriff \glqq Analytics\grqq{} häufig enthält einen hohen TF-Wert erhalten.
+
+Durch die Multiplikation beider Metriken pro Dokument kann eine Sortierung nach Relevanz durchgeführt werden.
