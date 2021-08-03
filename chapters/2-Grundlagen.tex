@@ -1,12 +1,208 @@
 \chapter{Grundlagen\label{chap2:Zweites-Kapitel}}
 
-Um eine Konzeption und prototypische Umsetzung einer Volltextsuche in \gls{mcc} zu ermöglichen, wird in folgendem Kapitel auf die architekturellen Hintergründe von \gls{mcc} eingegangen. Hierfür werden zu Beginn allgemein gültige Architektur-Prinzipien erläutert, welche auch bei der Integration einer Volltextsuche berücksichtigt werden müssen und somit bei der Auswahl eines geeigneten Konzeptes von Bedeutung sind.
+Grundlegend wird in folgendem Kapitel auf den Funktionsumfang von Suchfunktionalitäten in modernen Informationssystemen eingegangen. Differenziert wird dabei betrachtet, inwiefern sich die Anforderungen an eine Suchfunktionalität zwischen einer Websuche, einer Suche in einem E-Commerce - Shop und einer Suche in einem MES-System unterscheiden. Neben den Anforderungen und Charakteristiken der Suchfunktionen, werden auch die verschiedenen Umsetzungsmöglichkeiten \glqq Volltextsuche\grqq{}, \glqq Facetten-Suche\grqq{} und \glqq semantische Suche\grqq{} erläutert. Für eine nach Relevanz sortierte Auflistung der Suchergebnisse, wird eine Möglichkeit der Relevanzbestimmung vorgestellt.
+
+% Neben einer Klärung, welchen Mehrwert eine Suchfunktionalität liefert, werden auch die Umsetzungsmöglichkeiten \glqq Volltextsuche\grqq{}, \glqq Facetten-Suche\grqq{} und \glqq semantische Suche\grqq{} aufgezeigt. Ergänzend wird die Relevanzbestimmung von Suchtreffern thematisiert.
+
+Um eine Konzeption und prototypische Umsetzung einer Volltextsuche in \gls{mcc} zu ermöglichen, wird in zusätzlich auf die architekturellen Hintergründe von \gls{mcc} eingegangen. Hierfür werden zu Beginn allgemein gültige Architektur-Prinzipien erläutert, welche auch bei der Integration einer Volltextsuche berücksichtigt werden müssen und somit bei der Auswahl eines geeigneten Konzeptes von Bedeutung sind.
 
 Aufbauend auf den Architektur-Prinzipien wird die verwendete Microservice-Architektur erläutert, wobei neben einer allgemeinen Einführung in die Architektur auch auf die Kommunikation von Microservices untereinander eingegangen wird. Um mögliche Fehlkonzeptionen zu vermeiden, werden häufig auftretende Anti-Pattern aufgezeigt, welche unter Umständen zu monolithischen Seiteneffekten führen können.
 
-Grundlegend wird auf die Umsetzung von Suchfunktionalitäten in modernen Informationssystemen eingegangen. Neben einer Klärung, welchen Mehrwert eine Suchfunktionalität liefert, werden auch die Umsetzungsmöglichkeiten \glqq Volltextsuche\grqq{}, \glqq Facetten-Suche\grqq{} und \glqq semantische Suche\grqq{} aufgezeigt. Ergänzend wird die Relevanzbestimmung von Suchtreffern thematisiert.
+\section{Suchfunktionen in modernen Informationssystemen\label{sec2.1:Unterpunkt-1}}
 
-\section{Software-Architekturen\label{sec2.1:Unterpunkt-1}}
+Aufgrund der fortlaufenden Digitalisierung und Themen wie \glqq Industrie 4.0\grqq{} und \glqq Internet of Things\grqq{} steigt die jährlich anfallende Datenmenge im weltweiten Internet. Das aufkommende Datenvolumen wird bereits für das Jahr 2025 auf 175 Zettabyte prognostiziert \cite{F.Tenzer.2018}. Dies wäre ein Wachstum, vom Jahr 2018 bis zum Jahr 2025, um mehr als den Faktor fünf.
+
+Neben den reinen Daten wachsen zunehmend auch die Anzahl der Websites und Web-Inhalten. So gibt es Stand 2021 rund 1,83 Milliarden Websites \cite{GuyFawkes.2021}, welche durch Suchmaschinen, wie Google gefunden werden können. Ein Nutzer kann hierbei einen Volltext als Sucheingabe eingeben und erhält eine Liste mit den entsprechenden Treffern sortiert nach der Relevanz für den Nutzer. Solche Suchfunktionalitäten werden auch direkt auf den Websites angeboten, um den Besuchern so das Navigieren durch die Website und das Auffinden von Produkten und Dienstleistungen zu erleichtern.
+
+% Nach einer Studie des eCommerce-Leitfadens \cite{AaronSchrettenbrunner.} geben 80\% der Shopbesitzer an, dass die Suchfunktion auf ihrer Website ihnen \glqq sehr wichtig\grqq{} ist. Demnach geben 97\% der Befragten an, dass sie eine Suchfunktion im Shop anbieten.
+
+Je nach Art der Benutzer und Umfang der Produkte und Informationen stehen bei der Umsetzung einer Suchfunktion zwei Möglichkeiten zur Verfügung. Eine Möglichkeit ist die Suche mit Hilfe einer Volltextsuche. Für einen Benutzer stellt solch eine Art der Suchfunktion einen bekannten Komfort dar, da diese Art bereits aus Web-Suchmaschinen, wie zum Beispiel Google bekannt ist. Eine weitere Möglichkeit bietet die Suche über verschiedene Filter. Hierbei werden die Details der Informationen über verschiedene Facetten definiert. Durch Filterung der Facetten können dann die Informationen gefunden werden.
+
+Als Ergänzung zur Volltextsuche und facettierten Suche wird bei der semantischen Suche zusätzlich noch der semantische Wert einer Suchanfrage berücksichtigt. Dadurch ist es möglich dem Benutzer der Suchfunktionalität relevante Suchergebnisse zu liefern.
+
+\subsection{Anwendungsgebiete für Suchfunktionen\label{subsec2.1.1:Unterunterpunkt-1}}
+
+Je nach Anwendungsgebiet einer Suchfunktionalität gibt es Unterschiede bezüglich dem Umfang des suchbaren Datenkontextes und der Größe des Benutzerkreises. Aufgrund dieser Unterschiede ist eine passende Auswahl beziehungsweise Kombination der Umsetzungsmöglichkeiten für die Suchfunktionalitäten von Nöten. Anschließend an die Betrachtung von den drei Anwendungsgebieten \glqq Websuche\grqq{}, \glqq E-Commerce - Suche\grqq{} und \glqq MES-Suche\grqq{}, werden die Umsetzungsmöglichkeiten näher erläutert.
+
+Ein Anwendungsgebiet ist die Websuche, bei welcher explizit nach Websites und den Web-Inhalten gesucht wird. Hierbei stellt das World Wide Web den Datenkontext dar und ist aufgrund der Größe von rund 1,83 Milliarden Websites (Stand 2021) \cite{GuyFawkes.2021} nicht mehr ohne Suchmaschinen, wie zum Beispiel Google, zu durchsuchen. Umgesetzt wird die Suchfunktionalität bei der Websuche durch die Verwendung einer Volltextsuche. Um den Benutzern effektivere Suchtreffer zu gewährleisten, wird bei Suchmaschinen, wie Google, zusätzlich noch eine semantische Suche verwendet.
+
+Auch in Online-Shops beziehungsweise E-Commerce - Shops ist eine Suchfunktion für die Navigation innerhalb der Websites von Nöten. Der durchsuchbare Datenkontext ist abhängig vom  angebotenem Artikelumfang der Website. Eine Suchfunktion ist im Gegensatz zur Websuche nicht unbedingt notwendig, da Produkte und Dienstleistungen auch durch eine Navigation durch die Website erreichbar sind. Jedoch ist der Benutzerkreis oftmals nicht mit dem Aufbau der Website vertraut, so dass eine Suchfunktionalität bei der Navigation innerhalb der Website unterstützen kann. Oft zu finden ist eine Kombination aus einer Volltextsuche und einer facettierten Suche. Hierbei wird dem Benutzer primär eine Volltextsuche in Form eines Eingabefeldes angeboten und anschließend kann über eine \glqq Erweiterte Suche\grqq{} die Facettierung vorgenommen werden. Ein bekanntes Beispiel für die Verwendung einer Kombination beider Möglichkeiten ist der Onlineversandhändler \glqq Amazon\grqq{}. Durch die Eingabe eines Suchbegriffes wird dem Benutzer eine Auswahl geeigneter Suchtreffer angezeigt. Für eine weitere Eingrenzung der Suchergebnisse kann der Benutzer die Ergebnisse zum Beispiel anhand der Preise, Bewertungen oder Hersteller filtern.
+
+Im Rahmen dieser Arbeit wird explizit die Einführung einer Suchfunktionalität in ein MES-System betrachtet. Der Datenkontext eines MES-Systems kann hierbei sowohl ein großes Volumen als auch eine hohe Komplexität aufweisen. Je nach Funktionsumfang und Struktur des MES-Systems kann auch die Navigation innerhalb des Systems erschwert sein. Der überwiegend explizite Benutzerkreis muss daher im Umgang mit dem MES-System geschult werden. Damit sowohl neuen Benutzern der Umgang mit dem System ermöglicht, und erfahrenen Benutzern der Umgang mit dem System erleichtert wird, kann eine Kombination aus Volltextsuche und facettierter Suche verwendet werden.
+
+% \subsection{Mehrwert einer Suchfunktion\label{subsec2.1.1:Unterunterpunkt-1}}
+
+% Der Mehrwert bei der Einführung einer Suchfunktion in einer Website oder in einem Software-Produkt, wie \gls{mcc}, liegt bei der Unterstützung der Benutzer beim Navigieren und Auffinden von Produkten oder Dienstleistungen.
+
+% Aufgrund der wachsenden Anzahl der Websites und Web-Inhalten \cite{GuyFawkes.2021} ist ein eigenständiges Navigieren durch das World Wide Web nicht mehr möglich. Durch die Verwendung von Suchmaschinen können Benutzer mit beliebigen Suchbegriffen nach expliziten Websites oder Web-Inhalten suchen.
+
+% Der Benutzerkreis von Software-Produkten, wie \gls{mcc}, besteht überwiegend aus einem expliziten Benutzerkreis. Im Umfeld von \gls{mcc} sind dies vor allem die Betreiber der jeweiligen Anlagen. Damit sich auch neue und unerfahrene Benutzer in einer solchen umfangreichen Software zurechtfinden, kann eine Suchfunktionalität den Einstieg erleichtern. So kann der Produktumfang von \gls{mcc} benutzt werden, ohne die genaue Struktur und den kompletten Funktionsumfang zu kennen.
+
+\subsection{Volltextsuche\label{subsec2.1.2:Unterunterpunkt-2}}
+
+Eine Möglichkeit nach Produkten oder Informationen zu suchen, ist die Volltextsuche. Hierbei kann der Benutzer einen beliebigen Freitext in ein Suchfeld eingeben und erhält eine Auflistung der Suchtreffer, welche den eingegebenen Freitext enthalten.
+
+Da auch Suchmaschinen wie Google auf einer Volltextsuche basieren, ist diese Art der Suchfunktion, für die Benutzer ein gewohnter Komfort. Eine Volltextsuche wird dabei nicht nur in den Suchmaschinen oder direkt in auf den Websites angeboten, sondern auch für die Navigation und Suche in Software-Produkten. Ein Beispiel hierfür ist die Wiki-Software \glqq Atlassian Confluence\grqq{}, welche standardmäßig eine Suchfunktion zur Verfügung stellt. Für die Wissensaufnahme und Weitergabe der Firma Enisco wird diese Wiki-Software verwendet.
+
+In \autoref{fig:search_confluence_fulltextsearch} ist beispielhaft die Trefferauflistung des Suchbegriffes \glqq Studenten\grqq{} abgebildet. Hierbei dursucht die Suchfunktion den Datenbestand der Confluence-Anwendung der Firma Enisco und gibt als Ergebnis alle Seiten zurück, welche mit dem Suchbegriff übereinstimmen. In der gezeigten Ansicht erscheinen dabei alle Seiten, welche einen Treffer im Titel aufweisen. Durch die Schaltfläche \glqq Suche nach \textbf{Studenten}\grqq{}, welche in der Ansicht unten angezeigt wird, werden auch Confluence-Seiten angezeigt, in welchen der Suchbegriff auch im eigentlichen Inhalt der Seite gefunden wird.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\linewidth]{images/Suchleiste_Confluence.png}
+    \caption{Ergebnisse der Suchanfrage \glqq Studenten\grqq{} - entnommen aus \cite{EniscobyForcamGmbH.2021}\protect\footnotemark}
+    \label{fig:search_confluence_fulltextsearch}
+\end{figure}
+
+\footnotetext{Quelle aus dem Intranet (nicht öffentlich zugänglich) von Enisco}
+
+Grundlage für die technische Umsetzung einer Volltextsuche ist die Erstellung eines Suchindexes. Ein Suchindex für die Volltextsuche wird hierbei als invertierter Index umgesetzt \cite{SebastianRuss.2017}. Die Funktionsweise von einem invertierten Index ist vergleichbar mit dem Stichwortverzeichnis in Büchern. Bei der Suche nach einem bestimmten Wort oder Begriff in Büchern, ist eine Suche durch das gesamte Buch umständlich und mit einem hohen Zeitaufwand verbunden. Durch die Verwendung eines Stichwortverzeichnis, wie in \autoref{fig:inverted_index} abgebildet, werden die Begriffe aus dem Buch den einzelnen Seiten zugewiesen. Eine Suche im Stichwortverzeichnis ist aufgrund der Vorsortierung schneller und man kann direkt an die entsprechende Stelle im Buch springen.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\linewidth]{images/Stichwortverzeichnis.png}
+    \caption{Beispiel für ein Stichwortverzeichnis \cite{weka.de.2014}}
+    \label{fig:inverted_index}
+\end{figure}
+
+Bei der Eingabe von Freitexten durch menschliche Benutzer ist das Aufkommen von Fehleingaben nicht auszuschließen. Aus diesem Grund müssen sowohl beim Aufbau des invertierten Indexes, als auch beim Bearbeiten der Suchanfrage gewisse Transformationsschritte berücksichtigt werden \cite{SebastianRuss.2017}. Die Transformationsschritte sorgen für eine Fehlertoleranz innerhalb der Suchfunktion und verbessern die User Experience bezüglich der Benutzung der Suchfunktion.
+
+Die Transformationsschritte werden benötigt, um die Vielzahl der unterschiedlichen Suchanfragen korrekt zu beantworten \cite{SebastianRuss.2017}. Hierbei werden je nach Anforderungen verschiedene Tokenizer und Analyzer verwendet. In \autoref{fig:index_analyzer} ist eine beispielhafte Abfolge von Transformationsschritten aufgezeigt. Ziel ist es, die variantenreiche Suchphrase durch eine Normalisierung in ein einheitliches Format zu überführen. Dadurch kann eine ausreichende Fehlertoleranz geschaffen werden. Neben der Suchphrase müssen die Transformationsschritte auch bei der Erstellung des Indexes berücksichtigt werden \cite{SebastianRuss.2017}.
+
+Die in \autoref{fig:index_analyzer} aufgezeigten Transformationsschritte werden nachfolgend näher erläutert.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\linewidth]{images/Index_Analyzer.png}
+    \caption{Beispielhafter Ablauf der Transformationsschritte - in Anlehnung an \cite{SebastianRuss.2017}}
+    \label{fig:index_analyzer}
+\end{figure}
+
+\subsubsection{Tokenizer}
+
+Hierbei wird die komplette Suchphrase in verschiedene Suchbegriffe (auch Tokens genannt) aufgeteilt. So wird beispielsweise aus der Suchphrase \glqq Hose Blau\grqq{} die Tokens \glqq Hose\grqq{} und \glqq Blau\grqq{}. Neben der Trennung der Tokens anhand von Leerzeichen, ist auch eine Trennung anhand von bestimmten Zeichen möglich. Solche Zeichen können zum Beispiel das Subtraktionszeichen \glqq -\grqq{} oder Semikolonzeichen \glqq ;\grqq{} sein. Die Aufteilung in Tokens ist hierbei die Vorbereitung für die Verwendung von einigen Analyzern.
+
+\subsubsection{Analyzer}
+
+Die Analyzer agieren bei der Transformation der Suchanfrage als Filter und ersetzen, löschen oder verändern einzelne Tokens. Darunter zählen unteranderem Filter bezüglich der Groß- und Kleinschreibung und eventuellen Sonderzeichen. Durch dieses Vorgehen wird eine gewisse Fehlertoleranz gegenüber den Eingaben der Benutzer gewährt. Zu den Sonderzeichen gehöhren zum Beispiel Symbole, wie die Kennzeichnung für eingetragene Handelsmarken \glqq \textregistered\grqq{}, oder Trennzeichen für verschiedene Begriffe. So werden die Terme \glqq USA\grqq{} und \glqq U.S.A\grqq{} auf einen gemeinsamen Term gemappt.
+
+Eine weitere Möglichkeit die Suchphrase zu filtern ist das Entfernen von Stopwords. Dies sind häufig auftretende Begriffe, welche eine geringe semantische Relevanz für die Suchphrase besitzen \cite{SebastianRuss.2017}. Die Stopwords werden als Liste angelegt, welche überwiegend aus Füllwörtern wie zum Beispiel \glqq mit\grqq{}, \glqq für\grqq{} und \glqq von\grqq{} besteht. Lediglich bei der Verwendung einer semantischen Suche, werden die Stopwords benötigt, um die Bedeutung zu erkennen \cite{SebastianRuss.2017}. Die Funktionsweise einer semantischen Suche wird in \autoref{subsec2.1.4:Unterunterpunkt-4} erläutert.
+
+Um die Fehlertoleranz zu erhöhen, muss auch die morphologische Varianz der einzelnen Begriffe berücksichtigt werden. So können Begriffe in unterschiedlichsten Zeitformen und Numeri vom Benutzer eingegeben werden. Um die Varianz der menschlichen Sprache zu beseitigen, müssen die Begriffe durch Normalisierung vereinheitlicht werden. Ein Verfahren für die Normalisierung ist das \glqq Stemming\grqq{} (zu deutsch Stammformreduktion). Beim Stemming werden die unterschiedlichen morphologischen Varianten eines Begriffes auf einen gemeinsamen Wortstamm zurückgeführt. Als ein Arbeitsschritt aus dem \gls{nlp}, wird Stemming auch in Suchmaschinen verwendet \cite{StefanLuber.2020}. Hierbei muss dieses Verfahren sowohl bei der Behandlung der Suchphrase, als auch bei der Erstellung des Indexes berücksichtigt werden \cite{SebastianRuss.2017}. Folgend sind Beispiele für Stemming aufgelistet \cite{SebastianRuss.2017}:
+
+\begin{itemize}
+    \item rot, rotes, roter, rote $\rightarrow$ rot
+    \item schuh, schuhe $\rightarrow$ schuh
+    \item töpfe, topf $\rightarrow$ topf
+\end{itemize}
+
+Ein beispielhafter Ablauf der Transformation sowohl beim Zeitpunkt der Abfrage, als auch zum Zeitpunkt der Erzeugung des Indexes ist in \autoref{fig:final_index_ablauf} abgebildet. Hierbei wird deutlich, dass bei der technischen Umsetzung eines invertierten Indexes die Wahl der Analyzer sowohl für die Bearbeitung der Suchphrasen, als auch für die Erstellung des Indexes von Bedeutung ist.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{images/Query_Index_Time.png}
+    \caption{Analyzer bei Indexierung und Abfrage - in Anlehnung an \cite{SebastianRuss.2017}}
+    \label{fig:final_index_ablauf}
+\end{figure}
+
+\subsection{Facettierte Suche\label{subsec2.1.3:Unterunterpunkt-3}}
+
+Bei der Facetten-Suche wird die Menge der Suchergebnisse durch das Setzen von Filtern immer weiter eingeschränkt. Die Objekte und Produkte eines Informationssystems werden dabei mit Metadaten angereichert, welche die jeweiligen Facetten definieren. Der Begriff Facette beschreibt die verschiedenen Teilaspekte eines Objekts oder Produkts. So kann beispielhaft ein \glqq Hemd\grqq{} unteranderem mit den Facetten \glqq Größe\grqq{}, \glqq Farbe\grqq{} oder \glqq Muster\grqq{} versehen werden.
+
+Eine Mindestanforderung nach Sperling \cite{Martin.2018} ist, dass die Filter sich dynamisch aus den bereits gefundenen Suchergebnistreffern bilden. So wechseln dynamisch die Filtermöglichkeiten je nach Suchergebnis und sinnfreie Filtermöglichkeiten beziehungsweise Filtermöglichkeiten ohne Suchergebnisse werden vermieden. In der Praxis ist ein solch dynamischer Wechsel der Filtermöglichkeiten in Online-Shops zu finden. Ein Benutzer ist zum Beispiel bei einem USB-Stick daran interessiert mithilfe eines Filters die maximale Datenmenge zu begrenzen und bei der Suche nach Waschmaschinen ist die Angabe des maximalen Fassungsvermögen eine aussagekräftige Filterung.
+
+Wie in \autoref{fig:schubert_search} zu erkennen ist, kann man diese Filter mit unterschiedlichsten Bedienelementen visualisieren. Dabei ist zu unterscheiden, ob die Werte der Facetten explizit genannt werden können oder sich in einem Bereich befinden. Wie von Schubert Motors \cite{SchubertMotorsGmbH.2021} in \autoref{fig:schubert_search} umgesetzt, wurde zum Beispiel für die Preis-Facette ein Slider und für die Auswahl der Marke ein Drop-Down-Bedienelement ausgewählt.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\linewidth]{images/schubert_search.png}
+    \caption{Facettierte Suche bei Schubert Motors \cite{SchubertMotorsGmbH.2021}}
+    \label{fig:schubert_search}
+\end{figure}
+
+Bei der praktischen Umsetzung einer facettierten Suche müssen die logischen Verknüpfungen zwischen den einzelnen Filter konfiguriert werden \cite{Martin.2018}. Aus den Ergebnissen der unterschiedlichen Filter müssen Vereinigungs- oder Schnittmengen gebildet werden, welche wiederum sortiert, durch eine Relevanzbestimmung, dem Benutzer präsentiert werden. Zum Einsatz kommen hierfür neben \glqq UND\grqq{}- auch \glqq ODER\grqq{}- Verknüpfungen. Die Wahl der richtigen Verknüpfung ist vom jeweiligen Kontext abhängig. So ist die Intention eines Benutzers bei der Benutzung der Facette \glqq Farbe\grqq{}, dass die einzelnen Ergebnisse mit einer ODER-Verknüpfungen miteinander kombiniert werden. Ein Benutzer erhält somit beispielsweise als Ergebnis alle Produkte der Farbe rot \textbf{UND} blau. Verwendet man jedoch mehrere Facetten bei der Suche, wie zum Beispiel die \glqq Farbe\grqq{} und \glqq Größe\grqq{}, ist die Schnittmenge aus den Ergebnissen von Vorteil. Hier ist eine UND-Verknüpfungen notwendig.
+
+\subsection{Semantische Suche\label{subsec2.1.4:Unterunterpunkt-4}}
+
+Während die Varianten \glqq Volltextsuche\grqq{} und \glqq Facettierte Suche\grqq{} lediglich auf einer syntaktischen und statistischen Auswertung von einzelnen Suchbegriffen basieren, greift eine semantische Suche zusätzlich noch auf ein semantisches Modell zurück \cite[S. 4f]{Hoppe.2020}. Solch ein, auch als \glqq Wissensmodell\grqq{} bezeichnetes, semantisches Modell, beschreibt die begrifflichen Zusammenhänge und Beziehungen. Dadurch ist es möglich neben syntaktisch ähnlichen, auch inhaltlich verwandte Treffer zu finden \cite[S. 3]{Hoppe.2020}. Nach Hoppe \cite[S. 3]{Hoppe.2020} kann demnach eine semantische Suche, im Sprachgebrauch der Künstlichen Intelligenz, als wissensbasiert bezeichnet werden.
+
+Ziel ist es, die Suchfunktion weiter der menschlichen Sprache anzunähern. So liegt es, laut Tamblé \cite{MelanieTamble.2012}, in der Natur der menschlichen Sprache, dass mit verschiedenen Wörtern inhaltlich gleiche oder ähnliche Bedeutungen gemeint sind. So kann eine Landfläche in der deutschen Sprache auch mit den Begriffen \glqq Bereich\grqq{}, \glqq Gebiet\grqq{} oder \glqq Areal\grqq{} beschrieben werden. Neben Synonymen werden Begriffe auch durch Assoziationen miteinander verbunden. So wird der Begriff \glqq Rot\grqq{} mit dem Begriff \glqq Liebe\grqq{} assoziiert.
+
+Für die Umsetzung einer semantischen Suche bedarf es einer Wissensdatenbank, in welcher Entitäten und deren Beziehungen untereinander abgespeichert werden. Mit dem Knowledge Graphen betreibt Google seit 2012 solch eine Wissensdatenbank, um Funktionen einer semantischen Suche bereitzustellen \cite{OlafKopp.2021}. Der Knowledge Graph wird dabei in drei Ebenen unterteilt: \cite{OlafKopp.2021}
+
+\begin{description}
+    \item[Entitäten-Katalog:]\hfill \\
+    Die unterste Ebene ist eine reine Auflistung der verschiedenen Entitäten, welche über die Zeit hinweg identifiziert wurden. Die Art der Entitäten ist abhängig vom Kontext der Anwendung, in welcher eine Suchfunktion integriert ist. Allgemein handelt es sich um Objekte und Konzepte, welche eindeutig identifiziert werden können. Darunter zählen zum Beispiel Persönlichkeiten, Orte, Organisationen oder auch Farben und Gefühle.
+    \item[Knowledge Repository:]\hfill \\
+    Die unterschiedlichen Entitäten aus dem Entitäten-Katalog werden im Knowledge Repository mit Informationen beziehungsweise Attributen erweitert. Neben dem Ergänzen der Entitäten um Beschreibungen, werden diese auch in semantische Klassen und Gruppen eingeteilt. Die Gruppierungen werden auch Entitätstypen genannt.
+    \item[Knowledge Graph:]\hfill \\
+    Im eigentlichen Graphen werden die Beziehungen zwischen den unterschiedlichen Entitäten hergestellt.
+\end{description}
+
+In \autoref{fig:baby_yoda_google} ist das Ergebnis einer semantische Suchanfrage von Google abgebildet. Gesucht wurde mit der Suchphrase \glqq \textbf{small green guy with lightsaber as child}\grqq{}. Als Ergebnis erhält der Benutzer eine sofortige Übersicht über das wahrscheinlichste Ergebnis. In diesem Beispiel wurden die einzelnen Begriffe aus der Suchphrase mit dem Knowledge-Graphen von Google verglichen. Dabei erwiesen die Beziehungen der Begriffe untereinander, dass der fiktive Charakter \glqq Grogu\grqq{} am wahrscheinlichsten gesucht wird. 
+
+Während bei einer reinen syntaktischen Suchfunktion die einzelnen Begriffe durch Transformationsschritte vereinheitlicht und anschließend mit einem invertierten Index verglichen werden, kann die semantische Suche nun auch mit Synonymen und Assoziationen umgehen. So würde die Suchmaschine Google das gleiche Ergebnis, wie in \autoref{fig:baby_yoda_google}, liefern, wenn statt dem Begriff \glqq small\grqq{} das Synonym \glqq little\grqq{} verwendet wird.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{images/baby_yoda.png}
+    \caption{Ergebnis einer semantischen Suche in Google}
+    \label{fig:baby_yoda_google}
+\end{figure}
+
+Um genauere und personalisierte Suchergebnisse zu erhalten, verwendet Google bei der semantischen Suche zusätzlich noch die persönlichen Daten und den Suchverlauf der Benutzer \cite{MichalPecanek.2020b}. So ist ein Programmierer mit der Suchphrase \glqq Python\grqq{} eher daran interessiert Suchergebnisse über die selbige Programmiersprache zu erhalten, anstatt über das Tier.
+
+\subsection{Relevanzbestimmung\label{subsec2.1.5:Unterunterpunkt-5}}
+
+Unabhängig, ob eine Volltextsuche, facettierte Suche, semantische Suche oder eine Kombination zum Einsatz kommt, müssen die Ergebnisse der Suchanfrage in einer geeigneten Reihenfolge angezeigt werden. Es gilt die einzelnen Treffer der Suche mit einer Relevanz zu gewichten und dem Benutzer die Treffer mit der höchsten Relevanz als erstes anzuzeigen.
+
+Eine Möglichkeit der praktischen Umsetzung einer Relevanzbestimmung ist die Durchführung einer Termgewichtung mit dem \glqq TF-IDF\grqq{}-Modell. \glqq \gls{tf-idf}\grqq{} ist dabei ein statistisches Maß, welches angibt, wie relevant ein Begriff für ein Dokument in einer Sammlung von Dokumenten ist \cite{BrunoStecanella.2019}. Durch die Multiplikation der beiden Metriken \glqq \gls{tf}\grqq{} und \glqq \gls{idf}\grqq{} kann eine Sortierung der Suchergebnisse nach Relevanz erfolgen.
+
+\subsubsection{Term Frequency - TF}
+
+Eine der Metrik bezieht sich auf die Häufigkeit eines Begriffes in einem Dokument. Um diese Häufigkeit zu bestimmen, gibt es verschiedene Möglichkeiten. Das einfachste Vorgehen ist die reine Zählung des Vorkommens des Begriffes in einem Dokument \cite{BrunoStecanella.2019}. Weitergehend kann man die Häufigkeit auch nach der Länge des Dokumentes oder nach der Häufigkeit des häufigsten Wortes abhängig machen \cite{BrunoStecanella.2019}.
+
+Unter der Einbeziehung der Gesamtzahl aller Terme eines Dokumentes, wird mit folgender Formel \cite{JensFrohlich.2020} die Begriffshäufigkeit eines Begriffes berechnet:
+
+\begin{equation}
+    \nonumber
+    TF\textsubscript{(i)} = \frac{\log_2 (Freq(i,j) + 1)}{\log_2 (L)}
+\end{equation}
+
+\begin{itemize}
+    \item i = Term
+    \item j = Dokument
+    \item L = Gesamtzahl aller Terme im Dokument j
+    \item Freq(i,j) = Häufigkeit des Terms i im Dokument j
+\end{itemize}
+
+\subsubsection{Inverse Document Frequency - IDF}
+
+Multipliziert wird die erste Metrik mit der inversen Dokumentenhäufigkeit. Darunter versteht man die Häufigkeit des Vorkommens eines Begriffes über die gesamte Dokumentenmenge hinweg. Einem Begriff wird hierbei ein größerer IDF-Wert zugeordnet, wenn der Begriff seltener vorkommt. Stopwords würden hierbei einen niedrigen IDF-Wert erhalten, da diese Begriffe in vielen Dokumenten vorkommen.
+
+Für die Berechnung der invertierten Dokumentenhäufigkeit wird folgende Formel \cite{JensFrohlich.2020} verwendet: 
+
+\begin{equation}
+    \nonumber
+    IDF\textsubscript{t} = \log (\frac{N\textsubscript{D}}{f\textsubscript{t}})
+\end{equation}
+
+\begin{itemize}
+    \item t = Term
+    \item N\textsubscript{D} = Gesamtzahl der Dokumente in der Dokumentensammlung D
+    \item f\textsubscript{t} = Anzahl aller Dokumente, die t enthalten
+\end{itemize}
+
+Für die Bestimmung der Relevanz eines Begriffes in einem Dokument, wird die Multiplikation beider Metriken benötigt. Bei lediglich der Bestimmung der Begriffshäufigkeit, würden Stopwords eine große Relevanz bekommen. Erst durch die Einbeziehung der inversen Dokumentenhäufigkeit werden solche Begriffe, wie Stopwords mit einer niedrigeren Relevanz versehen.
+
+\subsubsection{Beispiel}
+
+Bei der Anwendung des TF-IDF - Wertes für die Relevanzbestimmung der Suchtreffer, werden die IDF-Werte der einzelnen Begriffe aus der Suchphrase miteinander verglichen. Sucht der Benutzer zum Beispiel nach der Suchphrase \glqq Website Analytics\grqq{}, wird vermutlich dem Begriff \glqq Website\grqq{} ein niedriger IDF-Wert zugeordnet, da dieser Begriff in vielen Dokumenten vorkommt.
+
+Weitergehend werden dann die jeweiligen TF-Werte bestimmt. Hierbei wird jeder Begriff aus der Suchphrase mit jedem Dokument aus der Trefferliste in die TF-Formel eingegeben. So wird ein Dokument, welches den Begriff \glqq Analytics\grqq{} häufig enthält einen hohen TF-Wert erhalten.
+
+Durch die Multiplikation beider Metriken pro Dokument kann eine Sortierung nach Relevanz durchgeführt werden.
+
+\section{Software-Architekturen\label{sec2.2:Unterpunkt-2}}
 
 \begin{quote}
     Die Software-Architektur eines Systems ist die Menge von Strukturen, die benötigt werden, um Entscheidungen über das System zu treffen, welche die Software-Elemente, die Relationen zwischen ihnen und die Eigenschaften von beiden betreffen. \textasciitilde{} Len Bass \cite[S. 4]{Bass.2013}
@@ -14,7 +210,7 @@ Grundlegend wird auf die Umsetzung von Suchfunktionalitäten in modernen Informa
 
 Wie aus der Definition von Len Bass zu entnehmen ist, beschreibt eine Software-Architektur die Eigenschaften und Beziehungen von Software-Bausteinen zueinander \cite[S. 4]{Bass.2013}. Ein Software-Baustein wird hierbei als eine Teil-Komponente der gesamten Software betrachtet und wird bei der Erstellung einer Architektur als elementarer Bestandteil angesehen. Dabei wird ein Software-Baustein nicht näher spezifiziert, sondern als Komponente betrachtet, dessen konkrete Implementierung für die Architektur nicht von Bedeutung ist. Der Fokus einer Software-Architektur liegt auf den Schnittstellen der Software-Bausteine, über welche die Bausteine miteinander kommunizieren können.
 
-\subsection{Architektur-Prinzipien\label{subsec2.1.1:Unterunterpunkt-1}}
+\subsection{Architektur-Prinzipien\label{subsec2.2.1:Unterunterpunkt-1}}
 
 Für das Erstellen einer guten Software-Architektur wurden von Vogel \cite[S. 128-147]{Vogel.2009} einige Grundprinzipien definiert. Diese Prinzipien sollten bei der Erstellung einer Software-Architektur beachtet werden: \cite[S. 128-147]{Vogel.2009}
 
@@ -65,19 +261,21 @@ Für das Erstellen einer guten Software-Architektur wurden von Vogel \cite[S. 12
 
 Auch für die spätere Konzeption einer Volltextsuche in einer Microservice-Architektur werden die eingeführten Prinzipien als Grundlage dienen.
 
-\subsection{Monolithische und verteilte Architekturen\label{subsec2.1.2:Unterunterpunkt-2}}
+\subsection{Monolithische und verteilte Architekturen\label{subsec2.2.2:Unterunterpunkt-2}}
 
 Bei der Neugestaltung von E-MES wird von einer monolithischen 3-Schichten-Architektur auf eine verteilte Microservice-Architektur gewechselt.
 
-In einer monolithischen Architektur wird die gesamte Architektur in nur einem Software-Baustein zusammengefasst. Dadurch erfolgt keine explizite Gliederung in Teilsysteme und Architektur-Prinzipien, wie lose Kopplung und Separation of Concerns sind nur schwer umsetzbar \cite[S. 216]{Vogel.2009}. Zu finden sind monolithische Architekturen oftmals in Altsystemen, welche oft über Jahrzehnte gewachsen sind. Aufgrund der mangelnden Modularisierung steigt die Kompliziertheit des Systems. Die Wartung und Anpassung des Quellcodes wird erschwert \cite{Prof.Dr.AndreasFink.2012b}. Ein weiterer Nachteil der mangelnden Modularisierung ist die kaum mögliche nebenläufige Ausführung von Teilen des Systems auf verschiedenen Rechnern \cite{Prof.Dr.AndreasFink.2012b}. Somit kann eine horizontale Skalierung nicht ermöglicht werden, und eine effiziente, lastverteilende Programmausführung ist nicht gegeben.
+In einer monolithischen Architektur wird die gesamte Architektur in nur einem Software-Baustein zusammengefasst. Dadurch erfolgt keine explizite Gliederung in Teilsysteme und Architektur-Prinzipien, wie lose Kopplung und Separation of Concerns sind nur schwer umsetzbar \cite[S. 216]{Vogel.2009}. Zu finden sind monolithische Architekturen oftmals in Altsystemen, welche oft über Jahrzehnte gewachsen sind. Aufgrund der mangelnden Modularisierung steigt die Komplexität des Systems. Die Wartung und Anpassung des Quellcodes wird erschwert \cite{Prof.Dr.AndreasFink.2012b}. Ein weiterer Nachteil der mangelnden Modularisierung ist die kaum mögliche nebenläufige Ausführung von Teilen des Systems auf verschiedenen Rechnern \cite{Prof.Dr.AndreasFink.2012b}. Somit kann eine horizontale Skalierung nicht ermöglicht werden, und eine effiziente, lastverteilende Programmausführung ist nicht gegeben.
 
 Die Architektur von MCC wird eine verteilte Struktur aufweisen. Hierbei werden Teile des Gesamtsystems in unterschiedliche Software-Bausteine aufgeteilt. Eine Modularisierung der Software ist dadurch möglich und Architekturen-Prinzipien, wie lose Kopplung und Separation of Concerns sind umsetzbar \cite{Vogel.2009}. Durch die strikte Aufteilung der Geschäftslogik kann auch die Komplexität aufgeteilt werden. Somit können die einzelnen Software-Bausteine mit wenig Aufwand angepasst oder erweitert werden. Durch die Modularisierung von verteilten Architekturen kann die Ausführung bestimmter Aufgaben auf redundanter Hardware nebenläufig erfolgen \cite{Prof.Dr.AndreasFink.2012}. Durch jene horizontale Skalierung kann eine effiziente und lastverteilende Programmausführung erfolgen, welche auch zur Ausfallsicherheit des Gesamtsystems beiträgt \cite{Prof.Dr.AndreasFink.2012}.
 
-\section{Microservice-Architektur\label{sec2.2:Unterpunkt-2}}
+\section{Microservice-Architektur\label{sec2.3:Unterpunkt-3}}
 
 Bei der Neugestaltung des \gls{mes} der Firma Enisco wird auf eine Microservice-Architektur aufgebaut, welche eine verteilte Struktur aufweist.
 
-Die Kernelemente dieser Architektur sind die Microservices, welche der Modularisierung der Software dienen. Somit ist eine Aufteilung des Gesamtsystems in verschiedene Software-Bausteine möglich. Ein Software-Baustein stellt dabei jeweils eine Funktionalität des Gesamtsystems dar. Im Gegensatz zu einer monolithischen Architektur läuft das Gesamtsystem nicht innerhalb eines Prozesses, sondern auf verschiedenen Prozessen. Dabei wird jedem Software-Baustein ein eigener Prozess zugeordnet. Jene Prozesse können nun nahezu beliebig auf verschiedene Rechner verteilt und durch Replizierung ausfallsicher gemacht werden. \cite{GaryCalcott.2018}
+Die Kernelemente dieser Architektur sind die Microservices, welche der Modularisierung der Software dienen. Der Begriff Microservice wird hierbei für kleine unabhängige Services verwendet, welche über klar definierte APIs miteinander kommunizieren \cite{AmazonWebServicesInc..2021}. Durch die lose Kopplung ist eine einfache Skalierbarkeit und unabhängige Entwicklung durch verschiedene Teams möglich. Dies wiederum verringert die Entwicklungszeit und Komplexität bei Wartung.
+
+Durch die Verwendung von Microservices ist eine Aufteilung des Gesamtsystems in verschiedene Software-Bausteine möglich. Ein Software-Baustein stellt dabei jeweils eine Funktionalität des Gesamtsystems dar. Im Gegensatz zu einer monolithischen Architektur läuft das Gesamtsystem nicht innerhalb eines Prozesses, sondern auf verschiedenen Prozessen. Dabei wird jedem Software-Baustein ein eigener Prozess zugeordnet. Jene Prozesse können nun nahezu beliebig auf verschiedene Rechner verteilt und durch Replizierung ausfallsicher gemacht werden. \cite{GaryCalcott.2018}
 
 Neben den Vorteilen der horizontalen Skalierung ergeben sich aus der Aufteilung des Gesamtsystems in unterschiedliche Software-Bausteine auch Auswirkungen auf die Entwicklungsorganisation. So wird beim Umgang mit Microservices nach der Unix-Philosophie von Ken Thompson \glqq Do one thing and do it well\grqq{} \cite{IONOSSE.2021} gearbeitet. Durch die Modularität von Microservices können diese von unterschiedlichen Entwicklerteams unabhängig entwickelt werden. Durch die Abstraktion der Microservices können diese mit unterschiedlichen Technologien und Programmiersprachen implementiert werden. Auch der Datenhaushalt kann von jedem Microservice separat verwaltet werden. Zudem wird die Einarbeitung eines Entwicklers in die Codebasis reduziert, da durch die Aufteilung weniger Code verstanden werden muss.
 
@@ -87,7 +285,7 @@ Da die jeweiligen Microservices repliziert auf verschiedenen Rechnern laufen kö
 
 Eine Herausforderung bei der Konzeption einer Microservice-Architektur ist die Vermeidung von Abhängigkeiten, welche eine lose Kopplung der Microservices verhindern würden. Um solche monolithischen Seiteneffekte zu vermeiden, werden in \autoref{subsec2.2.2:Unterunterpunkt-2} die häufigsten Microservice-Anti-Pattern aufgezeigt.
 
-\subsection{Kommunikation zwischen Microservices\label{subsec2.2.1:Unterunterpunkt-1}}
+\subsection{Kommunikation zwischen Microservices\label{subsec2.3.1:Unterunterpunkt-1}}
 
 Auch wenn das Ziel einer Microservice-Architektur ist, dass einzelne Funktionalitäten des Gesamtsystems in getrennte Microservices gekapselt werden, müssen diese miteinander kommunizieren. Aufgrund der Modularität können die Microservices horizontal skaliert und auf verschiedenen Rechnern betrieben werden. Dies erhöht die Komplexität bei der Kommunikation der Microservices untereinander. \cite{MichaelSchwab.2019}
 
@@ -112,9 +310,11 @@ Wie in \autoref{fig:service_discovery} dargestellt ist, wird bei einer Anfrage e
 
 Anders als bei der synchronen Kommunikation wird bei der asynchronen Kommunikation nicht auf jede Anfrage eine Antwort erwartet. Kern einer asynchronen Kommunikation ist ein zentraler Nachrichtenkanal, auf dem Nachrichten ausgetauscht werden. Ein Service schickt Nachrichten an solch einen Nachrichtenkanal, auch Message Broker genannt, und wenn ein anderer Service an der Nachricht interessiert ist, kann er diese konsumieren. Eine Nachricht kann dabei auch von mehreren Services konsumiert werden.
 
-Zu den bekanntesten Message Brokern zählen RabbitMQ und Apache Kafka. Während RabbitMQ leichtgewichtiger ist als Apache Kafka, hat letzteres mehr Features und weist eine größere Stabilität auf. Die Verantwortlichkeiten innerhalb des Systems werden bei der Verwendung eines Message Brokers umgedreht. Ein Service wird nun nicht mehr explizit von einem anderen Service aufgerufen, sondern schickt seine Nachrichten an den Message Broker, ohne zu wissen, wer diese Nachrichten konsumiert. Sender und Empfänger sind somit lose gekoppelt.
+% Zu den bekanntesten Message Brokern zählen RabbitMQ und Apache Kafka. Während RabbitMQ leichtgewichtiger ist als Apache Kafka, hat letzteres mehr Features und weist eine größere Stabilität auf.
 
-Zur Einteilung der Nachrichten werden in Message Brokern sogenannte Message Queues verwendet. Über eine Message Queue, welche einen bestimmten Topic besitzt, können Services dann entweder Nachrichten senden oder sich als Konsumenten an diesem Topic registrieren. In \autoref{fig:Message_Broker_Queue} ist die Funktionsweise von Apache Kafka abgebildet. Durch den Publish/Subscribe-Mechanismus kann Service A in diesem Beispiel sowohl Publisher von zwei Topics sein, als auch Konsument von einem Topic.
+Die Verantwortlichkeiten innerhalb des Systems werden bei der Verwendung eines Message Brokers umgedreht. Ein Service wird nun nicht mehr explizit von einem anderen Service aufgerufen, sondern schickt seine Nachrichten an den Message Broker, ohne zu wissen, wer diese Nachrichten konsumiert. Sender und Empfänger sind somit lose gekoppelt.
+
+Zur Einteilung der Nachrichten werden in Message Brokern sogenannte Message Queues verwendet. Über eine Message Queue, welche einen bestimmten Topic besitzt, können Services dann entweder Nachrichten senden oder sich als Konsumenten an diesem Topic registrieren. In \autoref{fig:Message_Broker_Queue} ist die Funktionsweise beispielhaft an dem Message Broker \glqq Apache Kafka\grqq{} abgebildet. Durch den Publish/Subscribe-Mechanismus kann Service A in diesem Beispiel sowohl Publisher von zwei Topics sein, als auch Konsument von einem Topic.
 
 \begin{figure}[H]
     \centering
@@ -137,7 +337,7 @@ Die Nachrichten werden in der Message Queue zwischengespeichert, bis die registr
 
 \end{description}
 
-\subsection{Microservice - Anti-Pattern\label{subsec2.2.2:Unterunterpunkt-2}}
+\subsection{Microservice - Anti-Pattern\label{subsec2.3.2:Unterunterpunkt-2}}
 
 Um die Vorteile einer Microservice-Architektur im Bezug auf lose Kopplung und der damit eingehenden Unabhängigkeit der Microservices bezüglich Wartbarkeit und Erweiterbarkeit zu gewährleisten, ist es von Nöten die möglichen Anti-Pattern einer Microservice-Architektur zu kennen. Mit Hilfe von Anti-Pattern können nach Roth und Hafner \cite{StephanRoth.2019} wiederkehrende Fehler bei der Softwareentwicklung identifiziert und in generalisierter Form dokumentiert werden. So können Anti-Pattern dabei helfen häufig auftretende Fehler von vornherein zu vermeiden.
 
@@ -222,189 +422,3 @@ Zu dem Betrieb einer Microservice-Architektur gehört auch die Überwachung der 
 \end{description}
 
 Auch bei der Integration einer Suchfunktion in eine Microservice-Architektur gilt es die vorgestellten Anti-Pattern zu beachten, um so monolithische Seiteneffekte zu vermeiden.
-
-\section{Suchfunktionen in modernen Informationssystemen\label{sec2.3:Unterpunkt-3}}
-
-Aufgrund der fortlaufenden Digitalisierung und Themen wie \glqq Industrie 4.0\grqq{} und \glqq Internet of Things\grqq{} steigt die jährlich anfallende Datenmenge im weltweiten Internet. Das aufkommende Datenvolumen wird bereits für das Jahr 2025 auf 175 Zettabyte prognostiziert \cite{F.Tenzer.2018}. Dies wäre ein Wachstum, vom Jahr 2018 bis zum Jahr 2025, um mehr als den Faktor fünf.
-
-Neben den reinen Daten wachsen zunehmend auch die Anzahl der Websites und Web-Inhalten. So gibt es Stand 2021 rund 1,83 Milliarden Websites \cite{GuyFawkes.2021}, welche durch Suchmaschinen, wie Google gefunden werden können. Ein Nutzer kann hierbei einen Volltext als Sucheingabe eingeben und erhält eine Liste mit den entsprechenden Treffern sortiert nach der Relevanz für den Nutzer.
-
-Solche Suchfunktionalitäten werden auch direkt auf den Websites angeboten, um den Besuchern so das Navigieren durch die Website und das Auffinden von Produkten und Dienstleistungen zu erleichtern. Nach einer Studie des eCommerce-Leitfadens \cite{AaronSchrettenbrunner.} geben 80\% der Shopbesitzer an, dass die Suchfunktion auf ihrer Website ihnen \glqq sehr wichtig\grqq{} ist. Demnach geben 97\% der Befragten an, dass sie eine Suchfunktion im Shop anbieten.
-
-Je nach Art der Benutzer und Umfang der Produkte und Informationen stehen bei der Umsetzung einer Suchfunktion zwei Möglichkeiten zur Verfügung. Eine Möglichkeit ist die Suche mit Hilfe einer Volltextsuche. Für einen Benutzer stellt solch eine Art der Suchfunktion einen bekannten Komfort dar, da diese Art bereits aus Web-Suchmaschinen, wie zum Beispiel Google bekannt ist. Eine weitere Möglichkeit bietet die Suche über verschiedene Filter. Hierbei werden die Details der Informationen über verschiedene Facetten definiert. Durch Filterung der Facetten können dann die Informationen gefunden werden.
-
-Oft zu finden ist eine Kombination aus einer Volltextsuche und einer facettierten Suche. Hierbei wird dem Benutzer primär eine Volltextsuche in Form eines Eingabefeldes angeboten und anschließend kann über eine \glqq Erweiterte Suche\grqq{} die Facettierung vorgenommen werden. Ein bekanntes Beispiel für die Verwendung einer Kombination beider Möglichkeiten ist der Onlineversandhändler \glqq Amazon\grqq{}. Durch die Eingabe eines Suchbegriffes wird dem Benutzer eine Auswahl geeigneter Suchtreffer angezeigt. Für eine weitere Eingrenzung der Suchergebnisse kann der Benutzer die Ergebnisse zum Beispiel anhand der Preise, Bewertungen oder Hersteller filtern.
-
-Als Ergänzung zur Volltextsuche und facettierten Suche wird bei der semantischen Suche zusätzlich noch der semantische Wert einer Suchanfrage berücksichtigt. Dadurch ist es möglich dem Benutzer der Suchfunktionalität relevante Suchergebnisse zu liefern.
-
-\subsection{Mehrwert einer Suchfunktion\label{subsec2.3.1:Unterunterpunkt-1}}
-
-Der Mehrwert bei der Einführung einer Suchfunktion in einer Website oder in einem Software-Produkt, wie \gls{mcc}, liegt bei der Unterstützung der Benutzer beim Navigieren und Auffinden von Produkten oder Dienstleistungen.
-
-Aufgrund der wachsenden Anzahl der Websites und Web-Inhalten \cite{GuyFawkes.2021} ist ein eigenständiges Navigieren durch das World Wide Web nicht mehr möglich. Durch die Verwendung von Suchmaschinen können Benutzer mit beliebigen Suchbegriffen nach expliziten Websites oder Web-Inhalten suchen.
-
-Der Benutzerkreis von Software-Produkten, wie \gls{mcc}, besteht überwiegend aus einem expliziten Benutzerkreis. Im Umfeld von \gls{mcc} sind dies vor allem die Betreiber der jeweiligen Anlagen. Damit sich auch neue und unerfahrene Benutzer in einer solchen umfangreichen Software zurechtfinden, kann eine Suchfunktionalität den Einstieg erleichtern. So kann der Produktumfang von \gls{mcc} benutzt werden, ohne die genaue Struktur und den kompletten Funktionsumfang zu kennen.
-
-\subsection{Volltextsuche\label{subsec2.3.2:Unterunterpunkt-2}}
-
-Eine Möglichkeit nach Produkten oder Informationen zu suchen, ist die Volltextsuche. Hierbei kann der Benutzer einen beliebigen Freitext in ein Suchfeld eingeben und erhält eine Auflistung der Suchtreffer, welche den eingegebenen Freitext enthalten.
-
-Da auch Suchmaschinen wie Google auf einer Volltextsuche basieren, ist diese Art der Suchfunktion, für die Benutzer ein gewohnter Komfort. Eine Volltextsuche wird dabei nicht nur in den Suchmaschinen oder direkt in auf den Websites angeboten, sondern auch für die Navigation und Suche in Software-Produkten. Ein Beispiel hierfür ist die Wiki-Software \glqq Atlassian Confluence\grqq{}, welche standardmäßig eine Suchfunktion zur Verfügung stellt. Für die Wissensaufnahme und Weitergabe der Firma Enisco wird diese Wiki-Software verwendet.
-
-In \autoref{fig:search_confluence_fulltextsearch} ist beispielhaft die Trefferauflistung des Suchbegriffes \glqq Studenten\grqq{} abgebildet. Hierbei dursucht die Suchfunktion den Datenbestand der Confluence-Anwendung der Firma Enisco und gibt als Ergebnis alle Seiten zurück, welche mit dem Suchbegriff übereinstimmen. In der gezeigten Ansicht erscheinen dabei alle Seiten, welche einen Treffer im Titel aufweisen. Durch die Schaltfläche \glqq Suche nach \textbf{Studenten}\grqq{}, welche in der Ansicht unten angezeigt wird, werden auch Confluence-Seiten angezeigt, in welchen der Suchbegriff auch im eigentlichen Inhalt der Seite gefunden wird.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.4\linewidth]{images/Suchleiste_Confluence.png}
-    \caption{Ergebnisse der Suchanfrage \glqq Studenten\grqq{} - entnommen aus \cite{EniscobyForcamGmbH.2021}\protect\footnotemark}
-    \label{fig:search_confluence_fulltextsearch}
-\end{figure}
-
-\footnotetext{Quelle aus dem Intranet (nicht öffentlich zugänglich) von Enisco}
-
-Grundlage für die technische Umsetzung einer Volltextsuche ist die Erstellung eines Suchindexes. Ein Suchindex für die Volltextsuche wird hierbei als invertierter Index umgesetzt \cite{SebastianRuss.2017}. Die Funktionsweise von einem invertierten Index ist vergleichbar mit dem Stichwortverzeichnis in Büchern. Bei der Suche nach einem bestimmten Wort oder Begriff in Büchern, ist eine Suche durch das gesamte Buch umständlich und mit einem hohen Zeitaufwand verbunden. Durch die Verwendung eines Stichwortverzeichnis, wie in \autoref{fig:inverted_index} abgebildet, werden die Begriffe aus dem Buch den einzelnen Seiten zugewiesen. Eine Suche im Stichwortverzeichnis ist aufgrund der Vorsortierung schneller und man kann direkt an die entsprechende Stelle im Buch springen.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.3\linewidth]{images/Stichwortverzeichnis.png}
-    \caption{Beispiel für ein Stichwortverzeichnis \cite{weka.de.2014}}
-    \label{fig:inverted_index}
-\end{figure}
-
-Bei der Eingabe von Freitexten durch menschliche Benutzer ist das Aufkommen von Fehleingaben nicht auszuschließen. Aus diesem Grund müssen sowohl beim Aufbau des invertierten Indexes, als auch beim Bearbeiten der Suchanfrage gewisse Transformationsschritte berücksichtigt werden \cite{SebastianRuss.2017}. Die Transformationsschritte sorgen für eine Fehlertoleranz innerhalb der Suchfunktion und verbessern die User Experience bezüglich der Benutzung der Suchfunktion.
-
-Die Transformationsschritte werden benötigt, um die Vielzahl der unterschiedlichen Suchanfragen korrekt zu beantworten \cite{SebastianRuss.2017}. Hierbei werden je nach Anforderungen verschiedene Tokenizer und Analyzer verwendet. In \autoref{fig:index_analyzer} ist eine beispielhafte Abfolge von Transformationsschritten aufgezeigt. Ziel ist es, die variantenreiche Suchphrase durch eine Normalisierung in ein einheitliches Format zu überführen. Dadurch kann eine ausreichende Fehlertoleranz geschaffen werden. Neben der Suchphrase müssen die Transformationsschritte auch bei der Erstellung des Indexes berücksichtigt werden \cite{SebastianRuss.2017}.
-
-Die in \autoref{fig:index_analyzer} aufgezeigten Transformationsschritte werden nachfolgend näher erläutert.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.65\linewidth]{images/Index_Analyzer.png}
-    \caption{Beispielhafter Ablauf der Transformationsschritte - in Anlehnung an \cite{SebastianRuss.2017}}
-    \label{fig:index_analyzer}
-\end{figure}
-
-\subsubsection{Tokenizer}
-
-Hierbei wird die komplette Suchphrase in verschiedene Suchbegriffe (auch Tokens genannt) aufgeteilt. So wird beispielsweise aus der Suchphrase \glqq Hose Blau\grqq{} die Tokens \glqq Hose\grqq{} und \glqq Blau\grqq{}. Neben der Trennung der Tokens anhand von Leerzeichen, ist auch eine Trennung anhand von bestimmten Zeichen möglich. Solche Zeichen können zum Beispiel das Subtraktionszeichen \glqq -\grqq{} oder Semikolonzeichen \glqq ;\grqq{} sein. Die Aufteilung in Tokens ist hierbei die Vorbereitung für die Verwendung von einigen Analyzern.
-
-\subsubsection{Analyzer}
-
-Die Analyzer agieren bei der Transformation der Suchanfrage als Filter und ersetzen, löschen oder verändern einzelne Tokens. Darunter zählen unteranderem Filter bezüglich der Groß- und Kleinschreibung und eventuellen Sonderzeichen. Durch dieses Vorgehen wird eine gewisse Fehlertoleranz gegenüber den Eingaben der Benutzer gewährt. Zu den Sonderzeichen gehöhren zum Beispiel Symbole, wie die Kennzeichnung für eingetragene Handelsmarken \glqq \textregistered\grqq{}, oder Trennzeichen für verschiedene Begriffe. So werden die Terme \glqq USA\grqq{} und \glqq U.S.A\grqq{} auf einen gemeinsamen Term gemappt.
-
-Eine weitere Möglichkeit die Suchphrase zu filtern ist das Entfernen von Stopwords. Dies sind häufig auftretende Begriffe, welche eine geringe semantische Relevanz für die Suchphrase besitzen \cite{SebastianRuss.2017}. Die Stopwords werden als Liste angelegt, welche überwiegend aus Füllwörtern wie zum Beispiel \glqq mit\grqq{}, \glqq für\grqq{} und \glqq von\grqq{} besteht. Lediglich bei der Verwendung einer semantischen Suche, werden die Stopwords benötigt, um die Bedeutung zu erkennen \cite{SebastianRuss.2017}. Die Funktionsweise einer semantischen Suche wird in \autoref{subsec2.3.4:Unterunterpunkt-4} erläutert.
-
-Um die Fehlertoleranz zu erhöhen, muss auch die morphologische Varianz der einzelnen Begriffe berücksichtigt werden. So können Begriffe in unterschiedlichsten Zeitformen und Numeri vom Benutzer eingegeben werden. Um die Varianz der menschlichen Sprache zu beseitigen, müssen die Begriffe durch Normalisierung vereinheitlicht werden. Ein Verfahren für die Normalisierung ist das \glqq Stemming\grqq{} (zu deutsch Stammformreduktion). Beim Stemming werden die unterschiedlichen morphologischen Varianten eines Begriffes auf einen gemeinsamen Wortstamm zurückgeführt. Als ein Arbeitsschritt aus dem \gls{nlp}, wird Stemming auch in Suchmaschinen verwendet \cite{StefanLuber.2020}. Hierbei muss dieses Verfahren sowohl bei der Behandlung der Suchphrase, als auch bei der Erstellung des Indexes berücksichtigt werden \cite{SebastianRuss.2017}. Folgend sind Beispiele für Stemming aufgelistet \cite{SebastianRuss.2017}:
-
-\begin{itemize}
-    \item rot, rotes, roter, rote $\rightarrow$ rot
-    \item schuh, schuhe $\rightarrow$ schuh
-    \item töpfe, topf $\rightarrow$ topf
-\end{itemize}
-
-Ein beispielhafter Ablauf der Transformation sowohl beim Zeitpunkt der Abfrage, als auch zum Zeitpunkt der Erzeugung des Indexes ist in \autoref{fig:final_index_ablauf} abgebildet. Hierbei wird deutlich, dass bei der technischen Umsetzung eines invertierten Indexes die Wahl der Analyzer sowohl für die Bearbeitung der Suchphrasen, als auch für die Erstellung des Indexes von Bedeutung ist.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.7\linewidth]{images/Query_Index_Time.png}
-    \caption{Analyzer bei Indexierung und Abfrage - in Anlehnung an \cite{SebastianRuss.2017}}
-    \label{fig:final_index_ablauf}
-\end{figure}
-
-\subsection{Facettierte Suche\label{subsec2.3.3:Unterunterpunkt-3}}
-
-Bei der Facetten-Suche wird die Menge der Suchergebnisse durch das Setzen von Filtern immer weiter eingeschränkt. Die Objekte und Produkte eines Informationssystems werden dabei mit Metadaten angereichert, welche die jeweiligen Facetten definieren. Der Begriff Facette beschreibt die verschiedenen Teilaspekte eines Objekts oder Produkts. So kann beispielhaft ein \glqq Hemd\grqq{} unteranderem mit den Facetten \glqq Größe\grqq{}, \glqq Farbe\grqq{} oder \glqq Muster\grqq{} versehen werden.
-
-Eine Mindestanforderung nach Sperling \cite{Martin.2018} ist, dass die Filter sich dynamisch aus den bereits gefundenen Suchergebnistreffern bilden. So wechseln dynamisch die Filtermöglichkeiten je nach Suchergebnis und sinnfreie Filtermöglichkeiten beziehungsweise Filtermöglichkeiten ohne Suchergebnisse werden vermieden. In der Praxis ist ein solch dynamischer Wechsel der Filtermöglichkeiten in Online-Shops zu finden. Ein Benutzer ist zum Beispiel bei einem USB-Stick daran interessiert mithilfe eines Filters die maximale Datenmenge zu begrenzen und bei der Suche nach Waschmaschinen ist die Angabe des maximalen Fassungsvermögen eine aussagekräftige Filterung.
-
-Wie in \autoref{fig:schubert_search} zu erkennen ist, kann man diese Filter mit unterschiedlichsten Bedienelementen visualisieren. Dabei ist zu unterscheiden, ob die Werte der Facetten explizit genannt werden können oder sich in einem Bereich befinden. Wie von Schubert Motors \cite{SchubertMotorsGmbH.2021} in \autoref{fig:schubert_search} umgesetzt, wurde zum Beispiel für die Preis-Facette ein Slider und für die Auswahl der Marke ein Drop-Down-Bedienelement ausgewählt.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.85\linewidth]{images/schubert_search.png}
-    \caption{Facettierte Suche bei Schubert Motors \cite{SchubertMotorsGmbH.2021}}
-    \label{fig:schubert_search}
-\end{figure}
-
-Bei der praktischen Umsetzung einer facettierten Suche müssen die logischen Verknüpfungen zwischen den einzelnen Filter konfiguriert werden \cite{Martin.2018}. Aus den Ergebnissen der unterschiedlichen Filter müssen Vereinigungs- oder Schnittmengen gebildet werden, welche wiederum sortiert, durch eine Relevanzbestimmung, dem Benutzer präsentiert werden. Zum Einsatz kommen hierfür neben \glqq UND\grqq{}- auch \glqq ODER\grqq{}- Verknüpfungen. Die Wahl der richtigen Verknüpfung ist vom jeweiligen Kontext abhängig. So ist die Intention eines Benutzers bei der Benutzung der Facette \glqq Farbe\grqq{}, dass die einzelnen Ergebnisse mit einer ODER-Verknüpfungen miteinander kombiniert werden. Ein Benutzer erhält somit beispielsweise als Ergebnis alle Produkte der Farbe rot \textbf{UND} blau. Verwendet man jedoch mehrere Facetten bei der Suche, wie zum Beispiel die \glqq Farbe\grqq{} und \glqq Größe\grqq{}, ist die Schnittmenge aus den Ergebnissen von Vorteil. Hier ist eine UND-Verknüpfungen notwendig.
-
-\subsection{Semantische Suche\label{subsec2.3.4:Unterunterpunkt-4}}
-
-Während die Varianten \glqq Volltextsuche\grqq{} und \glqq Facettierte Suche\grqq{} lediglich auf einer syntaktischen und statistischen Auswertung von einzelnen Suchbegriffen basieren, greift eine semantische Suche zusätzlich noch auf ein semantisches Modell zurück \cite[S. 4f]{Hoppe.2020}. Solch ein, auch als \glqq Wissensmodell\grqq{} bezeichnetes, semantisches Modell, beschreibt die begrifflichen Zusammenhänge und Beziehungen. Dadurch ist es möglich neben syntaktisch ähnlichen, auch inhaltlich verwandte Treffer zu finden \cite[S. 3]{Hoppe.2020}. Nach Hoppe \cite[S. 3]{Hoppe.2020} kann demnach eine semantische Suche, im Sprachgebrauch der Künstlichen Intelligenz, als wissensbasiert bezeichnet werden.
-
-Ziel ist es, die Suchfunktion weiter der menschlichen Sprache anzunähern. So liegt es, laut Tamblé \cite{MelanieTamble.2012}, in der Natur der menschlichen Sprache, dass mit verschiedenen Wörtern inhaltlich gleiche oder ähnliche Bedeutungen gemeint sind. So kann eine Landfläche in der deutschen Sprache auch mit den Begriffen \glqq Bereich\grqq{}, \glqq Gebiet\grqq{} oder \glqq Areal\grqq{} beschrieben werden. Neben Synonymen werden Begriffe auch durch Assoziationen miteinander verbunden. So wird der Begriff \glqq Rot\grqq{} mit dem Begriff \glqq Liebe\grqq{} assoziiert.
-
-Für die Umsetzung einer semantischen Suche bedarf es einer Wissensdatenbank, in welcher Entitäten und deren Beziehungen untereinander abgespeichert werden. Mit dem Knowledge Graphen betreibt Google seit 2012 solch eine Wissensdatenbank, um Funktionen einer semantischen Suche bereitzustellen \cite{OlafKopp.2021}. Der Knowledge Graph wird dabei in drei Ebenen unterteilt: \cite{OlafKopp.2021}
-
-\begin{description}
-    \item[Entitäten-Katalog:]\hfill \\
-    Die unterste Ebene ist eine reine Auflistung der verschiedenen Entitäten, welche über die Zeit hinweg identifiziert wurden. Die Art der Entitäten ist abhängig vom Kontext der Anwendung, in welcher eine Suchfunktion integriert ist. Allgemein handelt es sich um Objekte und Konzepte, welche eindeutig identifiziert werden können. Darunter zählen zum Beispiel Persönlichkeiten, Orte, Organisationen oder auch Farben und Gefühle.
-    \item[Knowledge Repository:]\hfill \\
-    Die unterschiedlichen Entitäten aus dem Entitäten-Katalog werden im Knowledge Repository mit Informationen beziehungsweise Attributen erweitert. Neben dem Ergänzen der Entitäten um Beschreibungen, werden diese auch in semantische Klassen und Gruppen eingeteilt. Die Gruppierungen werden auch Entitätstypen genannt.
-    \item[Knowledge Graph:]\hfill \\
-    Im eigentlichen Graphen werden die Beziehungen zwischen den unterschiedlichen Entitäten hergestellt.
-\end{description}
-
-In \autoref{fig:baby_yoda_google} ist das Ergebnis einer semantische Suchanfrage von Google abgebildet. Gesucht wurde mit der Suchphrase \glqq \textbf{small green guy with lightsaber as child}\grqq{}. Als Ergebnis erhält der Benutzer eine sofortige Übersicht über das wahrscheinlichste Ergebnis. In diesem Beispiel wurden die einzelnen Begriffe aus der Suchphrase mit dem Knowledge-Graphen von Google verglichen. Dabei erwiesen die Beziehungen der Begriffe untereinander, dass der fiktive Charakter \glqq Grogu\grqq{} am wahrscheinlichsten gesucht wird. 
-
-Während bei einer reinen syntaktischen Suchfunktion die einzelnen Begriffe durch Transformationsschritte vereinheitlicht und anschließend mit einem invertierten Index verglichen werden, kann die semantische Suche nun auch mit Synonymen und Assoziationen umgehen. So würde die Suchmaschine Google das gleiche Ergebnis, wie in \autoref{fig:baby_yoda_google}, liefern, wenn statt dem Begriff \glqq small\grqq{} das Synonym \glqq little\grqq{} verwendet wird.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1\linewidth]{images/baby_yoda.png}
-    \caption{Ergebnis einer semantischen Suche in Google}
-    \label{fig:baby_yoda_google}
-\end{figure}
-
-Um genauere und personalisierte Suchergebnisse zu erhalten, verwendet Google bei der semantischen Suche zusätzlich noch die persönlichen Daten und den Suchverlauf der Benutzer \cite{MichalPecanek.2020b}. So ist ein Programmierer mit der Suchphrase \glqq Python\grqq{} eher daran interessiert Suchergebnisse über die selbige Programmiersprache zu erhalten, anstatt über das Tier.
-
-\subsection{Relevanzbestimmung\label{subsec2.3.5:Unterunterpunkt-5}}
-
-Unabhängig, ob eine Volltextsuche, facettierte Suche, semantische Suche oder eine Kombination zum Einsatz kommt, müssen die Ergebnisse der Suchanfrage in einer geeigneten Reihenfolge angezeigt werden. Es gilt die einzelnen Treffer der Suche mit einer Relevanz zu gewichten und dem Benutzer die Treffer mit der höchsten Relevanz als erstes anzuzeigen.
-
-Eine Möglichkeit der praktischen Umsetzung einer Relevanzbestimmung ist die Durchführung einer Termgewichtung mit dem \glqq TF-IDF\grqq{}-Modell. \glqq \gls{tf-idf}\grqq{} ist dabei ein statistisches Maß, welches angibt, wie relevant ein Begriff für ein Dokument in einer Sammlung von Dokumenten ist \cite{BrunoStecanella.2019}. Durch die Multiplikation der beiden Metriken \glqq \gls{tf}\grqq{} und \glqq \gls{idf}\grqq{} kann eine Sortierung der Suchergebnisse nach Relevanz erfolgen.
-
-\subsubsection{Term Frequency - TF}
-
-Eine der Metrik bezieht sich auf die Häufigkeit eines Begriffes in einem Dokument. Um diese Häufigkeit zu bestimmen, gibt es verschiedene Möglichkeiten. Das einfachste Vorgehen ist die reine Zählung des Vorkommens des Begriffes in einem Dokument \cite{BrunoStecanella.2019}. Weitergehend kann man die Häufigkeit auch nach der Länge des Dokumentes oder nach der Häufigkeit des häufigsten Wortes abhängig machen \cite{BrunoStecanella.2019}.
-
-Unter der Einbeziehung der Gesamtzahl aller Terme eines Dokumentes, wird mit folgender Formel \cite{JensFrohlich.2020} die Begriffshäufigkeit eines Begriffes berechnet:
-
-\begin{equation}
-    \nonumber
-    TF\textsubscript{(i)} = \frac{\log_2 (Freq(i,j) + 1)}{\log_2 (L)}
-\end{equation}
-
-\begin{itemize}
-    \item i = Term
-    \item j = Dokument
-    \item L = Gesamtzahl aller Terme im Dokument j
-    \item Freq(i,j) = Häufigkeit des Terms i im Dokument j
-\end{itemize}
-
-\subsubsection{Inverse Document Frequency - IDF}
-
-Multipliziert wird die erste Metrik mit der inversen Dokumentenhäufigkeit. Darunter versteht man die Häufigkeit des Vorkommens eines Begriffes über die gesamte Dokumentenmenge hinweg. Einem Begriff wird hierbei ein größerer IDF-Wert zugeordnet, wenn der Begriff seltener vorkommt. Stopwords würden hierbei einen niedrigen IDF-Wert erhalten, da diese Begriffe in vielen Dokumenten vorkommen.
-
-Für die Berechnung der invertierten Dokumentenhäufigkeit wird folgende Formel \cite{JensFrohlich.2020} verwendet: 
-
-\begin{equation}
-    \nonumber
-    IDF\textsubscript{t} = \log (\frac{N\textsubscript{D}}{f\textsubscript{t}})
-\end{equation}
-
-\begin{itemize}
-    \item t = Term
-    \item N\textsubscript{D} = Gesamtzahl der Dokumente in der Dokumentensammlung D
-    \item f\textsubscript{t} = Anzahl aller Dokumente, die t enthalten
-\end{itemize}
-
-Für die Bestimmung der Relevanz eines Begriffes in einem Dokument, wird die Multiplikation beider Metriken benötigt. Bei lediglich der Bestimmung der Begriffshäufigkeit, würden Stopwords eine große Relevanz bekommen. Erst durch die Einbeziehung der inversen Dokumentenhäufigkeit werden solche Begriffe, wie Stopwords mit einer niedrigeren Relevanz versehen.
-
-\subsubsection{Beispiel}
-
-Bei der Anwendung des TF-IDF - Wertes für die Relevanzbestimmung der Suchtreffer, werden die IDF-Werte der einzelnen Begriffe aus der Suchphrase miteinander verglichen. Sucht der Benutzer zum Beispiel nach der Suchphrase \glqq Website Analytics\grqq{}, wird vermutlich dem Begriff \glqq Website\grqq{} ein niedriger IDF-Wert zugeordnet, da dieser Begriff in vielen Dokumenten vorkommt.
-
-Weitergehend werden dann die jeweiligen TF-Werte bestimmt. Hierbei wird jeder Begriff aus der Suchphrase mit jedem Dokument aus der Trefferliste in die TF-Formel eingegeben. So wird ein Dokument, welches den Begriff \glqq Analytics\grqq{} häufig enthält einen hohen TF-Wert erhalten.
-
-Durch die Multiplikation beider Metriken pro Dokument kann eine Sortierung nach Relevanz durchgeführt werden.
