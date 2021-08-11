@@ -1,20 +1,38 @@
 \chapter{Konzeption\label{chap4:Viertes-Kapitel}}
 
-Inhalt
+Um die prototypische Umsetzung einer Search Engine in MCC umzusetzen, werden im folgenden Kapitel verschiedene technische Umsetzungsmöglichkeiten vorgestellt und miteinander verglichen.
 
-\section{Konzeptionskriterien\label{sec4.1:Unterpunkt-1}}
+% Wird nur eine Volltextsuche oder eine facettierte Volltextsuche umgesetzt?
 
-Inhalt
+Im Rahmen dieser Arbeit wird innerhalb der prototypischen Umsetzung nur eine Volltextsuche umgesetzt. Die Umsetzung einer semantischen Suchfunktionalität bedarf der Verwendung eines semantischen Modells, in welchem die begrifflichen Zusammenhänge und Beziehungen definiert sind. Um solch ein wissenbasiertes Modell aufzubauen, wird eine gewissen Datengrundlage benötigt, welche im Umfang des Prototypen nicht gegeben ist.
+
+Neben der reinen Verwendung von Search-Engines für die Umsetzung einer Suchfunktionalität, gibt es aus technischer Sicht auch die Möglichkeit eine eigene Implementierung auf Basis der Programmbibliothek \glqq Apache Lucene\grqq{} umzusetzen. Eine weitere Möglichkeit ist die Verwendung von DBMS-internen Volltextsuchen. Folgend wird auf die technischen Umsetzungsmöglichkeiten einer Volltextsuche näher eingegangen.
+
+Für das Erstellen eines Gesamtkonzeptes bedarf es einer Validierung der Komponenten \glqq Search-Engine\grqq{} und \glqq Datenpipeline\grqq{}. Hierbei beschriebt die Datenpipeline, in welcher Form eine Datenaktualisierung zwischen den Microservices und einer Search-Engine umgesetzt werden kann.
+
+Beim Vergleich und der Gegenüberstellung der unterschiedlichen Search-Engines, werden neben Kriterien die Search-Engines \glqq Apache Solr\grqq{}, \glqq Elasticsearch\grqq{} und \glqq Sphinx\grqq{} verglichen.
+
+Bezüglich der Datenpipeline für die Datenaktualisierung zwischen den Microservices und der Search-Engine, werden verschiedene Konzepte miteinander verglichen. Zu den Konzepten zählen die \glqq Clientseitige Aktualisierung\grqq{}, die \glqq Pull-or-Push Aktualisierung\grqq{} und die \glqq Change-Data-Capture Aktualisierung\grqq{}.
+
+Nach Auswahl aller benötigten Komponenten wird zum Schluss dieses Kapitels ein Gesamtkonzept erstellt. Jenes Gesamtkonzept ist zudem die Grundlage für die prototypische Umsetzung in \autoref{chap5:Fuenftes-Kapitel}.
+
+% \section{Konzeptionskriterien\label{sec4.1:Unterpunkt-1}}
+
+% Für die Erstellung eines Gesamtkonzeptes und die darin enthaltene Auswahl von einzelnen Komponenten, müssen unterschiedliche Kriterien definiert werden. Diese Kriterien dienen dazu, die technische Umsetzung im Umfeld von MCC und die Vermeidung von monolithischen Seiteneffekten zu ermöglichen.
 
 \section{Technische Umsetzung einer Volltextsuche\label{sec4.2:Unterpunkt-2}}
 
+Bei der technischen Umsetzung einer Volltextsuche dient ein invertierter Index als Grundlage für eingehende Suchanfragen. Hierfür müssen durch Transformationsschritte (siehe auch \autoref{subsec2.1.2:Unterunterpunkt-2}) die Suchphrasen bei der Suchanfrage und die Informationen bei der Indexierung in einer einheitliche Form gebracht werden. Dabei gilt es die morphologischen Varianzen der menschlichen Sprache zu entfernen.
+
+\subsection{Apache Lucene\label{subsec4.2.1:Unterunterpunkt-1}}
+
 Inhalt
 
-\subsection{Search Engine\label{subsec4.2.1:Unterunterpunkt-1}}
+\subsection{Search Engine\label{subsec4.2.2:Unterunterpunkt-2}}
 
 Inhalt
 
-\subsection{DBMS-interne Volltextsuche\label{subsec4.2.2:Unterunterpunkt-2}}
+\subsection{DBMS-interne Volltextsuche\label{subsec4.2.3:Unterunterpunkt-3}}
 
 Inhalt
 
@@ -22,7 +40,7 @@ Inhalt
 
 Inhalt
 
-\subsection{Apache Lucene\label{subsec4.3.1:Unterunterpunkt-1}}
+\subsection{Kriterien\label{subsec4.3.1:Unterunterpunkt-1}}
 
 Inhalt
 
@@ -34,27 +52,35 @@ Inhalt
 
 Inhalt
 
-\subsection{Vergleich\label{subsec4.3.4:Unterunterpunkt-4}}
+\subsection{Sphinx\label{subsec4.3.4:Unterunterpunkt-4}}
 
 Inhalt
 
-\section{Datenaktualisierung zwischen Microservices und Search Engine\label{sec4.4:Unterpunkt-4}}
+\subsection{Vergleich\label{subsec4.3.5:Unterunterpunkt-5}}
 
 Inhalt
 
-\subsection{Clientseitige Aktualisierung\label{subsec4.4.1:Unterunterpunkt-1}}
+\section{Datenpipeline zwischen Microservices und Search Engine\label{sec4.4:Unterpunkt-4}}
 
 Inhalt
 
-\subsection{Pull-or-Push Aktualisierung\label{subsec4.4.2:Unterunterpunkt-2}}
+\subsection{Kriterien\label{subsec4.4.1:Unterunterpunkt-1}}
 
 Inhalt
 
-\subsection{Change-Data-Capture Aktualisierung\label{subsec4.4.3:Unterunterpunkt-3}}
+\subsection{Clientseitige Aktualisierung\label{subsec4.4.2:Unterunterpunkt-2}}
 
 Inhalt
 
-\subsection{Vergleich\label{subsec4.4.4:Unterunterpunkt-4}}
+\subsection{Pull-or-Push Aktualisierung\label{subsec4.4.3:Unterunterpunkt-3}}
+
+Inhalt
+
+\subsection{Change-Data-Capture Aktualisierung\label{subsec4.4.4:Unterunterpunkt-4}}
+
+Inhalt
+
+\subsection{Vergleich\label{subsec4.4.5:Unterunterpunkt-5}}
 
 Inhalt
 
