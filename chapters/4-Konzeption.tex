@@ -6,13 +6,13 @@ Um die prototypische Umsetzung einer Search Engine in MCC umzusetzen, werden im 
 
 Im Rahmen dieser Arbeit wird innerhalb der prototypischen Umsetzung nur eine Volltextsuche umgesetzt. Die Umsetzung einer semantischen Suchfunktionalität bedarf der Verwendung eines semantischen Modells, in welchem die begrifflichen Zusammenhänge und Beziehungen definiert sind. Um solch ein wissenbasiertes Modell aufzubauen, wird eine gewissen Datengrundlage benötigt, welche im Umfang des Prototypen nicht gegeben ist.
 
-Neben der reinen Verwendung von Search-Engines für die Umsetzung einer Suchfunktionalität, gibt es aus technischer Sicht auch die Möglichkeit eine eigene Implementierung auf Basis der Programmbibliothek \glqq Apache Lucene\grqq{} umzusetzen. Eine weitere Möglichkeit ist die Verwendung von DBMS-internen Volltextsuchen. Folgend wird auf die technischen Umsetzungsmöglichkeiten einer Volltextsuche näher eingegangen.
+Neben der reinen Verwendung von Search Engines für die Umsetzung einer Suchfunktionalität, gibt es aus technischer Sicht auch die Möglichkeit eine eigene Implementierung auf Basis der Programmbibliothek \glqq Apache Lucene\grqq{} umzusetzen. Eine weitere Möglichkeit ist die Verwendung von DBMS-internen Volltextsuchen. Folgend wird auf die technischen Umsetzungsmöglichkeiten einer Volltextsuche näher eingegangen.
 
-Für das Erstellen eines Gesamtkonzeptes bedarf es einer Validierung der Komponenten \glqq Search-Engine\grqq{} und \glqq Datenpipeline\grqq{}. Hierbei beschriebt die Datenpipeline, in welcher Form eine Datenaktualisierung zwischen den Microservices und einer Search-Engine umgesetzt werden kann.
+Für das Erstellen eines Gesamtkonzeptes bedarf es einer Validierung der Komponenten \glqq Search Engine\grqq{} und \glqq Datenpipeline\grqq{}. Hierbei beschriebt die Datenpipeline, in welcher Form eine Datenaktualisierung zwischen den Microservices und einer Search Engine umgesetzt werden kann.
 
-Beim Vergleich und der Gegenüberstellung der unterschiedlichen Search-Engines, werden neben Kriterien die Search-Engines \glqq Apache Solr\grqq{}, \glqq Elasticsearch\grqq{} und \glqq Sphinx\grqq{} verglichen.
+Beim Vergleich und der Gegenüberstellung der unterschiedlichen Search Engines, werden neben Kriterien die Search Engines \glqq Apache Solr\grqq{}, \glqq Elasticsearch\grqq{} und \glqq Sphinx\grqq{} verglichen.
 
-Bezüglich der Datenpipeline für die Datenaktualisierung zwischen den Microservices und der Search-Engine, werden verschiedene Konzepte miteinander verglichen. Zu den Konzepten zählen die \glqq Clientseitige Aktualisierung\grqq{}, die \glqq Pull-or-Push Aktualisierung\grqq{} und die \glqq Change-Data-Capture Aktualisierung\grqq{}.
+Bezüglich der Datenpipeline für die Datenaktualisierung zwischen den Microservices und der Search Engine, werden verschiedene Konzepte miteinander verglichen. Zu den Konzepten zählen die \glqq Clientseitige Aktualisierung\grqq{}, die \glqq Pull-or-Push Aktualisierung\grqq{} und die \glqq Change-Data-Capture Aktualisierung\grqq{}.
 
 Nach Auswahl aller benötigten Komponenten wird zum Schluss dieses Kapitels ein Gesamtkonzept erstellt. Jenes Gesamtkonzept ist zudem die Grundlage für die prototypische Umsetzung in \autoref{chap5:Fuenftes-Kapitel}.
 
@@ -20,70 +20,196 @@ Nach Auswahl aller benötigten Komponenten wird zum Schluss dieses Kapitels ein 
 
 % Für die Erstellung eines Gesamtkonzeptes und die darin enthaltene Auswahl von einzelnen Komponenten, müssen unterschiedliche Kriterien definiert werden. Diese Kriterien dienen dazu, die technische Umsetzung im Umfeld von MCC und die Vermeidung von monolithischen Seiteneffekten zu ermöglichen.
 
-\section{Technische Umsetzung einer Volltextsuche\label{sec4.2:Unterpunkt-2}}
+\section{Technische Umsetzung einer Volltextsuche\label{sec4.1:Unterpunkt-1}}
 
 Bei der technischen Umsetzung einer Volltextsuche dient ein invertierter Index als Grundlage für eingehende Suchanfragen. Hierfür müssen durch Transformationsschritte (siehe auch \autoref{subsec2.1.2:Unterunterpunkt-2}) die Suchphrasen bei der Suchanfrage und die Informationen bei der Indexierung in einer einheitliche Form gebracht werden. Dabei gilt es die morphologischen Varianzen der menschlichen Sprache zu entfernen.
 
-\subsection{Apache Lucene\label{subsec4.2.1:Unterunterpunkt-1}}
+\subsection{Apache Lucene\label{subsec4.1.1:Unterunterpunkt-1}}
 
 Inhalt
 
-\subsection{Search Engine\label{subsec4.2.2:Unterunterpunkt-2}}
+\subsection{Search Engine\label{subsec4.1.2:Unterunterpunkt-2}}
 
 Inhalt
 
-\subsection{DBMS-interne Volltextsuche\label{subsec4.2.3:Unterunterpunkt-3}}
+\subsection{DBMS-interne Volltextsuche\label{subsec4.1.3:Unterunterpunkt-3}}
 
 Inhalt
 
-\section{Auswahl einer Search Engine\label{sec4.3:Unterpunkt-3}}
+\section{Auswahl einer Search Engine\label{sec4.2:Unterpunkt-2}}
 
 Inhalt
 
-\subsection{Kriterien\label{subsec4.3.1:Unterunterpunkt-1}}
+\subsection{Vergleichskriterien\label{subsec4.2.1:Unterunterpunkt-1}}
 
 Inhalt
 
-\subsection{Apache Solr\label{subsec4.3.2:Unterunterpunkt-2}}
+\subsection{Apache Solr\label{subsec4.2.2:Unterunterpunkt-2}}
 
 Inhalt
 
-\subsection{Elasticsearch\label{subsec4.3.3:Unterunterpunkt-3}}
+\subsection{Elasticsearch\label{subsec4.2.3:Unterunterpunkt-3}}
 
 Inhalt
 
-\subsection{Sphinx\label{subsec4.3.4:Unterunterpunkt-4}}
+\subsection{Sphinx\label{subsec4.2.4:Unterunterpunkt-4}}
 
 Inhalt
+
+\subsection{Vergleich\label{subsec4.2.5:Unterunterpunkt-5}}
+
+Inhalt
+
+\section{Datenpipeline zwischen Microservices und Search Engine\label{sec4.3:Unterpunkt-3}}
+
+Für die Erstellung eines invertierten Indexes innerhalb der Search Engine, muss diese mit Daten aus den verschiedenen Microservices befüllt werden. Durch die Verwendung einer geeigneten Datenpipeline kann der invertierte Index innerhalb der Search Engine erzeugt und aktuell gehalten werden. Anhand von Vergleichskriterien werden nachfolgend verschiedene Umsetzungsmöglichkeiten für solch eine Datenpipeline vorgestellt und anschließend miteinander verglichen.
+
+\subsection{Vergleichskriterien\label{subsec4.3.1:Unterunterpunkt-1}}
+
+Um die verschiedenen Umsetzungsmöglichkeiten für eine Datenpipeline zwischen den Microservices und der Search Engine untereinander zu vergleichen, werden die folgenden Vergleichskriterien verwendet:
+
+\begin{description}
+    \item[Mehraufwand bei Entwicklung:]\hfill \\
+    Je nach Art und Umfang der eingesetzten Datenpipeline, entsteht für die Entwickler ein Mehraufwand bei der Umsetzung neuer Funktionalitäten beziehungsweise Microservices.
+    
+    \begin{itemize}
+        \item \textbf{In welchem Umfang ist die Programmierung neuer Funktionalitäten und somit Microservices von der Einführung einer Search Engine mit dazugehöriger Datenpipeline betroffen?}
+    \end{itemize}
+
+    \item[Datenaktualität:]\hfill \\
+    Mit dem Begriff \glqq Datenaktualität\grqq{} wird die Aktualität der Search Engine hinsichtlich der indexierten Daten beschrieben. Dabei gibt die Datenpipeline vor, ob die Indexierung der neuen oder bearbeiteten Objekte in \glqq Echtzeit\grqq{} oder zu einem späteren Zeitpunkt erfolgt.
+
+    \begin{itemize}
+        \item \textbf{Wie aktuell sind die Daten und Informationen innerhalb der Search Engine?}
+        \item \textbf{In welcher Zeitspanne gelangen die neuen Daten und Information aus den Speicherschichten der Microservices in die Search Engine?}
+    \end{itemize}
+    
+    \item[Recovery Funktion:]\hfill \\
+    In dem Anwendungsfall, dass die Search Engine während dem Betrieb neu aufgesetzt werden muss, muss der Aufbau der Datenpipeline eine Recovery Funktion ermöglichen. Unter Recovery Funktion ist dabei die Vollindexierung aller beteiligten Microservices gemeint, wodurch ein invertierter Index in der Search Engine ermöglicht werden kann.
+    
+    \begin{itemize}
+        \item \textbf{Bietet die Datenpipeline eine Möglichkeit der Vollindexierung?}
+    \end{itemize}
+    
+    \item[Kompatibilität mit Datenbanksystemen:]\hfill \\
+    Die eigentlichen Daten und Informationen, welche durch eine Search Engine \glqq durchsuchbar\grqq{} gemacht werden sollen, sind zunächst in den Speicherschichten der jeweiligen Microservices abgespeichert. Durch geeignete Schnittstellenabstraktionen können hierbei unterschiedliche \gls{dbms} für die dauerhafte Speicherung der Daten verwendet werden.
+
+    \begin{itemize}
+        \item \textbf{Mit welchen \gls{dbms} ist die jeweilige Datenpipeline kompatibel?}
+        \item \textbf{Mit welchem Mehraufwand ist das Verwenden von \glqq neuen\grqq{} \gls{dbms} verbunden?}
+    \end{itemize}
+    
+    \item[Stabilität bei Ausfall von Komponenten:]\hfill \\
+    Eine Vermeidung von Komponentenausfällen ist auch in einer Produktionsumgebung nicht zu vermeiden. Die Gründe für den Ausfall einzelner Komponenten können sowohl Hardware-seitig als auch Software-seitig entstehen. Auch Komponenten der Datenpipeline können demnach ausfallen und für einen begrenzten Zeitraum nicht zur Verfügung stehen.
+
+    \begin{itemize}
+        \item \textbf{Aus wie vielen Komponenten besteht die Datenpipeline und wie anfällig sind diese für einen Ausfall?}
+        \item \textbf{Kann die Datenkonsistenz bei Ausfall einzelner Komponenten der Datenpipeline garantiert werden?}
+    \end{itemize}
+    
+    \item[Auslastung des Systems:]\hfill \\
+    Neben der reinen Speicherung der Vorgänge in den Speicherschichten der Microservices muss nun auch die Search Engine mit Daten versorgt werden. Hierfür ist es notwendig Nachrichten zwischen den einzelnen Komponenten auszutauschen. Dieser zusätzliche Nachrichtenaustausch stellt eine zusätzliche Belastung für das System dar und erhöht dessen Auslastung.
+
+    \begin{itemize}
+        \item \textbf{In welchem Umfang stellt die Integrierung der Datenpipeline eine zusätzliche Belastung für das System dar?}
+    \end{itemize}
+
+    \item[Kompatibilität mit Softwarekomponenten von MCC:]\hfill \\
+    Für die spätere Integrierung der Search Engine und der Datenpipeline in das Softwareprodukt MCC ist eine Kompatibilität mit bereits verwendeten Softwarekomponenten von Vorteil. Darunter zählt zum Beispiel der Message Broker \glqq Apache Kafka\grqq{}, welcher bei MCC für den Nachrichtenaustausch zwischen den Microservices verwendet wird.
+
+    \begin{itemize}
+        \item \textbf{Mit welchen Softwarekomponenten ist die Datenpipeline kompatibel?}
+    \end{itemize}
+
+\end{description}
+
+\subsection{Direkte Aktualisierung\label{subsec4.3.2:Unterunterpunkt-2}}
+
+Eine Umsetzungsmöglichkeit für die Datenpipeline ist die direkte Aktualisierung. Führt der Benutzer eine Aktion aus, welche zu einer Änderung der Datenhaltung eines Microservices führt, wird parallel auch ein Search Service über die Aktion informiert. Aktionen, welche mit den Datenhaltungsschichten interagieren, werden auch CRUD-Befehle genannt. CRUD steht dabei für die Aktionen \glqq Create\grqq{}, \glqq Read\grqq{}, \glqq Update\grqq{} und \glqq Delete\grqq{}.
+
+Eine Darstellung der direkten Aktualisierung ist in \autoref{fig:direkte_aktualisierung} abgebildet. Über ein User Interface hat der Benutzer die Möglichkeit mit den Funktionalitäten der Software zu interagieren. Sobald der Benutzer eine Aktion ausführt, welche zu einem CRUD-Befehl führt, wird sowohl der jeweilige Service als auch der Search Service benachrichtigt \footnote{In der \autoref{fig:direkte_aktualisierung} durch eine \glqq 1\grqq{} markiert}. Zu einem späteren Zeitpunkt kann der Benutzer dann über die Suchfunktionalität direkt mit dem Search Service interagieren\footnote{In der \autoref{fig:direkte_aktualisierung} durch eine \glqq 2\grqq{} markiert}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{images/direkte_aktualisierung.png}
+    \caption{Datenpipeline: Direkte Aktualisierung}
+    \label{fig:direkte_aktualisierung}
+\end{figure}
+
+\begin{description}
+    \item[Vorteile:]\hfill \\
+    Ein Vorteil bei dieser Art der Datenpipeline ist die \textbf{Datenaktualität} innerhalb der Search Engine. Da die CRUD-Befehle nicht nur in die Datenhaltung der Microservice, sondern auch zur Search Engine geschickt werden, findet eine ständige Synchronisation statt.
+    
+    Für die Datenpipeline werden keine zusätzlichen Softwarekomponenten benötigt und die Kommunikation mit den Datenbanksystemen findet über abstrahierte Schnittstellen der Services statt. Somit sind die Auswahlkriterien bezüglich der \textbf{Kompatibilität mit Datenbanksystemen und Softwarekomponenten von MCC} nicht von Bedeutung, da weder eine direkte Kommunikation mit einem Datenbanksystem, noch eine Verwendung von Softwarekomponenten vorhanden ist.
+    
+    \item[Nachteile:]\hfill \\
+    Die Nachteile einer direkten Aktualisierung liegen beim \textbf{Mehraufwand für die Entwicklung} und Wartung von bestehenden oder neuen Funktionalitäten. Die Entwickler müssen gezielt die einzelnen CRUD-Befehle nicht nur an den eigentlichen Services sondern zusätzlich an den Search Services schicken.
+
+    Ein weiteres Problem ist die \textbf{Datenkonsistenz zwischen Datenhaltung der Microservices und der Search Engine}, sobald eine Komponente des Systems ausfällt. Durch das parallele Benachrichtigen der Microservices und der Search Engine ist die Atomarität der Transaktionen nicht mehr gegeben.
+
+    Bezüglich der \textbf{Auslastung des Systems} besteht bei dieser Art der Datenpipeline das Problem, dass bei jeder Aktion, welche einen CRUD-Befehl beinhaltet ein Nachrichtenaustausch mit dem Search Service stattfindet. Dadurch entsteht eine Engstelle in der Software, durch welche die Performance des gesamten Systems verlangsamt wird.
+
+\end{description}
+
+\subsection{Pull-or-Push Aktualisierung\label{subsec4.3.3:Unterunterpunkt-3}}
+
+Eine weitere Umsetzungsmöglichkeit für die Datenpipeline ist die \glqq Pull-or-Push\grqq{} - Aktualisierung. Hier wird vom Benutzer lediglich die Aktualisierung der eigentlichen Datenhaltung initiiert. Zu einem definierten Zeitpunkt werden dann die bearbeiteten Daten entweder mit einem Pull-or-Push Mechanismus an den Search Service geschickt.
+
+\begin{description}
+    \item[Pull:]\hfill \\
+    Die Search Service initiiert die Aktualisierung des invertierten Index nach einer vordefinierten Zeitspanne und holt sich dann die Datenänderungen aus den verschiedenen Microservices.
+    
+    \item[Push:]\hfill \\
+    Nach einer vordefinierten Zeitspanne schicken die verschiedenen Microservices die Datenänderungen an die Search Engine, wo dann eine Aktualisierung des invertierten Index stattfinden kann.
+
+\end{description}
+
+In \autoref{fig:pullpush_aktualisierung} ist eine Darstellung der Pull-or-Push Aktualisierung abgebildet. Über das User Interface kann der Benutzer Aktionen initiieren, welche dann von den jeweiligen Microservices bearbeitet werden. Im Falle von CRUD-Befehlen werden lediglich die Datenhaltungsschichten der Microservices benötigt \footnote{In der \autoref{fig:pullpush_aktualisierung} durch eine \glqq 1\grqq{} markiert}. Die Aktualisierung des invertierten Indexes der Search Engine wird zu einem späteren Zeitpunk durch einen Pull- oder Push-Mechanismus durchgeführt \footnote{In der \autoref{fig:pullpush_aktualisierung} durch eine \glqq 2\grqq{} markiert}. Für das stellen einer Suchanfrage kann anschließend der Benutzer direkt mit dem Search Service interagieren \footnote{In der \autoref{fig:pullpush_aktualisierung} durch eine \glqq 3\grqq{} markiert}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\linewidth]{images/pullpush_aktualisierung.png}
+    \caption{Datenpipeline: Pull-or-Push Aktualisierung}
+    \label{fig:pullpush_aktualisierung}
+\end{figure}
+
+\begin{description}
+    \item[Vorteile:]\hfill \\
+    Im Gegensatz zur direkten Aktualisierung gibt es bei der Pull-or-Push Aktualisierung keine Engstelle in der Software, da bei jeder Benutzeraktion lediglich die Datenhaltungen der Microservices beeinträchtigt werden. So entsteht durch diese Art der Datenpipeline nur eine minimale \textbf{Mehrbelastung des Systems}.
+
+    Ein weiterer Vorteil ist die \textbf{Kompatibilität bezüglich den Datenbanksystemen und den Softwarekomponenten von MCC}, da hier über vordefinierte Schnittstellen kommuniziert wird.
+    
+    \item[Nachteile:]\hfill \\
+    Ein großer Nachteil bei dieser Datenpipeline ist die \textbf{Datenaktualität} innerhalb der Search Engine. Die Datenaktualität ist dabei von der Zeitspanne des Pull-or-Push Mechanismus abhängig. So kann es bei der Bearbeitung einer Suchanfrage dazu kommen, dass die Search Engine zu dem Zeitpunkt noch nicht aktualisiert wurde und somit eine unvollständige Trefferliste erzeugt wird.
+
+    Bei der Entwicklung und Wartung von neuen Funktionalitäten müssen die Entwickler bei den Pull-or-Push Mechanismen entscheiden, wann die Datenaktualisierung stattfinden soll. Dies resultiert in einen \textbf{Mehraufwand bei der Entwicklung}, da auch definiert werden muss, welche Teile des Datenkontextes \glqq durchsuchbar\grqq{} gemacht werden sollen.
+
+\end{description}
+
+\subsection{Change-Data-Capture Aktualisierung\label{subsec4.3.4:Unterunterpunkt-4}}
+
+Inhalt
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{images/CDC_aktualisierung.png}
+    \caption{Datenpipeline: Change-Data-Capture Aktualisierung}
+    \label{fig:changedatacapture_aktualisierung}
+\end{figure}
+
+\begin{description}
+    \item[Vorteile:]\hfill \\
+    Text
+    
+    \item[Nachteile:]\hfill \\
+    Text
+
+\end{description}
 
 \subsection{Vergleich\label{subsec4.3.5:Unterunterpunkt-5}}
 
 Inhalt
 
-\section{Datenpipeline zwischen Microservices und Search Engine\label{sec4.4:Unterpunkt-4}}
-
-Inhalt
-
-\subsection{Kriterien\label{subsec4.4.1:Unterunterpunkt-1}}
-
-Inhalt
-
-\subsection{Clientseitige Aktualisierung\label{subsec4.4.2:Unterunterpunkt-2}}
-
-Inhalt
-
-\subsection{Pull-or-Push Aktualisierung\label{subsec4.4.3:Unterunterpunkt-3}}
-
-Inhalt
-
-\subsection{Change-Data-Capture Aktualisierung\label{subsec4.4.4:Unterunterpunkt-4}}
-
-Inhalt
-
-\subsection{Vergleich\label{subsec4.4.5:Unterunterpunkt-5}}
-
-Inhalt
-
-\section{Gesamtkonzept\label{sec4.5:Unterpunkt-5}}
+\section{Gesamtkonzept\label{sec4.4:Unterpunkt-4}}
 
 Inhalt
