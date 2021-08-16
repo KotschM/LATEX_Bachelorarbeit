@@ -45,8 +45,6 @@ Zu den Grundfunktionalitäten zählen unteranderem die Themen:
 
     Beim Thema \glqq Security\grqq{} geht es demnach um die Authentifizierung und Autorisierung der Benutzer. Neben der Umsetzung von verschiedenen Authentifizierungsmöglichkeiten, müssen den Benutzern die individuellen Rechtepakete zugeordnet werden.
 
-    % Durch die Verfolgung der Benutzerinteraktionen entstehen Prüfpfade. Wer hat was falsch gemacht?
-
     \item[Streaming Base:]\hfill \\
     Der Austausch von Nachrichten zwischen Microservices wird über Kafka-Topics des Message Brokers \glqq Apache Kafka\grqq{} koordiniert. Der funktionale Ablauf der Nachrichtenweitergabe besteht dabei grundsätzich aus drei Schritten:
 
@@ -58,14 +56,10 @@ Zu den Grundfunktionalitäten zählen unteranderem die Themen:
 
     Unabhängig der späteren Geschäftslogik wird in der \glqq Streaming Base\grqq{} die Kernimplementierung für den Nachrichtentransport implementiert.
     
-    % \item[Activity Engine:]\hfill \\
-    % Text
+    \item[Entity Model:]\hfill \\
+    In einem Produktionsleitsystem, wie \glqq E-MES\grqq{}, existieren verschiedene Geschäftsentitäten. Jene Entitäten mit ihren Attributen unterscheiden sich dabei von Anlage zu Anlage. Deswegen ist es notwendig eine Möglichkeit der Konfiguration bereitzustellen. Durch Import und Export Funktionen soll das Austauschen von Entitätensammlungen vereinheitlicht werden.
 
-    % \item[Entity Model:]\hfill \\
-    % Text
-
-    % \item[Software Dokumentation:]\hfill \\
-    % Text
+    Zusätzlich soll das Entity Model in MCC eine Abstraktion der Datenhaltungsschicht bereistellen, bei welcher verschiedene Abstraktionen für verschiedene Datenbanken zur Verfügung gestellt werden. Über standardisierte API's sollen die jeweiligen Entitäten anschließend abgefragt bzw. bearbeitet werden.
 
 \end{description}
 
@@ -77,7 +71,7 @@ Geeignet für den Kontext einer Suchfunktionalität sind die Objekte und Informa
 
 \subsection{Core Services - Production\label{subsec3.1.2:Unterunterpunkt-2}}
 
-Aufbauend auf den Grundfunktionen der \glqq MCC Platform\grqq{}, welche für den Betrieb einer auf Microservices basierenden Architektur benötigt werden, stellt die \glqq Core Services\grqq{} - Schicht die Grundfunktionen für eigentliche Anwendung zur Verfügung. Im Umfeld von Produktionsanlagen werden Grundfunktionen für die anwendungsspezifischen Schichten \glqq PCS\grqq{} und \glqq SCADA\grqq{} definiert. Oftmals handelt es sich dabei um Funktionen, welche von mehreren darüber liegenden Schichten verwendet werden.
+Aufbauend auf den Grundfunktionen der \glqq MCC Platform\grqq{}, welche für den Betrieb einer auf Microservices basierenden Architektur benötigt werden, stellt die \glqq Core Services\grqq{} - Schicht die Grundfunktionen für die eigentliche Anwendung zur Verfügung. Im Umfeld von Produktionsanlagen werden Grundfunktionen für die anwendungsspezifischen Schichten \glqq PCS\grqq{} und \glqq SCADA\grqq{} definiert. Oftmals handelt es sich dabei um Funktionen, welche von mehreren darüber liegenden Schichten verwendet werden.
 
 Im Falle des Funktionsumfangs des Produktionsleitsystems \glqq E-MES\grqq{} handelt es sich in dieser Schicht um Funktionen, welche für die übergeordneten Schichten \glqq PCS\grqq{} und \glqq SCADA\grqq{} von Nutzen sind.
 

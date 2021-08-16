@@ -6,11 +6,11 @@ Um die prototypische Umsetzung einer Search Engine in MCC umzusetzen, werden im 
 
 Im Rahmen dieser Arbeit wird innerhalb der prototypischen Umsetzung nur eine Volltextsuche umgesetzt. Die Umsetzung einer semantischen Suchfunktionalität bedarf der Verwendung eines semantischen Modells, in welchem die begrifflichen Zusammenhänge und Beziehungen definiert sind. Um solch ein wissenbasiertes Modell aufzubauen, wird eine gewissen Datengrundlage benötigt, welche im Umfang des Prototypen nicht gegeben ist.
 
-Neben der reinen Verwendung von Search Engines für die Umsetzung einer Suchfunktionalität, gibt es aus technischer Sicht auch die Möglichkeit eine eigene Implementierung auf Basis der Programmbibliothek \glqq Apache Lucene\grqq{} umzusetzen. Eine weitere Möglichkeit ist die Verwendung von DBMS-internen Volltextsuchen. Folgend wird auf die technischen Umsetzungsmöglichkeiten einer Volltextsuche näher eingegangen.
+Neben der reinen Verwendung von Search Engines, für die Umsetzung einer Suchfunktionalität, gibt es aus technischer Sicht auch die Möglichkeit eine eigene Implementierung auf Basis der Programmbibliothek \glqq Apache Lucene\grqq{} umzusetzen. Eine weitere Möglichkeit ist die Verwendung von DBMS-internen Volltextsuchen. Folgend wird auf die technischen Umsetzungsmöglichkeiten einer Volltextsuche näher eingegangen.
 
 Für das Erstellen eines Gesamtkonzeptes bedarf es einer Validierung der Komponenten \glqq Search Engine\grqq{} und \glqq Datenpipeline\grqq{}. Hierbei beschriebt die Datenpipeline, in welcher Form eine Datenaktualisierung zwischen den Microservices und einer Search Engine umgesetzt werden kann.
 
-Beim Vergleich und der Gegenüberstellung der unterschiedlichen Search Engines, werden neben Kriterien die Search Engines \glqq Apache Solr\grqq{}, \glqq Elasticsearch\grqq{} und \glqq Sphinx\grqq{} verglichen.
+Beim Vergleich und der Gegenüberstellung der unterschiedlichen Search Engines, werden neben Vergleichskriterien die Search Engines \glqq Apache Solr\grqq{}, \glqq Elasticsearch\grqq{} und \glqq Sphinx\grqq{} verglichen.
 
 Bezüglich der Datenpipeline für die Datenaktualisierung zwischen den Microservices und der Search Engine, werden verschiedene Konzepte miteinander verglichen. Zu den Konzepten zählen die \glqq Clientseitige Aktualisierung\grqq{}, die \glqq Pull-or-Push Aktualisierung\grqq{} und die \glqq Change-Data-Capture Aktualisierung\grqq{}.
 
@@ -38,11 +38,42 @@ Inhalt
 
 \section{Auswahl einer Search Engine\label{sec4.2:Unterpunkt-2}}
 
-Inhalt
+Neben einer eigenen Implementierung einer Suchmaschine auf Basis der Programmbibliothek \glqq Apache Lucene\grqq{}, gibt es auf dem Markt bereits ausgereifte Software-Lösungen, welche für die invertierte Indexierung von Daten vorgesehen sind. Im folgenden soll eine Auswahl einer solchen Search Engine erfolgen. Jene Search Engine wird nachfolgend in das Gesamtkonzept und somit mit in den Prototypen einfließen. Betrachtet und miteinander verglichen werden dabei die Search Engines \glqq Apache Solr\grqq{}, \glqq Elasticsearch\grqq{} und \glqq Sphinx\grqq{}.
 
 \subsection{Vergleichskriterien\label{subsec4.2.1:Unterunterpunkt-1}}
 
-Inhalt
+Um die verschiedenen Softwareprodukte für eine Search Engine untereinander zu vergleichen, werden die folgenden Vergleichskriterien verwendet:
+
+\begin{description}
+    \item[Lizenzmodelle:]\hfill \\
+    Da die jeweilige Search Engine in der Zukunft auch eine Softwarekomponente für das Softwareprodukt MCC sein soll, ist die Verfügbarkeit von kostenfreien Lizenzen ein Vorteil. Auch Lizenzen mit einer einmaligen Bezahlung können für die Verwendung in MCC genutzt werden. Lediglich Lizenzmodelle mit laufenden Kosten (Preis pro Datenvolumen) sind zu vermeiden, da ansonsten bei der einer Skalierung des Kunden die Kosten für eine Nebenkomponente von MCC zu teuer werden.
+    
+    \begin{itemize}
+        \item \textbf{Welche Lizenzmodelle bietet die Search Engine an?}
+    \end{itemize}
+
+    \item[Effizienz:]\hfill \\
+    Im Umfeld eines Produktionsleitsystems ist die Effizienz einer jeden Softwarekomponente entscheidend. Bei einer Search Engine geht es dabei um die Geschwindigkeit und Ressourcennutzung während der Phase der Indexierung und während der Bearbeitung einer Suchanfrage.
+
+    \begin{itemize}
+        \item \textbf{In welcher Geschwindigkeit und mit welcher Ressourcennutzung werden bestimmte Mengen von Datensätzen indexiert und durch Suchanfragen durchsucht?}
+    \end{itemize}
+    
+    \item[Rankingmechanismus:]\hfill \\
+    Um dem Benutzer eine möglichst aussagekräftige Trefferauflistung zu übergeben, müssen die Suchtreffer nach ihrer Relevanz hin sortiert werden.
+
+    \begin{itemize}
+        \item \textbf{Anhand welcher Metrik bestimmt die Search Engine die Relevanz eines Suchtreffers?}
+    \end{itemize}
+
+    \item[Dokumentation:]\hfill \\
+    Für die Integrierung und Wartung einer Search Engine in das Softwareprodukt MCC ist eine aussagekräftige und umfangreiche Softwaredokumentation von der Search Engine nötig.
+
+    \begin{itemize}
+        \item \textbf{Welchen Umfang besitzt die vorliegende Softwaredokumentation?}
+    \end{itemize}
+
+\end{description}
 
 \subsection{Apache Solr\label{subsec4.2.2:Unterunterpunkt-2}}
 
@@ -56,13 +87,13 @@ Inhalt
 
 Inhalt
 
-\subsection{Vergleich\label{subsec4.2.5:Unterunterpunkt-5}}
+\subsection{Auswahl\label{subsec4.2.5:Unterunterpunkt-5}}
 
 Inhalt
 
-\section{Datenpipeline zwischen Microservices und Search Engine\label{sec4.3:Unterpunkt-3}}
+\section{Auswahl einer Datenpipeline für die Datenaktualisierung\label{sec4.3:Unterpunkt-3}}
 
-Für die Erstellung eines invertierten Indexes innerhalb der Search Engine, muss diese mit Daten aus den verschiedenen Microservices befüllt werden. Durch die Verwendung einer geeigneten Datenpipeline kann der invertierte Index innerhalb der Search Engine erzeugt und aktuell gehalten werden. Anhand von Vergleichskriterien werden nachfolgend verschiedene Umsetzungsmöglichkeiten für solch eine Datenpipeline vorgestellt und anschließend miteinander verglichen.
+Für die Erstellung eines invertierten Indexes innerhalb der Search Engine, muss diese mit Daten aus den verschiedenen Microservices befüllt werden. Durch die Verwendung einer geeigneten Datenpipeline kann der invertierte Index innerhalb der Search Engine erzeugt und aktuell gehalten werden. Anhand von Vergleichskriterien werden nachfolgend verschiedene Umsetzungsmöglichkeiten für eine Datenpipeline vorgestellt und anschließend miteinander verglichen.
 
 \subsection{Vergleichskriterien\label{subsec4.3.1:Unterunterpunkt-1}}
 
@@ -84,12 +115,12 @@ Um die verschiedenen Umsetzungsmöglichkeiten für eine Datenpipeline zwischen d
         \item \textbf{In welcher Zeitspanne gelangen die neuen Daten und Information aus den Speicherschichten der Microservices in die Search Engine?}
     \end{itemize}
     
-    \item[Recovery Funktion:]\hfill \\
-    In dem Anwendungsfall, dass die Search Engine während dem Betrieb neu aufgesetzt werden muss, muss der Aufbau der Datenpipeline eine Recovery Funktion ermöglichen. Unter Recovery Funktion ist dabei die Vollindexierung aller beteiligten Microservices gemeint, wodurch ein invertierter Index in der Search Engine ermöglicht werden kann.
+    % \item[Recovery Funktion:]\hfill \\
+    % In dem Anwendungsfall, dass die Search Engine während dem Betrieb neu aufgesetzt werden muss, muss der Aufbau der Datenpipeline eine Recovery Funktion ermöglichen. Unter Recovery Funktion ist dabei die Vollindexierung aller beteiligten Microservices gemeint, wodurch ein invertierter Index in der Search Engine ermöglicht werden kann.
     
-    \begin{itemize}
-        \item \textbf{Bietet die Datenpipeline eine Möglichkeit der Vollindexierung?}
-    \end{itemize}
+    % \begin{itemize}
+    %     \item \textbf{Bietet die Datenpipeline eine Möglichkeit der Vollindexierung?}
+    % \end{itemize}
     
     \item[Kompatibilität mit Datenbanksystemen:]\hfill \\
     Die eigentlichen Daten und Informationen, welche durch eine Search Engine \glqq durchsuchbar\grqq{} gemacht werden sollen, sind zunächst in den Speicherschichten der jeweiligen Microservices abgespeichert. Durch geeignete Schnittstellenabstraktionen können hierbei unterschiedliche \gls{dbms} für die dauerhafte Speicherung der Daten verwendet werden.
@@ -265,14 +296,18 @@ In \autoref{fig:changedatacapture_aktualisierung} ist die Verwendung von Debeziu
 
 \begin{description}
     \item[Vorteile:]\hfill \\
-    Ein Vorteil bei der Verwendung der CDC-Aktualisierung liegt bei der Echtzeit der Daten in der jeweiligen Search Engine. Grund dafür ist die stetige Überwachung der DBMS-spezifischen Transaktionsprotokolle.
+    Ein Vorteil bei der Verwendung der CDC-Aktualisierung liegt bei der \textbf{Echtzeit der Daten} in der jeweiligen Search Engine. Grund dafür ist die stetige Überwachung der DBMS-spezifischen Transaktionsprotokolle.
+
+    In der eigentlichen Software entsteht durch die zusätzliche CDC-Datenpipeline keine Engstelle. Zusätzlich wird durch die stetige Überwachung lediglich ein geringer Datenbestand transportiert, was die \textbf{Auslastung des Gesamtsystems} nicht nachteilig beeinträchtigt.
+
+    Da die verschiedenen Debezium-Kafka-Konnektoren für den Message Broker \glqq Apache Kafka\grqq{} entworfen wurden und jener auch als Basis für den Austausch von Nachrichten in MCC gedacht ist, besteht bei der Verwendung der CDC-Aktualisierung eine hohe \textbf{Kompatibilität mit den Softwarekomponenten} von MCC.
     
     \item[Nachteile:]\hfill \\
-    Text
+    Ein Nachteil ist die Varianz der unterschiedlichen Transaktionsprotokolle. Durch CDC-Software, wie \glqq Debezium\grqq{}, werden die unterschiedlichen Transaktionsprotokolle abstrahiert, jedoch ist man demnach auch von solcher Software abhängig. So kann Debezium lediglich in Verbindung mit dem Message Broker \glqq Apache Kafka\grqq{} verwendet werden.
 
 \end{description}
 
-\subsection{Vergleich\label{subsec4.3.5:Unterunterpunkt-5}}
+\subsection{Auswahl\label{subsec4.3.5:Unterunterpunkt-5}}
 
 Inhalt
 
