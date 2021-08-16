@@ -188,15 +188,73 @@ In \autoref{fig:pullpush_aktualisierung} ist eine Darstellung der Pull-or-Push A
 
 \subsection{Change-Data-Capture Aktualisierung\label{subsec4.3.4:Unterunterpunkt-4}}
 
-Neben der direkten Aktualisierung und der Pull-or-Push Aktualisierung, gibt es noch die Umsetzungsmöglichkeit mithilfe des \gls{cdc} - Pattern. Bei CDC handelt es sich um ein Software Design Pattern, welches die Datenintegration zwischen einer Datenbank und deren Datenquellen definiert.
+Neben der Umsetzungsmöglichkeit der direkten Aktualisierung und der Pull-or-Push Aktualisierung, gibt es noch die Umsetzungsmöglichkeit mithilfe des \gls{cdc} - Pattern. Bei CDC handelt es sich um ein Software Design Pattern, welches die Datenintegration zwischen einer Datenbank und deren Datenquellen definiert \cite{Datenbankenverstehen.de.2021}.
 
-https://datenbanken-verstehen.de/lexikon/change-data-capture/
+Durch das Beobachten von Datenänderungen in den Quelldatenbanken, ermöglicht \gls{cdc} ein Bewegen und Verarbeiten der Daten in nahezu Echtzeit \cite{JohnKutay.2021}. Somit können Datenreplikationen mit geringer Latenz erzeugt werden. Für die Umsetzung einer CDC-Datenpipeline gibt es vier gängige Methoden \cite{MarkVandeWiel.2021}:
 
 \begin{description}
-    \item[Change-Data-Capture:]\hfill \\
-    Text
+    \item[Zeitpunkt der letzten Aktualisierung:]\hfill \\
+    Um hierbei die Datenbankänderungen mit CDC zu beobachten, müssen die Datenbanktabellen eine \glqq DATE\_MODIFIED\grqq{}-Spalte enthalten, welche den Zeitpunkt der letzten Änderung des Datensatzes protokolliert. Bei der Datensynchronisierung zwischen einer Zieldatenbank und den Quelldatenbanken filtert man nun mithilfe von CDC bezüglich einer solchen \glqq DATE\_MODIFIED\grqq{}-Spalte und entnimmt die Datenänderungen, welche seit der letzten Datenextraktion geändert wurden.
+
+    Ein Problem bei diesem Vorgehen ist das Beobachten von Löschoperationen. Hierbei werden die Datensätze häufig komplett entfernt und ein Beobachten der Spalte \glqq DATE\_MODIFIED\grqq{} ist nicht mehr möglich.
+
+    Auch muss solch eine Spalte für jede Datenbanktabelle zur Verfügung stehen und aktuell gehalten werden. Durch Datenbank-Trigger können diese Spalten aktuell gehalten werden, was jedoch einen erhöhten Overhead verursacht.
+
+    \item[Tabellenunterschiede:]\hfill \\
+    Eine weitere Möglichkeit für die Umsetzung einer CDC-Datenpipeline ist das regelmäßige Vergleichen der Tabellenunterschiede. Hierbei wird der aktuelle Zustand der Daten mit dem vorherigen Zustand verglichen.
+
+    Im Vergleich zur Methode, bei welcher man auf die letzte Aktualisierung einer Zeile achtet, können hierbei auch die Löschoperationen berücksichtigt werden. Ein Nachteil ist der hohe Ressourcenverbrauch, welcher bei der Berechnung der Unterschiede zwischen den Datenbeständen entsteht. Somit kann die Methode der Tabellenunterschiede nicht in Echtzeit durchgeführt werden, da für eine ständige Durchführung zu viele Ressourcen benötigt werden.
+
+    \item[Trigger-basierte CDC:]\hfill \\
+    Mit der Verwendung von Datenbank-Triggern können Schattentabellen erzeugt werden, auf welchen dann die CDC-Datenpipeline die Änderungen erfassen kann. Hierbei gibt es die Möglichkeit die kompletten Datensätze in eine Schattentabelle zu speichern oder die Möglichkeit lediglich die Primärschlüssel der Datensätze in Verbindung mit der vorgenommen Art der Datenänderung (Einfügen, Aktualisieren oder Löschen) abzuspeichern.
+
+    Bei der Variante der kompletten Speicherung der Datensätze in eine Schattentabelle, entsteht bei der Erstellung und Aktualisierung der Schattentabelle ein Overhead. Ein geringerer Overhead entsteht bei der Variante, wo lediglich die Primärschlüssel mit der Art der Datenänderung in die Schattentabelle gespeichert werden. Hierbei ist aber ein Join zur Quelltabelle nötig, sobald die Datenänderungen ausgelesen werden möchten.
+
+    Somit senkt eine Trigger-basierte CDC-Datenpipeline den Aufwand für die Extraktion der Änderungen, erhöht aber den Aufwand für die Aufzeichnung der Änderungen in den Schattentabellen.
+
+    \item[Log-basierte CDC:]\hfill \\
+    Datenbanksysteme speichern alle Änderungen in einem Transaktionsprotokoll, um somit abgebrochene Transaktionen wieder rückgängig zu machen und um die Persistenz der Datenhaltung bei Ausfall des Datenbanksystems zu bewahren. Die Log-basierte CDC-Datenpipeline liest hierbei die Transaktionsprotokolle der Datenbanksysteme und entnimmt daraus die Datenänderungen.
+
+    Ein Problem bei der Verwendung der Transaktionsprotokolle ist der fehlende Standard bezüglich der Art und Weise, wie Änderungen abgespeichert werden. So sind die Transaktionsprotokolle von verschiedenen Datenbankanbietern nach keinem Standart aufgebaut und unterscheiden sich stark voneinander.
 
 \end{description}
+
+Im Rahmen dieser Arbeit und den Umsetzungsmöglichkeiten einer Datenpipeline wird die Log-basierte CDC-Datenpipeline näher betrachtet. In \autoref{fig:changedatacapture_aktualisierung} ist eine Datenpipeline mit einer CDC-Aktualisierung abgebildet. Wie bereits bei der Pull-or-Push Aktualisierung initiiert der Benutzer über ein User Interface eine Aktion, welche dann vom jeweiligen Microservice bearbeitet wird. Werden dabei die Daten der jeweiligen Datenbank durch CRUD-Befehle bearbeitet, werden jene Änderungen auch in den Datenbank-spezifischen Transaktionsprotokollen festgehalten.
+
+Durch die große Varianz der unterschiedlichen Transaktionsprotokolle ist eine eigene Implementierung solch einer CDC-Software umständlich. Abhilfe schafft das Open Source Framework \glqq Debezium\grqq{}, welche auf dem Log-basierten CDC arbeitet und die Änderungen der Transaktionsprotokolle beobachtet.
+
+\begin{description}
+\item[Debezium:]\hfill \\
+    Nach Luber \cite{StefanLuber.2021} ist Debezium ein Open Source Framework, welches Änderungen in einer Datenbank erfasst und in Form von Event-Streams anderen Anwendungen zur Verfügung stellt. Debezium baut hierfür auf dem Framework \glqq Apache Kafka Connect\grqq{} auf, welches für die Implementierung von Kafka-Schnittstellen verantwortlich ist. Solche Schnittstellen werden entweder in Form von Quellkonnektoren oder Sink-Konnektoren umgesetzt und sind dafür zuständig Datensätze an Kafka zu schicken (Quellkonnektoren) oder Datensätze aus Kafka-Topics an andere Systeme (Sink-Konnektoren) weiterzuschicken \cite{DebeziumCommunity.2021b}.
+    
+    Debezium bietet derzeit für folgende Datenbankmanagementsysteme Kafka-Konnektoren an: \cite{DebeziumCommunity.2021}
+
+    \begin{itemize}
+        \item MongoDB
+        \item MySQL
+        \item PostgreSQL
+        \item SQL Server
+        \item Oracle
+        \item Db2
+    \end{itemize}
+
+    Eine Vorabversion der Kafka-Konnektoren wird bereits für folgende Datenbankmanagementsysteme angeboten: \cite{DebeziumCommunity.2021}
+
+    \begin{itemize}
+        \item Cassandra
+        \item Vitess
+    \end{itemize}
+
+    % \begin{figure}[H]
+    %     \centering
+    %     \includegraphics[width=0.9\linewidth]{images/debezium_kafka_pipeline.png}
+    %     \caption{Architektur von Debezium}
+    %     \label{fig:architektur_von_debezium}
+    % \end{figure}
+
+\end{description}
+
+In \autoref{fig:changedatacapture_aktualisierung} ist die Verwendung von Debezium im Gesamtbild der Datenpipeline abgebildet. Zu erkennen ist, das Debezium auf die Transaktionsprotokolle der unterschiedlichen DBMS zugreift und dessen Änderungen an den Message Broker Apache Kafka weiterleitet. Somit fungiert Debezium als Kafka-Produzent und leitet die Datenänderungen aus den Quelldatenbanken an die entsprechenden Kafka-Topics weiter. Um die Daten aus den Kafka-Topics in die jeweilige Search Engine zu leiten, müssen geeignete Kafka-Sink-Konnektoren verwendet werden.
 
 \begin{figure}[H]
     \centering
@@ -207,7 +265,7 @@ https://datenbanken-verstehen.de/lexikon/change-data-capture/
 
 \begin{description}
     \item[Vorteile:]\hfill \\
-    Text
+    Ein Vorteil bei der Verwendung der CDC-Aktualisierung liegt bei der Echtzeit der Daten in der jeweiligen Search Engine. Grund dafür ist die stetige Überwachung der DBMS-spezifischen Transaktionsprotokolle.
     
     \item[Nachteile:]\hfill \\
     Text
@@ -221,3 +279,10 @@ Inhalt
 \section{Gesamtkonzept\label{sec4.4:Unterpunkt-4}}
 
 Inhalt
+
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=0.9\linewidth]{images/CDC_aktualisierung.png}
+%     \caption{Datenpipeline: Change-Data-Capture Aktualisierung}
+%     \label{fig:changedatacapture_aktualisierung}
+% \end{figure}
