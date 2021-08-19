@@ -12,13 +12,9 @@ Für das Erstellen eines Gesamtkonzeptes bedarf es einer Validierung der Kompone
 
 Beim Vergleich und der Gegenüberstellung der unterschiedlichen Search Engines, werden neben Vergleichskriterien die Search Engines \glqq Apache Solr\grqq{}, \glqq Elasticsearch\grqq{} und \glqq Sphinx\grqq{} verglichen.
 
-Bezüglich der Datenpipeline für die Datenaktualisierung zwischen den Microservices und der Search Engine, werden verschiedene Konzepte miteinander verglichen. Zu den Konzepten zählen die \glqq Clientseitige Aktualisierung\grqq{}, die \glqq Pull-or-Push Aktualisierung\grqq{} und die \glqq Change-Data-Capture Aktualisierung\grqq{}.
+Bezüglich der Datenpipeline für die Datenaktualisierung zwischen den Microservices und der Search Engine, werden verschiedene Umsetzungsmöglichkeiten miteinander verglichen. Zu den Konzepten zählen die \glqq Direkte Aktualisierung\grqq{}, die \glqq Pull-or-Push Aktualisierung\grqq{} und die \glqq Change-Data-Capture Aktualisierung\grqq{}.
 
 Nach Auswahl aller benötigten Komponenten wird zum Schluss dieses Kapitels ein Gesamtkonzept erstellt. Jenes Gesamtkonzept ist zudem die Grundlage für die prototypische Umsetzung in \autoref{chap5:Fuenftes-Kapitel}.
-
-% \section{Konzeptionskriterien\label{sec4.1:Unterpunkt-1}}
-
-% Für die Erstellung eines Gesamtkonzeptes und die darin enthaltene Auswahl von einzelnen Komponenten, müssen unterschiedliche Kriterien definiert werden. Diese Kriterien dienen dazu, die technische Umsetzung im Umfeld von MCC und die Vermeidung von monolithischen Seiteneffekten zu ermöglichen.
 
 \section{Technische Umsetzung einer Volltextsuche\label{sec4.1:Unterpunkt-1}}
 
@@ -100,18 +96,18 @@ Für die Erstellung eines invertierten Indexes innerhalb der Search Engine, muss
 Um die verschiedenen Umsetzungsmöglichkeiten für eine Datenpipeline zwischen den Microservices und der Search Engine untereinander zu vergleichen, werden die folgenden Vergleichskriterien verwendet:
 
 \begin{description}
-    \item[Mehraufwand bei Entwicklung:]\hfill \\
+    \item[Mehraufwand bei der Entwicklung:]\hfill \\
     Je nach Art und Umfang der eingesetzten Datenpipeline, entsteht für die Entwickler ein Mehraufwand bei der Umsetzung neuer Funktionalitäten beziehungsweise Microservices.
     
     \begin{itemize}
-        \item \textbf{In welchem Umfang ist die Programmierung neuer Funktionalitäten und somit Microservices von der Einführung einer Search Engine mit dazugehöriger Datenpipeline betroffen?}
+        \item \textbf{In welchem Umfang ist die Programmierung neuer Funktionalitäten und somit Microservices, von der Einführung einer Search Engine mit dazugehöriger Datenpipeline, betroffen?}
     \end{itemize}
 
     \item[Datenaktualität:]\hfill \\
-    Mit dem Begriff \glqq Datenaktualität\grqq{} wird die Aktualität der Search Engine hinsichtlich der indexierten Daten beschrieben. Dabei gibt die Datenpipeline vor, ob die Indexierung der neuen oder bearbeiteten Objekte in \glqq Echtzeit\grqq{} oder zu einem späteren Zeitpunkt erfolgt.
+    Mit dem Begriff \glqq Datenaktualität\grqq{} wird die Aktualität der Search Engine hinsichtlich der indexierten Daten beschrieben. Dabei gibt die Datenpipeline vor, ob die Indexierung der neuen oder bearbeiteten Objekte in nahezu Echtzeit oder zu einem späteren Zeitpunkt erfolgt.
 
     \begin{itemize}
-        \item \textbf{Wie aktuell sind die Daten und Informationen innerhalb der Search Engine?}
+        \item \textbf{Wie aktuell sind die Daten innerhalb der Search Engine?}
         \item \textbf{In welcher Zeitspanne gelangen die neuen Daten und Information aus den Speicherschichten der Microservices in die Search Engine?}
     \end{itemize}
     
@@ -146,7 +142,7 @@ Um die verschiedenen Umsetzungsmöglichkeiten für eine Datenpipeline zwischen d
     \end{itemize}
 
     \item[Kompatibilität mit Softwarekomponenten von MCC:]\hfill \\
-    Für die spätere Integrierung der Search Engine und der Datenpipeline in das Softwareprodukt MCC ist eine Kompatibilität mit bereits verwendeten Softwarekomponenten von Vorteil. Darunter zählt zum Beispiel der Message Broker \glqq Apache Kafka\grqq{}, welcher bei MCC für den Nachrichtenaustausch zwischen den Microservices verwendet wird.
+    Für die spätere Integrierung der Search Engine und der Datenpipeline in das Softwareprodukt MCC ist eine Kompatibilität mit bereits verwendeten Softwarekomponenten von Vorteil. Darunter zählt zum Beispiel der Message Broker \glqq Apache Kafka\grqq{}, welcher bei MCC unteranderem für den Nachrichtenaustausch zwischen den Microservices verwendet wird.
 
     \begin{itemize}
         \item \textbf{Mit welchen Softwarekomponenten ist die Datenpipeline kompatibel?}
@@ -184,14 +180,14 @@ Eine Darstellung der direkten Aktualisierung ist in \autoref{fig:direkte_aktuali
 
 \subsection{Pull-or-Push Aktualisierung\label{subsec4.3.3:Unterunterpunkt-3}}
 
-Eine weitere Umsetzungsmöglichkeit für die Datenpipeline ist die \glqq Pull-or-Push\grqq{} - Aktualisierung. Hier wird vom Benutzer lediglich die Aktualisierung der eigentlichen Datenhaltung initiiert. Zu einem definierten Zeitpunkt werden dann die bearbeiteten Daten entweder mit einem Pull-or-Push Mechanismus an den Search Service geschickt.
+Eine weitere Umsetzungsmöglichkeit für die Datenpipeline ist die \glqq Pull-or-Push\grqq{} - Aktualisierung. Hier wird vom Benutzer lediglich die Aktualisierung der eigentlichen Datenhaltung initiiert. Innerhalb einer vordefinierten Zeitspanne werden dann die bearbeiteten Daten entweder mit einem Pull- oder Push-Mechanismus an den Search Service geschickt.
 
 \begin{description}
     \item[Pull:]\hfill \\
-    Die Search Service initiiert die Aktualisierung des invertierten Index nach einer vordefinierten Zeitspanne und holt sich dann die Datenänderungen aus den verschiedenen Microservices.
+    Der Search Service initiiert die Aktualisierung des invertierten Index nach einer vordefinierten Zeitspanne und holt sich dann die Datenänderungen aus den verschiedenen Microservices.
     
     \item[Push:]\hfill \\
-    Nach einer vordefinierten Zeitspanne schicken die verschiedenen Microservices die Datenänderungen an die Search Engine, wo dann eine Aktualisierung des invertierten Index stattfinden kann.
+    Nach einer vordefinierten Zeitspanne schicken die verschiedenen Microservices die Datenänderungen an den Search Engine, wo dann eine Aktualisierung des invertierten Index stattfinden kann.
 
 \end{description}
 
@@ -239,7 +235,7 @@ Durch das Beobachten von Datenänderungen in den Quelldatenbanken, ermöglicht \
     \item[Trigger-basierte CDC:]\hfill \\
     Mit der Verwendung von Datenbank-Triggern können Schattentabellen erzeugt werden, auf welchen dann die CDC-Datenpipeline die Änderungen erfassen kann. Hierbei gibt es die Möglichkeit die kompletten Datensätze in eine Schattentabelle zu speichern oder die Möglichkeit lediglich die Primärschlüssel der Datensätze in Verbindung mit der vorgenommen Art der Datenänderung (Einfügen, Aktualisieren oder Löschen) abzuspeichern.
 
-    Bei der Variante der kompletten Speicherung der Datensätze in eine Schattentabelle, entsteht bei der Erstellung und Aktualisierung der Schattentabelle ein Overhead. Ein geringerer Overhead entsteht bei der Variante, wo lediglich die Primärschlüssel mit der Art der Datenänderung in die Schattentabelle gespeichert werden. Hierbei ist aber ein Join zur Quelltabelle nötig, sobald die Datenänderungen ausgelesen werden möchten.
+    Bei der Variante der kompletten Speicherung der Datensätze in eine Schattentabelle, entsteht bei der Erstellung und Aktualisierung der Schattentabelle ein Overhead. Ein geringerer Overhead entsteht bei der Variante, wo lediglich die Primärschlüssel mit der Art der Datenänderung in die Schattentabelle gespeichert werden. Hierbei ist aber ein Join zur Quelltabelle nötig, sobald die Datenänderungen ausgelesen werden sollen.
 
     Somit senkt eine Trigger-basierte CDC-Datenpipeline den Aufwand für die Extraktion der Änderungen, erhöht aber den Aufwand für die Aufzeichnung der Änderungen in den Schattentabellen.
 
@@ -256,7 +252,7 @@ Durch die große Varianz der unterschiedlichen Transaktionsprotokolle ist eine e
 
 \begin{description}
 \item[Debezium:]\hfill \\
-    Nach Luber \cite{StefanLuber.2021} ist Debezium ein Open Source Framework, welches Änderungen in einer Datenbank erfasst und in Form von Event-Streams anderen Anwendungen zur Verfügung stellt. Debezium baut hierfür auf dem Framework \glqq Apache Kafka Connect\grqq{} auf, welches für die Implementierung von Kafka-Schnittstellen verantwortlich ist. Solche Schnittstellen werden entweder in Form von Quellkonnektoren oder Sink-Konnektoren umgesetzt und sind dafür zuständig Datensätze an Kafka zu schicken (Quellkonnektoren) oder Datensätze aus Kafka-Topics an andere Systeme (Sink-Konnektoren) weiterzuschicken \cite{DebeziumCommunity.2021b}.
+    Nach Luber \cite{StefanLuber.2021} ist Debezium ein Open Source Framework, welches Änderungen in einer Datenbank erfasst und in Form von Event-Streams anderen Anwendungen zur Verfügung stellt. Debezium baut hierbau auf dem Framework \glqq Apache Kafka Connect\grqq{} auf, welches für die Implementierung von Kafka-Schnittstellen verantwortlich ist. Solche Schnittstellen werden entweder in Form von Quellkonnektoren oder Sink-Konnektoren umgesetzt und sind dafür zuständig Datensätze an Kafka zu schicken (Quellkonnektoren) oder Datensätze aus Kafka-Topics (Sink-Konnektoren) an andere Systeme weiterzuschicken \cite{DebeziumCommunity.2021b}.
     
     Debezium bietet derzeit für folgende Datenbankmanagementsysteme Kafka-Konnektoren an: \cite{DebeziumCommunity.2021}
 
@@ -275,13 +271,6 @@ Durch die große Varianz der unterschiedlichen Transaktionsprotokolle ist eine e
         \item Cassandra
         \item Vitess
     \end{itemize}
-
-    % \begin{figure}[H]
-    %     \centering
-    %     \includegraphics[width=0.9\linewidth]{images/debezium_kafka_pipeline.png}
-    %     \caption{Architektur von Debezium}
-    %     \label{fig:architektur_von_debezium}
-    % \end{figure}
 
 \end{description}
 
@@ -303,21 +292,18 @@ In \autoref{fig:changedatacapture_aktualisierung} ist die Verwendung von Debeziu
     Da die verschiedenen Debezium-Kafka-Konnektoren für den Message Broker \glqq Apache Kafka\grqq{} entworfen wurden und jener auch als Basis für den Austausch von Nachrichten in MCC gedacht ist, besteht bei der Verwendung der CDC-Aktualisierung eine hohe \textbf{Kompatibilität mit den Softwarekomponenten} von MCC.
     
     \item[Nachteile:]\hfill \\
-    Ein Nachteil ist die Varianz der unterschiedlichen Transaktionsprotokolle. Durch CDC-Software, wie \glqq Debezium\grqq{}, werden die unterschiedlichen Transaktionsprotokolle abstrahiert, jedoch ist man demnach auch von solcher Software abhängig. So kann Debezium lediglich in Verbindung mit dem Message Broker \glqq Apache Kafka\grqq{} verwendet werden.
+    Ein Nachteil ist die Varianz der unterschiedlichen Transaktionsprotokolle. Durch CDC-Software, wie \glqq Debezium\grqq{}, werden die unterschiedlichen Transaktionsprotokolle abstrahiert, jedoch ist man demnach auch von solch einer Software abhängig. So kann Debezium lediglich in Verbindung mit dem Message Broker \glqq Apache Kafka\grqq{} verwendet werden.
 
 \end{description}
 
 \subsection{Auswahl\label{subsec4.3.5:Unterunterpunkt-5}}
 
-Inhalt
+Für die Datenpipeline innerhalb der prototypischen Umsetzung wurde sich für die Umsetzungsmöglichkeit \glqq \textbf{Change-Data-Capture Aktualisierung}\grqq{} entschieden. Die Entscheidung resultiert aus einem Vergleich mit den Umsetzungsmöglichkeiten \glqq Direkte Aktualisierung\grqq{} und \glqq Pull-or-Push Aktualisierung\grqq{}.
+
+Eines der wichtigen Vergleichskriterien ist die \textbf{Aktualität der Daten} innerhalb der Search Engine. Die Aktualität jener Daten definiert gleichermaßen die Vollständigkeit von Suchtreffern, welche bei der Search Engine angefragt werden. Da die Datenaktualität bei der Pull-or-Push Aktualisierung abhängig von einer vordefinierten Zeitspanne ist, kann es vorkommen, dass Datenänderungen aufgrund der Zeitspanne noch nicht an die Search Engine übermittelt wurden, aber bei der Search Engine zur gleichen Zeit eine Suchanfrage bezüglich jener Daten erfolgt. Sowohl bei der direkten Aktualisierung, als auch bei der CDC-Aktualisierung werden die Daten zwischen den Microservices und der Search Engine in nahezu Echtzeit aktuell gehalten.
+
+Die verschiedenen Umsetzungsmöglichkeiten unterscheiden sich stark hinsichtlich des \textbf{Mehraufwands für die Entwicklung und Wartung} eines Gesamtsystems. Unter den vorgestellten Umsetzungsmöglichkeiten bietet die CDC-Aktualisierung den geringsten Mehraufwand. Grund hierfür ist die Unabhängigkeit der Datenpipeline bezüglich den internen Implementierungen der einzelnen Microservices, da sich die CDC Aktualisierung ausschließlich direkt mit den entsprechenden Datenhaltungschichten verbindet. Bei Neuentwicklung oder Erweiterungen der Microservices gilt es lediglich die Konfigurationen der CDC-Konnektoren anzupassen, damit bei der CDC Aktualisierung die entsprechenden Datenänderungen in den Datenhaltungsschichten registriert werden. Anders verhält sich der Mehraufwand bei der Umsetzung einer direkten Aktualisierung oder einer Pull-or-Push Aktualisierung. Bei der direkten Aktualisierung liegt die Verantwortung für das Senden der Datenänderungen an den Search Service beim jeweiligen Entwickler. Jener muss neben dem Schreiben der Datenänderungen in die eigentliche Datenhaltung, zusätzlich die Datenänderungen an die Search Engine schicken. Bei Änderungen auf Seiten der Search Engine, gilt es somit alle Funktionalitäten des gesamten Systems zu warten. Bei der Pull-or-Push Aktualisierung ist der Austausch der Datenänderungen zwischen den Microservices und der Search Engine anhand einer Zeitspanne geregelt. Neben der Zeitspanne gilt es auch die Pull- oder Push-Mechanismen zu definieren.
 
 \section{Gesamtkonzept\label{sec4.4:Unterpunkt-4}}
 
 Inhalt
-
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics[width=0.9\linewidth]{images/CDC_aktualisierung.png}
-%     \caption{Datenpipeline: Change-Data-Capture Aktualisierung}
-%     \label{fig:changedatacapture_aktualisierung}
-% \end{figure}
