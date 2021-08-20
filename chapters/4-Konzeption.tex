@@ -4,37 +4,37 @@ Um die prototypische Umsetzung einer Search Engine in MCC umzusetzen, werden im 
 
 % Wird nur eine Volltextsuche oder eine facettierte Volltextsuche umgesetzt?
 
-Im Rahmen dieser Arbeit wird innerhalb der prototypischen Umsetzung nur eine Volltextsuche umgesetzt. Die Umsetzung einer semantischen Suchfunktionalität bedarf der Verwendung eines semantischen Modells, in welchem die begrifflichen Zusammenhänge und Beziehungen definiert sind. Um solch ein wissenbasiertes Modell aufzubauen, wird eine gewissen Datengrundlage benötigt, welche im Umfang des Prototypen nicht gegeben ist.
+Im Rahmen dieser Arbeit wird innerhalb der prototypischen Umsetzung nur eine Volltextsuche umgesetzt. Die Umsetzung einer semantischen Suchfunktionalität bedarf der Verwendung eines semantischen Modells, in welchem die begrifflichen Zusammenhänge und Beziehungen definiert sind. Um solch ein wissenbasiertes Modell aufzubauen, wird eine gewisse Datengrundlage benötigt, welche im Umfang des Prototypen nicht gegeben ist.
 
-Neben der reinen Verwendung von Search Engines, für die Umsetzung einer Suchfunktionalität, gibt es aus technischer Sicht auch die Möglichkeit eine eigene Implementierung auf Basis der Programmbibliothek \glqq Apache Lucene\grqq{} umzusetzen. Eine weitere Möglichkeit ist die Verwendung von DBMS-internen Volltextsuchen. Folgend wird auf die technischen Umsetzungsmöglichkeiten einer Volltextsuche näher eingegangen.
+% Neben der reinen Verwendung von Search Engines, für die Umsetzung einer Suchfunktionalität, gibt es aus technischer Sicht auch die Möglichkeit eine eigene Implementierung auf Basis der Programmbibliothek \glqq Apache Lucene\grqq{} umzusetzen. Eine weitere Möglichkeit ist die Verwendung von DBMS-internen Volltextsuchen. Folgend wird auf die technischen Umsetzungsmöglichkeiten einer Volltextsuche näher eingegangen.
 
 Für das Erstellen eines Gesamtkonzeptes bedarf es einer Validierung der Komponenten \glqq Search Engine\grqq{} und \glqq Datenpipeline\grqq{}. Hierbei beschriebt die Datenpipeline, in welcher Form eine Datenaktualisierung zwischen den Microservices und einer Search Engine umgesetzt werden kann.
 
-Beim Vergleich und der Gegenüberstellung der unterschiedlichen Search Engines, werden neben Vergleichskriterien die Search Engines \glqq Apache Solr\grqq{}, \glqq Elasticsearch\grqq{} und \glqq Sphinx\grqq{} verglichen.
+Beim Vergleich und der Gegenüberstellung der unterschiedlichen Search Engines, werden die Search Engines \glqq Apache Solr\grqq{} und \glqq Elasticsearch\grqq{} miteinander verglichen. Beide beruhen auf dem Funktionsumfang der Programmbibliothek \glqq Apache Lucene\grqq{}. Da es aus technischer Sicht auch die Möglichkeit gibt eine eigene Search Engine auf Basis von \glqq Apache Lucene\grqq{} zu implementieren, wird jene Programmbibliothek, vor der eigentlichen Auswahl der Search Engine für den Prototypen, erläutert.
 
 Bezüglich der Datenpipeline für die Datenaktualisierung zwischen den Microservices und der Search Engine, werden verschiedene Umsetzungsmöglichkeiten miteinander verglichen. Zu den Konzepten zählen die \glqq Direkte Aktualisierung\grqq{}, die \glqq Pull-or-Push Aktualisierung\grqq{} und die \glqq Change-Data-Capture Aktualisierung\grqq{}.
 
 Nach Auswahl aller benötigten Komponenten wird zum Schluss dieses Kapitels ein Gesamtkonzept erstellt. Jenes Gesamtkonzept ist zudem die Grundlage für die prototypische Umsetzung in \autoref{chap5:Fuenftes-Kapitel}.
 
-\section{Technische Umsetzung einer Volltextsuche\label{sec4.1:Unterpunkt-1}}
+% \section{Technische Umsetzung einer Volltextsuche\label{sec4.1:Unterpunkt-1}}
 
-Bei der technischen Umsetzung einer Volltextsuche dient ein invertierter Index als Grundlage für eingehende Suchanfragen. Hierfür müssen durch Transformationsschritte (siehe auch \autoref{subsec2.1.2:Unterunterpunkt-2}) die Suchphrasen bei der Suchanfrage und die Informationen bei der Indexierung in einer einheitliche Form gebracht werden. Dabei gilt es die morphologischen Varianzen der menschlichen Sprache zu entfernen.
+% Bei der technischen Umsetzung einer Volltextsuche dient ein invertierter Index als Grundlage für eingehende Suchanfragen. Hierfür müssen durch Transformationsschritte (siehe auch \autoref{subsec2.1.2:Unterunterpunkt-2}) die Suchphrasen bei der Suchanfrage und die Informationen bei der Indexierung in einer einheitliche Form gebracht werden. Dabei gilt es die morphologischen Varianzen der menschlichen Sprache zu entfernen.
 
-\subsection{Apache Lucene\label{subsec4.1.1:Unterunterpunkt-1}}
+% \subsection{Apache Lucene\label{subsec4.1.1:Unterunterpunkt-1}}
 
-Inhalt
+% Inhalt
 
-\subsection{Search Engine\label{subsec4.1.2:Unterunterpunkt-2}}
+% \subsection{Search Engine\label{subsec4.1.2:Unterunterpunkt-2}}
 
-Inhalt
+% Inhalt
 
-\subsection{DBMS-interne Volltextsuche\label{subsec4.1.3:Unterunterpunkt-3}}
+% \subsection{DBMS-interne Volltextsuche\label{subsec4.1.3:Unterunterpunkt-3}}
 
-Inhalt
+% Inhalt
 
 \section{Auswahl einer Search Engine\label{sec4.2:Unterpunkt-2}}
 
-Neben einer eigenen Implementierung einer Suchmaschine auf Basis der Programmbibliothek \glqq Apache Lucene\grqq{}, gibt es auf dem Markt bereits ausgereifte Software-Lösungen, welche für die invertierte Indexierung von Daten vorgesehen sind. Im folgenden soll eine Auswahl einer solchen Search Engine erfolgen. Jene Search Engine wird nachfolgend in das Gesamtkonzept und somit mit in den Prototypen einfließen. Betrachtet und miteinander verglichen werden dabei die Search Engines \glqq Apache Solr\grqq{}, \glqq Elasticsearch\grqq{} und \glqq Sphinx\grqq{}.
+Neben einer eigenen Implementierung einer Suchmaschine auf Basis der Programmbibliothek \glqq Apache Lucene\grqq{}, gibt es auf dem Markt bereits ausgereifte Software-Lösungen, welche für die invertierte Indexierung von Daten vorgesehen sind. Im folgenden soll die Auswahl einer solchen Search Engine erfolgen. Jene Search Engine wird nachfolgend in das Gesamtkonzept des Prototypen einfließen. Betrachtet und miteinander verglichen werden dabei die Search Engines \glqq Apache Solr\grqq{} und \glqq Elasticsearch\grqq{}.
 
 \subsection{Vergleichskriterien\label{subsec4.2.1:Unterunterpunkt-1}}
 
@@ -49,7 +49,7 @@ Um die verschiedenen Softwareprodukte für eine Search Engine untereinander zu v
     \end{itemize}
 
     \item[Effizienz:]\hfill \\
-    Im Umfeld eines Produktionsleitsystems ist die Effizienz einer jeden Softwarekomponente entscheidend. Bei einer Search Engine geht es dabei um die Geschwindigkeit und Ressourcennutzung während der Phase der Indexierung und während der Bearbeitung einer Suchanfrage.
+    Im Umfeld eines Produktionsleitsystems ist die Effizienz einer jeden Softwarekomponente entscheidend. Bei einer Search Engine geht es dabei um die Geschwindigkeit und Ressourcennutzung während der Phase der Indexierung und während der Bearbeitung der Suchanfragen.
 
     \begin{itemize}
         \item \textbf{In welcher Geschwindigkeit und mit welcher Ressourcennutzung werden bestimmte Mengen von Datensätzen indexiert und durch Suchanfragen durchsucht?}
@@ -71,6 +71,14 @@ Um die verschiedenen Softwareprodukte für eine Search Engine untereinander zu v
 
 \end{description}
 
+\subsection{Programmbibliothek \glqq Apache Lucene\grqq{}\label{subsec4.1.1:Unterunterpunkt-1}}
+
+Für die technische Umsetzung einer Volltextsuche und die damit einhergehende Erstellung und Verwaltung eines invertierten Indexes, bietet sich die frei verfügbare Programmbibliothek \glqq Apache Lucene\grqq{} an.
+
+Lucene, welches anfänglich Ende der 1990er-Jahre von Doug Cutting programmiert wurde, wird seit 2005 als Top-Level-Projekt von der Apache Software Foundation betreut \cite{StefanLuber.2018}.
+
+% Bei der technischen Umsetzung einer Volltextsuche dient ein invertierter Index als Grundlage für eingehende Suchanfragen. Hierfür müssen durch Transformationsschritte (siehe auch \autoref{subsec2.1.2:Unterunterpunkt-2}) die Suchphrasen bei der Suchanfrage und die Informationen bei der Indexierung in einer einheitliche Form gebracht werden. Dabei gilt es die morphologischen Varianzen der menschlichen Sprache zu entfernen.
+
 \subsection{Apache Solr\label{subsec4.2.2:Unterunterpunkt-2}}
 
 Inhalt
@@ -79,9 +87,9 @@ Inhalt
 
 Inhalt
 
-\subsection{Sphinx\label{subsec4.2.4:Unterunterpunkt-4}}
+% \subsection{Sphinx\label{subsec4.2.4:Unterunterpunkt-4}}
 
-Inhalt
+% Inhalt
 
 \subsection{Auswahl\label{subsec4.2.5:Unterunterpunkt-5}}
 
