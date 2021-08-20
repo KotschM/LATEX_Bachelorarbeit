@@ -46,6 +46,8 @@ Zu den Grundfunktionalitäten zählen unteranderem die Themen:
     Beim Thema \glqq Security\grqq{} geht es demnach um die Authentifizierung und Autorisierung der Benutzer. Neben der Umsetzung von verschiedenen Authentifizierungsmöglichkeiten, müssen den Benutzern die individuellen Rechtepakete zugeordnet werden.
 
     \item[Streaming Base:]\hfill \\
+    Nachrichten, welche aufgrund der Kommunikation mit mehreren Kafka-Topics und Datenhaltungschichten nicht mehr als atomare Nachrichtenübermittlungen angesehen werden können, sollten als eine Transaktion angesehen werden. Die Streaming Base stellt hierbei sicher, dass alle Nachrichtenübermittlungen innerhalb einer Transaktion rückgängig gemacht werden können, sobald eine der Nachrichten fehlschlägt. So wird innerhalb des gesamten Systems eine Datenkonsistenz sichergestellt.
+
     Der Austausch von Nachrichten zwischen Microservices wird über Kafka-Topics des Message Brokers \glqq Apache Kafka\grqq{} koordiniert. Der funktionale Ablauf der Nachrichtenweitergabe besteht dabei grundsätzich aus drei Schritten:
 
     \begin{itemize}
@@ -61,6 +63,9 @@ Zu den Grundfunktionalitäten zählen unteranderem die Themen:
 
     Zusätzlich soll das Entity Model in MCC eine Abstraktion der Datenhaltungsschicht bereistellen, bei welcher verschiedene Abstraktionen für verschiedene Datenbanken zur Verfügung gestellt werden. Über standardisierte API's sollen die jeweiligen Entitäten anschließend abgefragt bzw. bearbeitet werden.
 
+    % \item[Portal / Microfrontend Framework:]\hfill \\
+    % ToDo
+
 \end{description}
 
 Für den Kontext einer Suchfunktionalität sind die meisten Funktionalitäten aus der \glqq MCC Platform\grqq{} - Schicht nicht relevant, da ein Benutzer mit diesen Funktionen nicht direkt interagiert. Zum Beispiel soll die Funktions- und Arbeitsweise der \glqq Streaming Base\grqq{} dem Benutzer verborgen bleiben.
@@ -75,7 +80,7 @@ Aufbauend auf den Grundfunktionalitäten der \glqq MCC Platform\grqq{}, welche f
 
 Im Falle des Funktionsumfangs des Produktionsleitsystems \glqq E-MES\grqq{} handelt es sich in dieser Schicht um Funktionen, welche für die übergeordneten Schichten \glqq PCS\grqq{} und \glqq SCADA\grqq{} von Nutzen sind.
 
-Zu den Funktionen zählen zum Beispiel die folgenden Funktionalitäten:
+Zum Funktionsumfang zählen zum Beispiel die folgenden Funktionalitäten:
 
 \begin{description}
 
@@ -86,6 +91,9 @@ Zu den Funktionen zählen zum Beispiel die folgenden Funktionalitäten:
 
     \item[Asset Model:]\hfill \\
     Um auch große Anlagen übersichtlich zu strukturieren und dadurch eine Übersichtlichkeit herzustellen, werden Anlagen üblicherweise in sogenannte \glqq Assets\grqq{} unterteilt. Hierbei kann der Begriff \glqq Asset\grqq{} von den einzelnen Maschinen und Sensoren bis hin zur kompletten Anlage reichen. Eine tiefergehende Erläuterung der \glqq Assets\grqq{} bezüglich dem Einsatz im Umfeld eines Produktionsleitsystems ist in \autoref{subsec3.1.3:Unterunterpunkt-3} \textbf{(\nameref{subsec3.1.3:Unterunterpunkt-3})} zu aufgeführt.
+    
+    \item[Maschinenkonnektivität:]\hfill \\
+    Die späteren Anlagen, auf welchen MCC betrieben wird, sind sehr Vielfältig. Neben dem Alter der Maschinen und Sensoren gibt es auch eine breite Masse an verschiedenen Herstellern, die überwiegend eigene Protokolle und Schnittstellen anbieten. Damit solche Anlagen mit MCC verbunden und betrieben werden können, bedarf es einer Funktionalität, welche für die Abstaktion der einzelnen Maschinen- und Sensor-Schnittstellen zuständig ist.
 
 \end{description}
 
