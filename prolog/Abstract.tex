@@ -7,4 +7,12 @@
     \textbf{\huge{}Abstract}{\huge\par}
 \par\end{flushleft}
 
-ToDo
+This bachelor thesis with the title \glqq Konzeption und prototypische Implementierung einer Search Engine in einer Microservice-Architektur\grqq{} explains the different possibilities for the implementation of a search functionality.
+
+The search functionality is to be implemented in the MES software \glqq MCC\grqq{} in the near future. \glqq MCC\grqq{} is the redesign of the current production control system \glqq E-MES\grqq{} of the company Enisco by Forcam GmbH. In the redesign, a change is made from a monolithically operated, modular 3-layer architecture to a distributed microservice architecture.
+
+In the context of this work, the different types of search functions in modern information systems will be discussed first. Full-text search, faceted search, and semantic search will be examined in more detail. The respective scope of the search types is defined on the basis of the functional scope of the production control system \glqq MCC\grqq{}. For this purpose, an explanation of the functional scope is given.
+
+When creating a suitable concept, valid architectural principles are taken into account in order to avoid monolithic side effects when introducing a search functionality. Within the concept, a selection is made regarding a search engine and a suitable data pipeline. The search engines \glqq Apache Solr\grqq{} and \glqq Elasticsearch\grqq{} are compared, and the implementation options \glqq Dual Write\grqq{}, \glqq Polling\grqq{} and \glqq Change-Data-Capture\grqq{} are compared with regard to a data pipeline.
+
+This is followed by a prototypical implementation of the change data capture data pipeline in conjunction with the search engine \glqq Elasticsearch\grqq{}. 

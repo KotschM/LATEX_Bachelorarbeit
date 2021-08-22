@@ -2,8 +2,6 @@
 
 Um die prototypische Umsetzung einer Search Engine in MCC umzusetzen, werden im folgenden Kapitel verschiedene technische Umsetzungsmöglichkeiten vorgestellt und miteinander verglichen.
 
-% Wird nur eine Volltextsuche oder eine facettierte Volltextsuche umgesetzt?
-
 Im Rahmen dieser Arbeit wird innerhalb der prototypischen Umsetzung nur eine Volltextsuche umgesetzt. Die Umsetzung einer semantischen Suchfunktionalität bedarf der Verwendung eines semantischen Modells, in welchem die begrifflichen Zusammenhänge und Beziehungen definiert sind. Um solch ein wissenbasiertes Modell aufzubauen, wird eine gewisse Datengrundlage benötigt, welche im Umfang des Prototypen nicht gegeben ist.
 
 % Neben der reinen Verwendung von Search Engines, für die Umsetzung einer Suchfunktionalität, gibt es aus technischer Sicht auch die Möglichkeit eine eigene Implementierung auf Basis der Programmbibliothek \glqq Apache Lucene\grqq{} umzusetzen. Eine weitere Möglichkeit ist die Verwendung von DBMS-internen Volltextsuchen. Folgend wird auf die technischen Umsetzungsmöglichkeiten einer Volltextsuche näher eingegangen.
@@ -32,11 +30,11 @@ Nach Auswahl aller benötigten Komponenten wird zum Schluss dieses Kapitels ein 
 
 % Inhalt
 
-\section{Auswahl einer Search Engine\label{sec4.2:Unterpunkt-2}}
+\section{Auswahl einer Search Engine\label{sec4.1:Unterpunkt-1}}
 
 Neben einer eigenen Implementierung einer Suchmaschine auf Basis der Programmbibliothek \glqq Apache Lucene\grqq{}, gibt es auf dem Markt bereits ausgereifte Software-Lösungen, welche für die invertierte Indexierung von Daten vorgesehen sind. Im folgenden soll die Auswahl einer solchen Search Engine erfolgen. Jene Search Engine wird nachfolgend in das Gesamtkonzept des Prototypen einfließen. Betrachtet und miteinander verglichen werden dabei die Search Engines \glqq Apache Solr\grqq{} und \glqq Elasticsearch\grqq{}.
 
-\subsection{Vergleichskriterien\label{subsec4.2.1:Unterunterpunkt-1}}
+\subsection{Vergleichskriterien\label{subsec4.1.1:Unterunterpunkt-1}}
 
 Um die verschiedenen Softwareprodukte für eine Search Engine untereinander zu vergleichen, werden die folgenden Vergleichskriterien verwendet:
 
@@ -71,35 +69,68 @@ Um die verschiedenen Softwareprodukte für eine Search Engine untereinander zu v
 
 \end{description}
 
-\subsection{Programmbibliothek \glqq Apache Lucene\grqq{}\label{subsec4.1.1:Unterunterpunkt-1}}
+\subsection{Programmbibliothek \glqq Apache Lucene\grqq{}\label{subsec4.1.2:Unterunterpunkt-2}}
 
-Für die technische Umsetzung einer Volltextsuche und die damit einhergehende Erstellung und Verwaltung eines invertierten Indexes, bietet sich die frei verfügbare Programmbibliothek \glqq Apache Lucene\grqq{} an.
+Apache Lucene, welches anfänglich Ende der 1990er-Jahre von Doug Cutting programmiert wurde, wird seit 2005 als Top-Level-Projekt von der Apache Software Foundation betreut \cite{StefanLuber.2018}.
 
-Lucene, welches anfänglich Ende der 1990er-Jahre von Doug Cutting programmiert wurde, wird seit 2005 als Top-Level-Projekt von der Apache Software Foundation betreut \cite{StefanLuber.2018}.
+Als frei verfügbare Programmbibliothek unterstützt Lucene hierbei die technische Umsetzung einer Volltextsuche. Unterstützt wird hierfür die Erstellung und Aktualisierung eines invertierten Indexes, auf welchem anschließend Suchanfragen gestellt werden können. So stellen die Funktionalitäten von Lucene neben einer Möglichkeit der Indexierung von Dateien auch eine Schnittstelle für das Abfragen von relevanten Suchtreffern zu Verfügung.
 
-% Bei der technischen Umsetzung einer Volltextsuche dient ein invertierter Index als Grundlage für eingehende Suchanfragen. Hierfür müssen durch Transformationsschritte (siehe auch \autoref{subsec2.1.2:Unterunterpunkt-2}) die Suchphrasen bei der Suchanfrage und die Informationen bei der Indexierung in einer einheitliche Form gebracht werden. Dabei gilt es die morphologischen Varianzen der menschlichen Sprache zu entfernen.
+Für die Erstellung und Aktualisierung des invertierten Indexes kommen hierbei verschiedene Tokenizer und Analyzer zum Einsatz (siehe auch \autoref{subsec2.1.2:Unterunterpunkt-2}). Durch jene Transformationsschritte werden die morphologischen Varianzen der menschlichen Sprache entfernt. So wird beispielsweise der Satz \glqq Eine Blaue Herrenhose von Levi's\textregistered\grqq{} in die Wörter \glqq blau\grqq{}, \glqq herr\grqq{}, \glqq hos\grqq{} und \glqq levis\grqq{} umgewandelt und anschließend dem invertierten Index hinzugefügt. Auch eingehende Suchanfragen werden mithilfe der Transformationsschritte umgewandelt und anschließend innerhalb des invertierten Indexes gesucht.
 
-\subsection{Apache Solr\label{subsec4.2.2:Unterunterpunkt-2}}
+Die nach der Suchanfrage gefundenen Suchtreffer werden bei Lucene durch eine Termgewichtung nach dem \glqq TF-IDF\grqq{}-Modell sortiert (siehe auch \autoref{subsec2.1.5:Unterunterpunkt-5}). Somit wird dem Benutzer eine sortierte Trefferauflistung zurückgegeben, wobei die relevantesten Ergebnisse oben in der Auflistung zu finden sind.
+
+\subsection{Apache Solr\label{subsec4.1.3:Unterunterpunkt-3}}
+
+Für die technische Umsetzung einer Suchfunktionalität gibt es auf dem Markt bereits verschiedene Search Engines, welche die Funktionalitäten zur Verfügung stellen. Eine solche Search Engine ist \glqq Apache Solr\grqq{}. Als Kern von Solr, wird für die Indexierung und Beantwortung von Suchanfragen, die Programmbibliothek \glqq Apache Lucene\grqq{} verwendet.
+
+Nach Luber \cite{StefanLuber.2018b} handelt es sich bei Lucene lediglich um ein Framework für die Entwicklung von Suchserver, während es sich bei Solr um eine Server-Software handelt. Ein solcher Suchserver stellt die Indexierung von Datenbeständen und die Suche nach Informationen als Services zur Verfügung. Somit erfordert die reine Nutzung von Lucene eine eigene Programmierung einer Suchanwendung, während bei Solr nach der Installation lediglich die gewünschten Suchfunktionen konfiguriert werden müssen.
+
+Für die Kommunikation mit Solr wird das \gls{http} verwendet. Über HTTP-POST Schnittstellen werden Datensätze in den möglichen Formaten XML, JSON, CSV oder binär an Solr geschickt und anschließend indexiert. Durch die Verwendung der HTTP-GET Schnittstelle können die Suchergebnisse in den Formaten XML, JSON, CVS oder binär abgefragt werden. Durch die Bereitstellung von verschiedenen Solr-Bibliotheken kann Solr auch direkt von Programmiersprache aus angesprochen werden. Unterstützt werden hierbei unteranderem die Programmiersprachen Java, Pyhton, Ruby, C\# und PHP \cite{SematextGroup.2021}.
+
+Aufbauend auf der Programmbibliothek Lucene bietet Solr weitere Features für die Bereitstellung einer Suchfunktionalität \cite{ApacheSoftwareFoundation.2021b}:
+
+\begin{description}
+    \item[Datenverarbeitung:]\hfill \\
+    Grundlage für die Indexierung in Solr sind \glqq Dokumente\grqq{}. Solche Dokumente könnten zum Beispiel vom Typ \glqq Buch\grqq{} sein und die Felder \glqq Titel\grqq{}, \glqq Autor\grqq{}, \glqq Anzahl der Seiten\grqq{} und \glqq Jahr der Veröffentlichung\grqq{} enthalten.
+
+    Die Felder können Daten von unterschiedlichen Typen beinhalten. So wird die Anzahl der Seiten eher mit numerischen Typen und der Name des Autors eher mit textbasierten Typen beschrieben. Die unterschiedlichen Typen können durch die Konfigurationen in Solr festgelegt werden, um so eine bestmögliche Indexierung zu erhalten.
+
+    Weitergehend können die unterschiedlichen Analyzer für die Indexierung und Suchabfrage konfiguriert werden. So kann individuell festgelegt werden, welche Stopwords oder Stemming-Verfahren eingesetzt werden sollen.
+
+    \item[Facetten:]\hfill \\
+    Solr unterstützt nicht nur die reine Volltextsuche, sondern liefert über die Konfiguration von Facetten auch eine Möglichkeit der facettierten Suche.
+
+    Hierzu erfolgt eine Einteilung der Suchergebnisse in Kategorien, welche aus den zu indizierenden Begriffen resultieren. Die explizite Suche mithilfe solcher Kategorien ist durch eine Ergänzung der Suchanfrage möglich.
+
+    \item[Erweiterte Dateiformate:]\hfill \\
+    Durch das Hinzufügen von Erweiterungen ist es mit Solr auch möglich Dateiformate wie PDF, Microsoft Word oder Microsoft PowerPoint verarbeiten zu können. Hierfür bietet sich beispielsweise das Analyse-Tool \glqq Apache Tika\grqq{} an.
+    
+    \item[Mehrsprachige Unterstützung:]\hfill \\
+    Neben Deutsch kann Solr auch mit einer Reihe anderer Sprachen wie Englisch, Chinesisch, Japanisch, Koreanisch, Arabisch, Französisch, Spanisch und vielen anderen verwendet werden. Solr verfügt über eine integrierte Spracherkennung und bietet dementsprechend sprachspezifische Textanalysetools.
+
+\end{description}
+
+Apache Solr wird unter der Lizenz \glqq Apache License 2.0\grqq{} vertrieben. Eine Integrierung in MCC ist somit kostenfrei möglich.
+
+\subsection{Elasticsearch\label{subsec4.1.4:Unterunterpunkt-4}}
+
+Eine weitere Search Engine, welche auf der Programmbibliothek \glqq Apache Lucene\grqq{} aufbaut ist Elasticsearch. Elasticsearch ist in der Programmiersprache Java entwickelt worden und kann somit plattformunabhängig betrieben werden. Erschienen ist Elasticsearch im Jahr 2010 und wird seit dem von der Firma Elastic entwickelt und betreut \cite{Elastic.2021}.
+
+Elasticsearch ist Teil des von Elastic vertriebenen \glqq ELK Stacks\grqq{}. Dies ist ein Verbund aus den drei Open-Source-Projekten \glqq Elasticsearch\grqq{}, \glqq Logstash\grqq{} und \glqq Kibana\grqq{}. Während Elasticsearch eine Suchmaschine zur Verfügung stellt, ist Logstash eine serverseitige Datenverarbeitungspipeline, welche Daten aus unterschiedlichen Quellen ingestiert, sie umwandelt und einen Speicherort weiterleitet. Kibana unterstützt bei der Visualisierung von Daten durch Diagramme und Tabellen.
+
+Für die Kommunikation stellt Elasticsearch eine REST API zur Verfügung \cite{Elasticsearch.2021}. Über diese Schnittstelle ist es möglich die Datensätze für die Erstellung eines invertierten Indexes an Elasticsearch zu schicken. Auch ist eine Suchabfrage über jene Schnittstelle möglich. Ähnlich, wie bei Solr, gibt es auch bei Elasticsearch die Möglichkeit die Kommunikation über Elasticsearch-Bibliotheken aufzubauen. Unterstützt werden dabei die Programmiersprachen Java, JavaScript, Go, .NET, PHP, Perl, Python und Ruby \cite{Elasticsearch.2021}.
+
+Im Bereich der eigenen Bereitstellung von Elasticsearch beläuft sich die Lizenz auf die \glqq Apache License 2.0\grqq{} und kann somit kostenfrei benutzt werden. Elasticsearch wird jedoch auch als bereits fertiger Cloud-Services angeboten. Hierbei wird unter den vier Abonnements \glqq Basic\grqq{}, \glqq Gold\grqq{}, \glqq Platinum\grqq{} und \glqq Enterprise\grqq{} unterschieden. Die Kosten belaufen sich dabei von 16\$ bis 30\$ pro Monat.
+
+\subsection{Auswahl\label{subsec4.1.5:Unterunterpunkt-5}}
 
 Inhalt
 
-\subsection{Elasticsearch\label{subsec4.2.3:Unterunterpunkt-3}}
-
-Inhalt
-
-% \subsection{Sphinx\label{subsec4.2.4:Unterunterpunkt-4}}
-
-% Inhalt
-
-\subsection{Auswahl\label{subsec4.2.5:Unterunterpunkt-5}}
-
-Inhalt
-
-\section{Auswahl einer Datenpipeline für die Datenaktualisierung\label{sec4.3:Unterpunkt-3}}
+\section{Auswahl einer Datenpipeline für die Datenaktualisierung\label{sec4.2:Unterpunkt-2}}
 
 Für die Erstellung eines invertierten Indexes innerhalb der Search Engine, muss diese mit Daten aus den verschiedenen Microservices befüllt werden. Durch die Verwendung einer geeigneten Datenpipeline kann der invertierte Index innerhalb der Search Engine erzeugt und aktuell gehalten werden. Anhand von Vergleichskriterien werden nachfolgend verschiedene Umsetzungsmöglichkeiten für eine Datenpipeline vorgestellt und anschließend miteinander verglichen.
 
-\subsection{Vergleichskriterien\label{subsec4.3.1:Unterunterpunkt-1}}
+\subsection{Vergleichskriterien\label{subsec4.2.1:Unterunterpunkt-1}}
 
 Um die verschiedenen Umsetzungsmöglichkeiten für eine Datenpipeline zwischen den Microservices und der Search Engine untereinander zu vergleichen, werden die folgenden Vergleichskriterien verwendet:
 
@@ -118,13 +149,6 @@ Um die verschiedenen Umsetzungsmöglichkeiten für eine Datenpipeline zwischen d
         \item \textbf{Wie aktuell sind die Daten innerhalb der Search Engine?}
         \item \textbf{In welcher Zeitspanne gelangen die neuen Daten und Information aus den Speicherschichten der Microservices in die Search Engine?}
     \end{itemize}
-    
-    % \item[Recovery Funktion:]\hfill \\
-    % In dem Anwendungsfall, dass die Search Engine während dem Betrieb neu aufgesetzt werden muss, muss der Aufbau der Datenpipeline eine Recovery Funktion ermöglichen. Unter Recovery Funktion ist dabei die Vollindexierung aller beteiligten Microservices gemeint, wodurch ein invertierter Index in der Search Engine ermöglicht werden kann.
-    
-    % \begin{itemize}
-    %     \item \textbf{Bietet die Datenpipeline eine Möglichkeit der Vollindexierung?}
-    % \end{itemize}
     
     \item[Kompatibilität mit Datenbanksystemen:]\hfill \\
     Die eigentlichen Daten und Informationen, welche durch eine Search Engine \glqq durchsuchbar\grqq{} gemacht werden sollen, sind zunächst in den Speicherschichten der jeweiligen Microservices abgespeichert. Durch geeignete Schnittstellenabstraktionen können hierbei unterschiedliche \gls{dbms} für die dauerhafte Speicherung der Daten verwendet werden.
@@ -158,7 +182,7 @@ Um die verschiedenen Umsetzungsmöglichkeiten für eine Datenpipeline zwischen d
 
 \end{description}
 
-\subsection{Dual Write Aktualisierung\label{subsec4.3.2:Unterunterpunkt-2}}
+\subsection{Dual Write Aktualisierung\label{subsec4.2.2:Unterunterpunkt-2}}
 
 Eine Umsetzungsmöglichkeit für die Datenpipeline ist die \glqq Dual Write Aktualisierung\grqq{}. Führt der Benutzer eine Aktion aus, welche zu einer Änderung der Datenhaltung eines Microservices führt, wird parallel auch ein Search Service über die Aktion informiert. Aktionen, welche mit den Datenhaltungsschichten interagieren, werden auch CRUD-Befehle genannt. CRUD steht dabei für die Aktionen \glqq Create\grqq{}, \glqq Read\grqq{}, \glqq Update\grqq{} und \glqq Delete\grqq{}.
 
@@ -221,7 +245,7 @@ In \autoref{fig:pullpush_aktualisierung} ist eine Darstellung der Polling Aktual
 
 \end{description}
 
-\subsection{Change-Data-Capture Aktualisierung\label{subsec4.3.4:Unterunterpunkt-4}}
+\subsection{Change-Data-Capture Aktualisierung\label{subsec4.2.4:Unterunterpunkt-4}}
 
 Neben der Umsetzungsmöglichkeit der Dual Write Aktualisierung und der Polling Aktualisierung, gibt es noch die Umsetzungsmöglichkeit mithilfe des \gls{cdc} - Pattern. Bei CDC handelt es sich um ein Software Design Pattern, welches die Datenintegration zwischen einer Datenbank und deren Datenquellen definiert \cite{Datenbankenverstehen.de.2021}.
 
@@ -304,7 +328,7 @@ In \autoref{fig:changedatacapture_aktualisierung} ist die Verwendung von Debeziu
 
 \end{description}
 
-\subsection{Auswahl\label{subsec4.3.5:Unterunterpunkt-5}}
+\subsection{Auswahl\label{subsec4.2.5:Unterunterpunkt-5}}
 
 Für die Datenpipeline innerhalb der prototypischen Umsetzung wurde sich für die Umsetzungsmöglichkeit \glqq \textbf{Change-Data-Capture Aktualisierung}\grqq{} entschieden. Die Entscheidung resultiert aus einem Vergleich mit den Umsetzungsmöglichkeiten \glqq Dual Write Aktualisierung\grqq{} und \glqq Polling Aktualisierung\grqq{}.
 
@@ -312,6 +336,6 @@ Eines der wichtigen Vergleichskriterien ist die \textbf{Aktualität der Daten} i
 
 Die verschiedenen Umsetzungsmöglichkeiten unterscheiden sich stark hinsichtlich des \textbf{Mehraufwands für die Entwicklung und Wartung} eines Gesamtsystems. Unter den vorgestellten Umsetzungsmöglichkeiten bietet die CDC-Aktualisierung den geringsten Mehraufwand. Grund hierfür ist die Unabhängigkeit der Datenpipeline bezüglich den internen Implementierungen der einzelnen Microservices, da sich die CDC Aktualisierung ausschließlich direkt mit den entsprechenden Datenhaltungschichten verbindet. Bei Neuentwicklung oder Erweiterungen der Microservices gilt es lediglich die Konfigurationen der CDC-Konnektoren anzupassen, damit bei der CDC Aktualisierung die entsprechenden Datenänderungen in den Datenhaltungsschichten registriert werden. Anders verhält sich der Mehraufwand bei der Umsetzung einer Dual Write Aktualisierung oder einer Polling Aktualisierung. Bei der Dual Write Aktualisierung liegt die Verantwortung für das Senden der Datenänderungen an den Search Service beim jeweiligen Entwickler. Jener muss neben dem Schreiben der Datenänderungen in die eigentliche Datenhaltung, zusätzlich die Datenänderungen an die Search Engine schicken. Bei Änderungen auf Seiten der Search Engine, gilt es somit alle Funktionalitäten des gesamten Systems zu warten. Bei der Polling Aktualisierung ist der Austausch der Datenänderungen zwischen den Microservices und der Search Engine anhand einer Zeitspanne geregelt. Neben der Zeitspanne gilt es auch die Pull- oder Push-Mechanismen zu definieren.
 
-\section{Gesamtkonzept\label{sec4.4:Unterpunkt-4}}
+\section{Gesamtkonzept\label{sec4.3:Unterpunkt-3}}
 
 Inhalt
