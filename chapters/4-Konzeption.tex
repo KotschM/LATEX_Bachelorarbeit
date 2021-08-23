@@ -118,13 +118,26 @@ Eine weitere Search Engine, welche auf der Programmbibliothek \glqq Apache Lucen
 
 Elasticsearch ist Teil des von Elastic vertriebenen \glqq ELK Stacks\grqq{}. Dies ist ein Verbund aus den drei Open-Source-Projekten \glqq Elasticsearch\grqq{}, \glqq Logstash\grqq{} und \glqq Kibana\grqq{}. Während Elasticsearch eine Suchmaschine zur Verfügung stellt, ist Logstash eine serverseitige Datenverarbeitungspipeline, welche Daten aus unterschiedlichen Quellen ingestiert, sie umwandelt und einen Speicherort weiterleitet. Kibana unterstützt bei der Visualisierung von Daten durch Diagramme und Tabellen.
 
-Für die Kommunikation stellt Elasticsearch eine REST API zur Verfügung \cite{Elasticsearch.2021}. Über diese Schnittstelle ist es möglich die Datensätze für die Erstellung eines invertierten Indexes an Elasticsearch zu schicken. Auch ist eine Suchabfrage über jene Schnittstelle möglich. Ähnlich, wie bei Solr, gibt es auch bei Elasticsearch die Möglichkeit die Kommunikation über Elasticsearch-Bibliotheken aufzubauen. Unterstützt werden dabei die Programmiersprachen Java, JavaScript, Go, .NET, PHP, Perl, Python und Ruby \cite{Elasticsearch.2021}.
+Für die Kommunikation stellt Elasticsearch eine REST API zur Verfügung \cite{Elasticsearch.2021}. Über diese Schnittstelle ist es möglich die Datensätze für die Erstellung eines invertierten Indexes an Elasticsearch zu schicken. Auch ist eine Suchabfrage über jene Schnittstelle möglich. Bei Elasticsearch spielt es keine Rolle, ob die Daten strukturiert, unstrukturiert, eine Kombination dieser beiden Arten vorliegt oder ob Geodaten und Metriken durchsucht werden müssen \cite{Elasticsearch.2021}. Ähnlich, wie bei Solr, gibt es auch bei Elasticsearch die Möglichkeit die Kommunikation über Elasticsearch-Bibliotheken aufzubauen. Unterstützt werden dabei die Programmiersprachen Java, JavaScript, Go, .NET, PHP, Perl, Python und Ruby \cite{Elasticsearch.2021}.
 
 Im Bereich der eigenen Bereitstellung von Elasticsearch beläuft sich die Lizenz auf die \glqq Apache License 2.0\grqq{} und kann somit kostenfrei benutzt werden. Elasticsearch wird jedoch auch als bereits fertiger Cloud-Services angeboten. Hierbei wird unter den vier Abonnements \glqq Basic\grqq{}, \glqq Gold\grqq{}, \glqq Platinum\grqq{} und \glqq Enterprise\grqq{} unterschieden. Die Kosten belaufen sich dabei von 16\$ bis 30\$ pro Monat.
 
 \subsection{Auswahl\label{subsec4.1.5:Unterunterpunkt-5}}
 
 Inhalt
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{images/elasticvssolr.png}
+    \caption{DB-Engines Ranking: Elasticsearch vs. Solr \cite{DBEngines.2021}}
+    \label{fig:elasticvssolr}
+\end{figure}
+
+\begin{description}
+    \item[Mehraufwand bei der Entwicklung:]\hfill \\
+    eher
+
+\end{description}
 
 \section{Auswahl einer Datenpipeline für die Datenaktualisierung\label{sec4.2:Unterpunkt-2}}
 

@@ -1,3 +1,35 @@
 \chapter{Fazit und Ausblick\label{chap6:Sechstes-Kapitel}}
 
-Inhalt
+In folgendem Kapitel sollen die Ergebnisse aus dem theoretischen Abschnitt, als auch aus dem praktischen Abschnitt dargelegt werden. Darauffolgend wird ein Ausblick auf die tatsächliche Integrierung in das Produktionsleitsystem MCC gegeben.
+
+\section{Fazit\label{sec6.1:Unterpunkt-1}}
+
+Die Ergebnisse der vorliegenden Arbeit können in einen theoretischen und einen praktischen Abschnitt unterteilt werden.
+
+\subsubsection{Theoretischer Abschnitt}
+
+In dem theoretischen Abschnitt wurde auf die unterschiedlichen Umsetzungsmöglichkeiten für eine Suchfunktionalität in modernen Informationssystemen eingegangen. Erläutert wurden dabei die Umsetzungsmöglichkeiten \glqq Volltextsuche\grqq{}, \glqq facettierte Suche\grqq{} und \glqq semantische Suche\grqq{}. Ebenso wurde durch das \glqq TF-IDF\grqq{}-Modell eine Vorgehensweise für die Relevanzbestimmung aufgezeigt. Mithilfe einer Relevanzbestimmung können die Suchtreffer sortiert werden, so das relevante Ergebnisse dem Benutzer priorisiert angezeigt werden.
+
+Durch das Aufzeigen von allgemeingültigen Architektur-Prinzipien und im spezielleren Anti-Pattern der Microservice-Architektur, wurde eine theoretische Grundlage für das Vermeiden von monolithischen Seiteneffekten aufgezeigt. Jenes Verständnis ist Grundlage für die Integration einer Suchfunktionalität, beziehungsweise einer Search Engine, in einer Microservice-Umgebung.
+
+Für die spätere Integrierung in das Produktionsleitsystem MCC, wurde in \autoref{chap3:Drittes-Kapitel} der Funktionsumfang von MCC aufgezeigt. Näher vorgestellt wurden dabei die Funktionalitäten der Schichten \glqq MCC Platform\grqq{}, \glqq Core Services - Production\grqq{}, \glqq SCADA\grqq{} und \glqq PCS\grqq{}. Für die vorgestellten Umsetzungsmöglichkeiten einer Suchfunktionalität, wurden die jeweiligen Umfänge anhand des Produktionsleitsystem MCC definiert.
+
+\subsubsection{Praktischer Abschnitt}
+
+Der praktische Teil der vorliegenden Arbeit wurde durch eine Konzeption, bezüglich der Integrierung einer Suchfunktionalität in das Produktionsleitsystem MCC, begonnen. Als Komponenten des endgültigen Gesamtkonzeptes wurde die Auswahl einer Search Engine und die Auswahl einer geeigneten Datenpipeline durchgeführt.
+
+Nach einer Festlegung von Vergleichskriterien für die Auswahl einer Search Engine, wurden die Search Engines \glqq Apache Solr\grqq{} und \glqq Elasticsearch\grqq{} miteinander verglichen. Da beide auf der Programmbibliothek \glqq Apache Lucene\grqq{} aufbauen, wurde hierfür ein theoretischer Einblick gegeben.
+
+Für die Pflege des Datenbestandes einer Search Engine, wurde anschließend eine geeignete Datenpipeline gesucht. Miteinander verglichen wurden die Umsetzungsmöglichkeiten \glqq Dual Write Aktualisierung\grqq{}, \glqq Polling Aktualisierung\grqq{} und \glqq Change-Data-Capture Aktualisierung\grqq{}. Anhand vordefinierter Vergleichskriterien wurde sich schlussendlich für die Umsetzungsmöglichkeit der CDC-Aktualisierung entschieden. Hierbei entstehen für die spätere Entwicklung und Wartung von neuen Funktionalitäten nur minimale Mehrbelastungen. Ebenso werden die Datenänderungen in unterschiedlichsten Datenquellen durch CDC-Software, wie zum Beispiel \glqq Debezium\grqq{}, registriert und an einen Message Broker weitergeleitet.
+
+Abgeschlossen wurde die Phase der Konzeption mit dem Erläutern eines Gesamtkonzeptes für die prototypische Umsetzung.
+
+% TODO
+
+\section{Ausblick\label{sec6.2:Unterpunkt-2}}
+
+Für die spätere Integrierung in das Produktionsleitsystem MCC gilt es noch einige weitere Themenfelder näher zu betrachten. Sowohl die Kafka-Konnektoren von Debezium, als auch die Search Engine sind für die horizontale Skalierung geeignet. Dies wurde jedoch bei der Umsetzung des Prototypen noch nicht berücksichtigt, sodass hiebei noch Recherchearbeit bezüglich den Konfigurationsmöglichkeiten notwendig ist.
+
+Auch gibt es derzeit bei der Firma Enisco Bemühungen eine Streaming Base in MCC einzubauen. Durch jene Komponente, soll es möglich sein verschiedene Transaktionen zu unterschiedlichen Datenquellen in größere Transaktionen zu gruppieren. Sollte demnach eine Teiltransaktion nicht erfolgreich beendet werden, werde auch die Änderungen der anderen Teiltranskationen rückgängig gemacht. Durch dieses Vorgehen, wäre eine Schwachstelle der \glqq Dual Write Aktualisierung\grqq{} beseitigt. Es gilt demnach eine Bewertung durchzuführen, ob die vorgeschlagene \glqq CDC-Aktualisierung\grqq{} immer noch die beste Wahl ist, mit dem Hintergedanken, dass durch die Verwendung einer \glqq Dual Write Aktualisierung\grqq{} eine Engstelle im System erzeugt wird.
+
+% TODO
