@@ -4,7 +4,7 @@ Grundlegend wird in folgendem Kapitel auf den Funktionsumfang von Suchfunktional
 
 % Neben einer Klärung, welchen Mehrwert eine Suchfunktionalität liefert, werden auch die Umsetzungsmöglichkeiten \glqq Volltextsuche\grqq{}, \glqq Facetten-Suche\grqq{} und \glqq semantische Suche\grqq{} aufgezeigt. Ergänzend wird die Relevanzbestimmung von Suchtreffern thematisiert.
 
-Um eine Konzeption und prototypische Umsetzung einer Volltextsuche in \gls{mcc} zu ermöglichen, wird in zusätzlich auf die architekturellen Hintergründe von \gls{mcc} eingegangen. Hierfür werden zu Beginn allgemein gültige Architektur-Prinzipien erläutert, welche auch bei der Integration einer Volltextsuche berücksichtigt werden müssen und somit bei der Auswahl eines geeigneten Konzeptes von Bedeutung sind.
+Um eine Konzeption und prototypische Umsetzung einer Volltextsuche in \gls{mcc} zu ermöglichen, wird zusätzlich auf die architekturellen Hintergründe von \gls{mcc} eingegangen. Hierfür werden zu Beginn allgemein gültige Architektur-Prinzipien erläutert, welche auch bei der Integration einer Volltextsuche berücksichtigt werden müssen und somit bei der Auswahl eines geeigneten Konzeptes von Bedeutung sind.
 
 Aufbauend auf den Architektur-Prinzipien wird die verwendete Microservice-Architektur erläutert, wobei neben einer allgemeinen Einführung in die Architektur auch auf die Kommunikation von Microservices untereinander eingegangen wird. Um mögliche Fehlkonzeptionen zu vermeiden, werden häufig auftretende Anti-Pattern aufgezeigt, welche unter Umständen zu monolithischen Seiteneffekten führen können.
 
@@ -16,17 +16,17 @@ Neben den reinen Daten wachsen zunehmend auch die Anzahl der Websites und Web-In
 
 % Nach einer Studie des eCommerce-Leitfadens \cite{AaronSchrettenbrunner.} geben 80\% der Shopbesitzer an, dass die Suchfunktion auf ihrer Website ihnen \glqq sehr wichtig\grqq{} ist. Demnach geben 97\% der Befragten an, dass sie eine Suchfunktion im Shop anbieten.
 
-Je nach Art der Benutzer und Umfang der Produkte und Informationen stehen bei der Umsetzung einer Suchfunktion zwei Möglichkeiten zur Verfügung. Eine Möglichkeit ist die Suche mit Hilfe einer Volltextsuche. Für einen Benutzer stellt solch eine Art der Suchfunktion einen bekannten Komfort dar, da diese Art bereits aus Web-Suchmaschinen, wie zum Beispiel Google bekannt ist. Eine weitere Möglichkeit bietet die Suche über verschiedene Filter. Hierbei werden die Details der Informationen über verschiedene Facetten definiert. Durch Filterung der Facetten können dann die Informationen gefunden werden.
+Je nach Art der Benutzer und Umfang der Produkte und Informationen stehen bei der Umsetzung einer Suchfunktion mehrere Möglichkeiten zur Verfügung. Eine Möglichkeit ist die Suche mit Hilfe einer Volltextsuche. Für einen Benutzer stellt solch eine Art der Suchfunktion einen bekannten Komfort dar, da sie bereits aus Web-Suchmaschinen, wie zum Beispiel Google bekannt ist. Eine weitere Möglichkeit bietet die facettierte Suche. Hierbei werden die Details der Suchtreffer über verschiedene Facetten definiert. Durch Filterung der Facetten können somit die Suchtreffer eingegrenzt werden. Umgesetzt wird die facettierte Suche hauptsächlich in Online-Shops. Nach der Auflistung der Suchtreffer kann der Benutzer durch passende Filter, wie zum Beispiel die maximale Datenmenge bei USB-Sticks, die Menge an Suchtreffern eingrenzen.
 
-Als Ergänzung zur Volltextsuche und facettierten Suche wird bei der semantischen Suche zusätzlich noch der semantische Wert einer Suchanfrage berücksichtigt. Dadurch ist es möglich dem Benutzer der Suchfunktionalität relevante Suchergebnisse zu liefern.
+Als Ergänzung zur Volltextsuche und facettierten Suche wird bei der semantischen Suche zusätzlich noch der semantische Wert einer Suchanfrage berücksichtigt. Dadurch ist es möglich, dem Benutzer der Suchfunktionalität relevante Suchergebnisse zu liefern.
 
 \subsection{Anwendungsgebiete für Suchfunktionen\label{subsec2.1.1:Unterunterpunkt-1}}
 
-Je nach Anwendungsgebiet einer Suchfunktionalität gibt es Unterschiede bezüglich dem Umfang des suchbaren Datenkontextes und der Größe des Benutzerkreises. Aufgrund dieser Unterschiede ist eine passende Auswahl beziehungsweise Kombination der Umsetzungsmöglichkeiten für die Suchfunktionalitäten von Nöten. Anschließend an die Betrachtung von den drei Anwendungsgebieten \glqq Websuche\grqq{}, \glqq E-Commerce - Suche\grqq{} und \glqq MES-Suche\grqq{}, werden die Umsetzungsmöglichkeiten näher erläutert.
+Je nach Anwendungsgebiet einer Suchfunktionalität gibt es Unterschiede bezüglich dem Umfang des suchbaren Datenkontextes und der Größe des Benutzerkreises. Aufgrund dieser Unterschiede ist eine passende Auswahl beziehungsweise Kombination der Umsetzungsmöglichkeiten für die Suchfunktionalitäten von Nöten. Anschließend an die Betrachtung der drei Anwendungsgebiete \glqq Websuche\grqq{}, \glqq E-Commerce - Suche\grqq{} und \glqq MES-Suche\grqq{}, werden die Umsetzungsmöglichkeiten näher erläutert.
 
 Ein Anwendungsgebiet ist die Websuche, bei welcher explizit nach Websites und den Web-Inhalten gesucht wird. Hierbei stellt das World Wide Web den Datenkontext dar und ist aufgrund der Größe von rund 1,83 Milliarden Websites (Stand 2021) \cite{GuyFawkes.2021} nicht mehr ohne Suchmaschinen, wie zum Beispiel Google, zu durchsuchen. Umgesetzt wird die Suchfunktionalität bei der Websuche durch die Verwendung einer Volltextsuche. Um den Benutzern effektivere Suchtreffer zu gewährleisten, wird bei Suchmaschinen, wie Google, zusätzlich noch eine semantische Suche verwendet.
 
-Auch in Online-Shops beziehungsweise E-Commerce - Shops ist eine Suchfunktion für die Navigation innerhalb der Websites von Nöten. Der durchsuchbare Datenkontext ist abhängig vom  angebotenem Artikelumfang der Website. Eine Suchfunktion ist im Gegensatz zur Websuche nicht unbedingt notwendig, da Produkte und Dienstleistungen auch durch eine Navigation durch die Website erreichbar sind. Jedoch ist der Benutzerkreis oftmals nicht mit dem Aufbau der Website vertraut, so dass eine Suchfunktionalität bei der Navigation innerhalb der Website unterstützen kann. Oft zu finden ist eine Kombination aus einer Volltextsuche und einer facettierten Suche. Hierbei wird dem Benutzer primär eine Volltextsuche in Form eines Eingabefeldes angeboten und anschließend kann über eine \glqq Erweiterte Suche\grqq{} die Facettierung vorgenommen werden. Ein bekanntes Beispiel für die Verwendung einer Kombination beider Möglichkeiten ist der Onlineversandhändler \glqq Amazon\grqq{}. Durch die Eingabe eines Suchbegriffes wird dem Benutzer eine Auswahl geeigneter Suchtreffer angezeigt. Für eine weitere Eingrenzung der Suchergebnisse kann der Benutzer die Ergebnisse zum Beispiel anhand der Preise, Bewertungen oder Hersteller filtern.
+Auch in Online-Shops beziehungsweise E-Commerce - Shops ist eine Suchfunktion für die Navigation innerhalb der Websites von Nöten. Der durchsuchbare Datenkontext ist abhängig vom angebotenen Artikelumfang der Website. Eine Suchfunktion ist im Gegensatz zur Websuche nicht unbedingt notwendig, da Produkte und Dienstleistungen auch über eine Navigation der Website erreichbar sind. Jedoch ist der Benutzerkreis oftmals nicht mit dem Aufbau der Website vertraut, so dass eine Suchfunktionalität bei der Navigation innerhalb der Website unterstützen kann. Oft zu finden ist eine Kombination aus einer Volltextsuche und einer facettierten Suche. Hierbei wird dem Benutzer primär eine Volltextsuche in Form eines Eingabefeldes angeboten und anschließend kann über eine \glqq Erweiterte Suche\grqq{} die Facettierung vorgenommen werden. Ein bekanntes Beispiel für die Verwendung einer Kombination beider Möglichkeiten ist der Onlineversandhändler \glqq Amazon\grqq{}. Durch die Eingabe eines Suchbegriffes wird dem Benutzer eine Auswahl geeigneter Suchtreffer angezeigt. Für eine weitere Eingrenzung der Suchergebnisse kann der Benutzer die Ergebnisse zum Beispiel anhand der Preise, Bewertungen oder Hersteller filtern.
 
 Im Rahmen dieser Arbeit wird explizit die Einführung einer Suchfunktionalität in ein MES-System betrachtet. Der Datenkontext eines MES-Systems kann hierbei sowohl ein großes Volumen als auch eine hohe Komplexität aufweisen. Je nach Funktionsumfang und Struktur des MES-Systems kann auch die Navigation innerhalb des Systems erschwert sein. Der überwiegend explizite Benutzerkreis muss daher im Umgang mit dem MES-System geschult werden. Damit sowohl neuen Benutzern der Umgang mit dem System ermöglicht, und erfahrenen Benutzern der Umgang mit dem System erleichtert wird, kann eine Kombination aus Volltextsuche und facettierter Suche verwendet werden.
 
@@ -42,9 +42,9 @@ Im Rahmen dieser Arbeit wird explizit die Einführung einer Suchfunktionalität 
 
 Eine Möglichkeit nach Produkten oder Informationen zu suchen, ist die Volltextsuche. Hierbei kann der Benutzer einen beliebigen Freitext in ein Suchfeld eingeben und erhält eine Auflistung der Suchtreffer, welche den eingegebenen Freitext enthalten.
 
-Da auch Suchmaschinen wie Google auf einer Volltextsuche basieren, ist diese Art der Suchfunktion, für die Benutzer ein gewohnter Komfort. Eine Volltextsuche wird dabei nicht nur in den Suchmaschinen oder direkt in auf den Websites angeboten, sondern auch für die Navigation und Suche in Software-Produkten. Ein Beispiel hierfür ist die Wiki-Software \glqq Atlassian Confluence\grqq{}, welche standardmäßig eine Suchfunktion zur Verfügung stellt. Für die Wissensaufnahme und Weitergabe der Firma Enisco wird diese Wiki-Software verwendet.
+Da auch Suchmaschinen wie Google auf einer Volltextsuche basieren, ist diese Art der Suchfunktion für die Benutzer ein gewohnter Komfort. Eine Volltextsuche wird dabei nicht nur in den Suchmaschinen oder direkt in auf den Websites angeboten, sondern auch für die Navigation und Suche in Software-Produkten. Ein Beispiel hierfür ist die Wiki-Software \glqq Atlassian Confluence\grqq{}, welche standardmäßig eine Suchfunktion zur Verfügung stellt. Für die Wissensaufnahme und Weitergabe der Firma Enisco wird diese Wiki-Software verwendet.
 
-In \autoref{fig:search_confluence_fulltextsearch} ist beispielhaft die Trefferauflistung des Suchbegriffes \glqq Studenten\grqq{} abgebildet. Hierbei dursucht die Suchfunktion den Datenbestand der Confluence-Anwendung der Firma Enisco und gibt als Ergebnis alle Seiten zurück, welche mit dem Suchbegriff übereinstimmen. In der gezeigten Ansicht erscheinen dabei alle Seiten, welche einen Treffer im Titel aufweisen. Durch die Schaltfläche \glqq Suche nach \textbf{Studenten}\grqq{}, welche in der Ansicht unten angezeigt wird, werden auch Confluence-Seiten angezeigt, in welchen der Suchbegriff auch im eigentlichen Inhalt der Seite gefunden wird.
+In \autoref{fig:search_confluence_fulltextsearch} ist beispielhaft die Trefferauflistung des Suchbegriffes \glqq Studenten\grqq{} abgebildet. Hierbei dursucht die Suchfunktion den Datenbestand der Confluence-Anwendung der Firma Enisco und gibt als Ergebnis alle Seiten zurück, welche mit dem Suchbegriff übereinstimmen. In der gezeigten Ansicht erscheinen dabei alle Seiten, welche einen Treffer im Titel aufweisen. Durch die Schaltfläche \glqq Suche nach \textbf{Studenten}\grqq{}, welche in der Ansicht unten dargestellt wird, werden auch Confluence-Seiten angezeigt, in welchen der Suchbegriff auch im eigentlichen Inhalt der Seite gefunden wird.
 
 \begin{figure}[H]
     \centering
@@ -64,7 +64,7 @@ Grundlage für die technische Umsetzung einer Volltextsuche ist die Erstellung e
     \label{fig:inverted_index}
 \end{figure}
 
-Bei der Eingabe von Freitexten durch menschliche Benutzer ist das Aufkommen von Fehleingaben nicht auszuschließen. Aus diesem Grund müssen sowohl beim Aufbau des invertierten Indexes, als auch beim Bearbeiten der Suchanfrage gewisse Transformationsschritte berücksichtigt werden \cite{SebastianRuss.2017}. Die Transformationsschritte sorgen für eine Fehlertoleranz innerhalb der Suchfunktion und verbessern die User Experience bezüglich der Benutzung der Suchfunktion.
+Bei der Eingabe von Freitexten durch menschliche Benutzer ist das Auftreten von Fehleingaben nicht auszuschließen. Aus diesem Grund müssen sowohl beim Aufbau des invertierten Indexes, als auch beim Bearbeiten der Suchanfrage gewisse Transformationsschritte berücksichtigt werden \cite{SebastianRuss.2017}. Die Transformationsschritte sorgen für eine Fehlertoleranz innerhalb der Suchfunktion und verbessern die User Experience bezüglich der Benutzung der Suchfunktion.
 
 Die Transformationsschritte werden benötigt, um die Vielzahl der unterschiedlichen Suchanfragen korrekt zu beantworten \cite{SebastianRuss.2017}. Hierbei werden je nach Anforderungen verschiedene Tokenizer und Analyzer verwendet. In \autoref{fig:index_analyzer} ist eine beispielhafte Abfolge von Transformationsschritten aufgezeigt. Ziel ist es, die variantenreiche Suchphrase durch eine Normalisierung in ein einheitliches Format zu überführen. Dadurch kann eine ausreichende Fehlertoleranz geschaffen werden. Neben der Suchphrase müssen die Transformationsschritte auch bei der Erstellung des Indexes berücksichtigt werden \cite{SebastianRuss.2017}.
 
@@ -79,15 +79,15 @@ Die in \autoref{fig:index_analyzer} aufgezeigten Transformationsschritte werden 
 
 \subsubsection{Tokenizer}
 
-Hierbei wird die komplette Suchphrase in verschiedene Suchbegriffe (auch Tokens genannt) aufgeteilt. So wird beispielsweise aus der Suchphrase \glqq Hose Blau\grqq{} die Tokens \glqq Hose\grqq{} und \glqq Blau\grqq{}. Neben der Trennung der Tokens anhand von Leerzeichen, ist auch eine Trennung anhand von bestimmten Zeichen möglich. Solche Zeichen können zum Beispiel das Subtraktionszeichen \glqq -\grqq{} oder Semikolonzeichen \glqq ;\grqq{} sein. Die Aufteilung in Tokens ist hierbei die Vorbereitung für die Verwendung von einigen Analyzern.
+Hierbei wird die komplette Suchphrase in verschiedene Suchbegriffe (auch Tokens genannt) aufgeteilt. So werden beispielsweise aus der Suchphrase \glqq Hose Blau\grqq{} die Tokens \glqq Hose\grqq{} und \glqq Blau\grqq{}. Neben der Trennung der Tokens anhand von Leerzeichen, ist auch eine Trennung anhand von bestimmten Zeichen möglich. Solche Zeichen können zum Beispiel das Subtraktionszeichen \glqq -\grqq{} oder Semikolon \glqq ;\grqq{} sein. Die Aufteilung in Tokens ist hierbei die Vorbereitung für die Verwendung von einigen Analyzern.
 
 \subsubsection{Analyzer}
 
-Die Analyzer agieren bei der Transformation der Suchanfrage als Filter und ersetzen, löschen oder verändern einzelne Tokens. Darunter zählen unteranderem Filter bezüglich der Groß- und Kleinschreibung und eventuellen Sonderzeichen. Durch dieses Vorgehen wird eine gewisse Fehlertoleranz gegenüber den Eingaben der Benutzer gewährt. Zu den Sonderzeichen gehöhren zum Beispiel Symbole, wie die Kennzeichnung für eingetragene Handelsmarken \glqq \textregistered\grqq{}, oder Trennzeichen für verschiedene Begriffe. So werden die Terme \glqq USA\grqq{} und \glqq U.S.A\grqq{} auf einen gemeinsamen Term gemappt.
+Die Analyzer agieren bei der Transformation der Suchanfrage als Filter und ersetzen, löschen oder verändern einzelne Tokens. Darunter zählen unter anderem Filter bezüglich der Groß- und Kleinschreibung und eventuelle Sonderzeichen. Durch dieses Vorgehen wird eine gewisse Fehlertoleranz gegenüber den Eingaben der Benutzer gewährt. Zu den Sonderzeichen gehöhren zum Beispiel Symbole, wie die Kennzeichnung für eingetragene Handelsmarken \glqq \textregistered\grqq{}, oder Trennzeichen für verschiedene Begriffe. So werden die Begriffe \glqq USA\grqq{} und \glqq U.S.A\grqq{} auf einen gemeinsamen Begriff gemappt.
 
-Eine weitere Möglichkeit die Suchphrase zu filtern ist das Entfernen von Stopwords. Dies sind häufig auftretende Begriffe, welche eine geringe semantische Relevanz für die Suchphrase besitzen \cite{SebastianRuss.2017}. Die Stopwords werden als Liste angelegt, welche überwiegend aus Füllwörtern wie zum Beispiel \glqq mit\grqq{}, \glqq für\grqq{} und \glqq von\grqq{} besteht. Lediglich bei der Verwendung einer semantischen Suche, werden die Stopwords benötigt, um die Bedeutung zu erkennen \cite{SebastianRuss.2017}. Die Funktionsweise einer semantischen Suche wird in \autoref{subsec2.1.4:Unterunterpunkt-4} erläutert.
+Eine weitere Möglichkeit die Suchphrase zu filtern, ist das Entfernen von Stopwords. Dies sind häufig auftretende Begriffe, welche eine geringe semantische Relevanz für die Suchphrase besitzen \cite{SebastianRuss.2017}. Die Stopwords werden als Liste angelegt, welche überwiegend aus Füllwörtern wie zum Beispiel \glqq mit\grqq{}, \glqq für\grqq{} und \glqq von\grqq{} besteht. Lediglich bei der Verwendung einer semantischen Suche, werden die Stopwords benötigt, um die Bedeutung zu erkennen \cite{SebastianRuss.2017}. Die Funktionsweise einer semantischen Suche wird in \autoref{subsec2.1.4:Unterunterpunkt-4} erläutert.
 
-Um die Fehlertoleranz zu erhöhen, muss auch die morphologische Varianz der einzelnen Begriffe berücksichtigt werden. So können Begriffe in unterschiedlichsten Zeitformen und Numeri vom Benutzer eingegeben werden. Um die Varianz der menschlichen Sprache zu beseitigen, müssen die Begriffe durch Normalisierung vereinheitlicht werden. Ein Verfahren für die Normalisierung ist das \glqq Stemming\grqq{} (zu deutsch Stammformreduktion). Beim Stemming werden die unterschiedlichen morphologischen Varianten eines Begriffes auf einen gemeinsamen Wortstamm zurückgeführt. Als ein Arbeitsschritt aus dem \gls{nlp}, wird Stemming auch in Suchmaschinen verwendet \cite{StefanLuber.2020}. Hierbei muss dieses Verfahren sowohl bei der Behandlung der Suchphrase, als auch bei der Erstellung des Indexes berücksichtigt werden \cite{SebastianRuss.2017}. Folgend sind Beispiele für Stemming aufgelistet \cite{SebastianRuss.2017}:
+Um die Fehlertoleranz zu erhöhen, muss auch die morphologische Varianz der einzelnen Begriffe berücksichtigt werden. So können Begriffe in unterschiedlichsten Zeitformen und Numeri vom Benutzer eingegeben werden. Um die Varianz der menschlichen Sprache zu beseitigen, müssen die Begriffe durch Normalisierung vereinheitlicht werden. Ein Verfahren für die Normalisierung ist das \glqq Stemming\grqq{} (zu deutsch Stammformreduktion). Beim Stemming werden die unterschiedlichen morphologischen Varianten eines Begriffes auf einen gemeinsamen Wortstamm zurückgeführt. Als ein Arbeitsschritt aus dem \gls{nlp} wird Stemming auch in Suchmaschinen verwendet \cite{StefanLuber.2020}. Hierbei muss dieses Verfahren sowohl bei der Behandlung der Suchphrase, als auch bei der Erstellung des Indexes berücksichtigt werden \cite{SebastianRuss.2017}. Folgend sind Beispiele für Stemming aufgelistet \cite{SebastianRuss.2017}:
 
 \begin{itemize}
     \item rot, rotes, roter, rote $\rightarrow$ rot
@@ -106,7 +106,7 @@ Ein beispielhafter Ablauf der Transformation sowohl beim Zeitpunkt der Abfrage, 
 
 \subsection{Facettierte Suche\label{subsec2.1.3:Unterunterpunkt-3}}
 
-Bei der Facetten-Suche wird die Menge der Suchergebnisse durch das Setzen von Filtern immer weiter eingeschränkt. Die Objekte und Produkte eines Informationssystems werden dabei mit Metadaten angereichert, welche die jeweiligen Facetten definieren. Der Begriff Facette beschreibt die verschiedenen Teilaspekte eines Objekts oder Produkts. So kann beispielhaft ein \glqq Hemd\grqq{} unteranderem mit den Facetten \glqq Größe\grqq{}, \glqq Farbe\grqq{} oder \glqq Muster\grqq{} versehen werden.
+Bei der Facetten-Suche wird die Menge der Suchergebnisse durch das Setzen von Filtern immer weiter eingeschränkt. Die Objekte und Produkte eines Informationssystems werden dabei mit Metadaten angereichert, welche die jeweiligen Facetten definieren. Der Begriff Facette beschreibt die verschiedenen Teilaspekte eines Objekts oder Produkts. So kann beispielhaft ein \glqq Hemd\grqq{} unter anderem mit den Facetten \glqq Größe\grqq{}, \glqq Farbe\grqq{} oder \glqq Muster\grqq{} versehen werden.
 
 Eine Mindestanforderung nach Sperling \cite{Martin.2018} ist, dass die Filter sich dynamisch aus den bereits gefundenen Suchergebnistreffern bilden. So wechseln dynamisch die Filtermöglichkeiten je nach Suchergebnis und sinnfreie Filtermöglichkeiten beziehungsweise Filtermöglichkeiten ohne Suchergebnisse werden vermieden. In der Praxis ist ein solch dynamischer Wechsel der Filtermöglichkeiten in Online-Shops zu finden. Ein Benutzer ist zum Beispiel bei einem USB-Stick daran interessiert mithilfe eines Filters die maximale Datenmenge zu begrenzen und bei der Suche nach Waschmaschinen ist die Angabe des maximalen Fassungsvermögen eine aussagekräftige Filterung.
 
@@ -159,9 +159,9 @@ Eine Möglichkeit der praktischen Umsetzung einer Relevanzbestimmung ist die Dur
 
 \subsubsection{Term Frequency - TF}
 
-Eine der Metrik bezieht sich auf die Häufigkeit eines Begriffes in einem Dokument. Um diese Häufigkeit zu bestimmen, gibt es verschiedene Möglichkeiten. Das einfachste Vorgehen ist die reine Zählung des Vorkommens des Begriffes in einem Dokument \cite{BrunoStecanella.2019}. Weitergehend kann man die Häufigkeit auch nach der Länge des Dokumentes oder nach der Häufigkeit des häufigsten Wortes abhängig machen \cite{BrunoStecanella.2019}.
+Eine der Metrik bezieht sich auf die Häufigkeit eines Begriffes in einem Dokument. Um diese Häufigkeit zu bestimmen, gibt es verschiedene Möglichkeiten. Das einfachste Vorgehen ist die reine Zählung des Vorkommens des Begriffes in einem Dokument \cite{BrunoStecanella.2019}. Weitergehend kann man die Häufigkeit auch von der Länge des Dokumentes oder von der Häufigkeit des häufigsten Wortes abhängig machen \cite{BrunoStecanella.2019}.
 
-Unter der Einbeziehung der Gesamtzahl aller Terme eines Dokumentes, wird mit folgender Formel \cite{JensFrohlich.2020} die Begriffshäufigkeit eines Begriffes berechnet:
+Unter der Einbeziehung der Gesamtzahl aller Terme eines Dokumentes wird mit folgender Formel \cite{JensFrohlich.2020} die Häufigkeit eines Begriffes berechnet:
 
 \begin{equation}
     \nonumber
@@ -192,13 +192,13 @@ Für die Berechnung der invertierten Dokumentenhäufigkeit wird folgende Formel 
     \item f\textsubscript{t} = Anzahl aller Dokumente, die t enthalten
 \end{itemize}
 
-Für die Bestimmung der Relevanz eines Begriffes in einem Dokument, wird die Multiplikation beider Metriken benötigt. Bei lediglich der Bestimmung der Begriffshäufigkeit, würden Stopwords eine große Relevanz bekommen. Erst durch die Einbeziehung der inversen Dokumentenhäufigkeit werden solche Begriffe, wie Stopwords mit einer niedrigeren Relevanz versehen.
+Für die Bestimmung der Relevanz eines Begriffes in einem Dokument wird die Multiplikation beider Metriken benötigt. Bei lediglich der Bestimmung der Begriffshäufigkeit, würden Stopwords eine große Relevanz bekommen. Erst durch die Einbeziehung der inversen Dokumentenhäufigkeit werden solche Begriffe, wie Stopwords mit einer niedrigeren Relevanz versehen.
 
 \subsubsection{Beispiel}
 
-Bei der Anwendung des TF-IDF - Wertes für die Relevanzbestimmung der Suchtreffer, werden die IDF-Werte der einzelnen Begriffe aus der Suchphrase miteinander verglichen. Sucht der Benutzer zum Beispiel nach der Suchphrase \glqq Website Analytics\grqq{}, wird vermutlich dem Begriff \glqq Website\grqq{} ein niedriger IDF-Wert zugeordnet, da dieser Begriff in vielen Dokumenten vorkommt.
+Bei der Anwendung des TF-IDF - Wertes für die Relevanzbestimmung der Suchtreffer werden die IDF-Werte der einzelnen Begriffe aus der Suchphrase miteinander verglichen. Sucht der Benutzer zum Beispiel nach der Suchphrase \glqq Website Analytics\grqq{}, wird vermutlich dem Begriff \glqq Website\grqq{} ein niedriger IDF-Wert zugeordnet, da dieser Begriff in vielen Dokumenten vorkommt.
 
-Weitergehend werden dann die jeweiligen TF-Werte bestimmt. Hierbei wird jeder Begriff aus der Suchphrase mit jedem Dokument aus der Trefferliste in die TF-Formel eingegeben. So wird ein Dokument, welches den Begriff \glqq Analytics\grqq{} häufig enthält einen hohen TF-Wert erhalten.
+Weitergehend werden dann die jeweiligen TF-Werte bestimmt. Hierbei wird jeder Begriff aus der Suchphrase mit jedem Dokument aus der Trefferliste in die TF-Formel eingegeben. So wird ein Dokument, welches den Begriff \glqq Analytics\grqq{} häufig enthält, einen hohen TF-Wert erhalten.
 
 Durch die Multiplikation beider Metriken pro Dokument kann eine Sortierung nach Relevanz durchgeführt werden.
 
@@ -218,14 +218,14 @@ Für das Erstellen einer guten Software-Architektur wurden von Vogel \cite[S. 12
     \item[Lose Kopplung:]\hfill \\
     Der Kern einer Software-Architektur besteht aus der Beschreibung der Software-Bausteine eines Software-Systems und deren Interaktionen zueinander. Unter dem Begriff Kopplung versteht man hierbei die Beziehung unter den Software-Bausteinen einer Software-Architektur. Eine Kopplung charakterisiert demnach die Interaktionen der Software-Bausteine.
 
-    Eine starke Kopplung von Software-Bausteinen hat zur Folge, dass beim Verstehen und Ändern eines Software-Bausteines auch zwingend weitere Software-Bausteine verstanden und geändert werden müssen. Um jenes Problem zu umgehen, besagt das Prinzip der losen Kopplung, dass die Kopplung zwischen Software-Bausteinen möglichst niedrig gehalten werden sollen.
+    Eine starke Kopplung von Software-Bausteinen hat zur Folge, dass beim Verstehen und Ändern eines Software-Bausteines auch zwingend weitere Software-Bausteine verstanden und geändert werden müssen. Um dieses Problem zu umgehen, besagt das Prinzip der losen Kopplung, dass die Kopplung zwischen Software-Bausteinen möglichst niedrig gehalten werden sollen.
 
-    Um eine lose Kopplung in einer Architektur zu erreichen, ist die Einführung von Schnittstellenabstraktionen ein wichtiger Aspekt. Dabei werden die Implementierungsinformationen hinter den Schnittstellen verborgen. Durch die Begrenzung von Schnittstellenelementen und der Häufigkeit des Austauschs der Schnittstellenelemente, kann eine Kopplung von Software-Bausteinen kontrollierbar gemacht werden.
+    Um eine lose Kopplung in einer Architektur zu erreichen, ist die Einführung von Schnittstellenabstraktionen ein wichtiger Aspekt. Dabei werden die Implementierungsinformationen hinter den Schnittstellen verborgen. Durch die Begrenzung von Schnittstellenelementen und der Häufigkeit des Austauschs der Schnittstellenelemente kann eine Kopplung von Software-Bausteinen kontrollierbar gemacht werden.
 
     \item[Hohe Kohäsion:]\hfill \\
     Im Gegensatz zur Kopplung, in welcher die Beziehungen zwischen Software-Bausteinen gemeint ist, versteht man unter dem Begriff Kohäsion die Abhängigkeiten innerhalb eines Software-Bausteins.
 
-    Beim Prinzip der hohen Kohäsion ist das Ziel die Abhängigkeiten innerhalb eines Software-Bausteins möglichst hoch zu gestalten. Wie bei der losen Kopplung geht es auch hier um die lokale Änderbarkeit und Verstehbarkeit von Software-Bausteinen.
+    Beim Prinzip der hohen Kohäsion ist das Ziel die Abhängigkeiten innerhalb eines Software-Bausteins möglichst hoch zu gestalten. Wie bei der losen Kopplung geht es auch hier um die lokale Änderbarkeit und Verständlichkeit von Software-Bausteinen.
     
     Wie in \autoref{fig:kopplung_and_kohaesion} zu erkennen, stehen Kopplung und Kohäsion normalerweise miteinander in einer Wechselbeziehung. Hierbei gilt, dass je höher die Kohäsion individueller Software-Bausteine einer Architektur ist, desto geringer ist die Kopplung zwischen den Software-Bausteinen. Schematisch ist dieser Zusammenhang in \autoref{fig:kopplung_and_kohaesion} abgebildet, worin zu erkennen ist, das eine Gesamtstruktur mit einer hohen Kohäsion und einer losen Kopplung (rechte Seite) eine höhere Übersichtlichkeit besitzt.
 
@@ -237,14 +237,14 @@ Für das Erstellen einer guten Software-Architektur wurden von Vogel \cite[S. 12
     \end{figure}
 
     \item[Entwurf für Veränderung:]\hfill \\
-    Durch den stetigen Wandel von Software-Systemen in Form von Anforderungen und Technologien, ist es von Vorteil solche Änderungen bereits in der Phase der architekturellen Konzeption zu berücksichtigen. Das Prinzip des Entwurfs für Veränderung (englisch: Design for Change) sieht nun vor, dass man vorhersehbare Änderungen architektonisch vorausplant. Dabei sollte man versuchen, die Architektur so zu entwerfen, dass man leicht mit den wahrscheinlichen Änderungen eines Software-Systems umgehen kann.
+    Durch den stetigen Wandel von Software-Systemen in Form von Anforderungen und Technologien ist es von Vorteil, solche Änderungen bereits in der Phase der architekturellen Konzeption zu berücksichtigen. Das Prinzip des Entwurfs für Veränderung (englisch: Design for Change) sieht nun vor, dass man vorhersehbare Änderungen architektonisch vorausplant. Dabei sollte man versuchen, die Architektur so zu entwerfen, dass man leicht mit den wahrscheinlichen Änderungen eines Software-Systems umgehen kann.
 
     \item[Separation of Concerns:]\hfill \\
     Abgeleitet von dem römischen Prinzip \glqq Teile und herrsche\grqq{} wird beim Prinzip Separation of Concerns ausgesagt, dass ein Software-System in individuelle Software-Bausteine zerlegt werden soll.
 
-    Separation of Concerns unterstützt hierbei die Modularisierung eines Software-Systems. Es geht darum Teile eines Software-Systems zu identifizieren, welche für bestimmte Angelegenheiten, Aspekte und Aufgaben verantwortlich sind. Jene Teile werden dann als eigene Software-Bausteine gekapselt. Eine Zerteilung des Gesamtsystems in relativ unabhängige Einzelteile ermöglicht zudem noch die Verteilung von Verantwortlichkeiten für verschiedene Software-Bausteine und auch das parallele Arbeiten an dem Software-System durch mehrere Entwickler wird dadurch ermöglicht.
+    Separation of Concerns unterstützt hierbei die Modularisierung eines Software-Systems. Es geht darum Teile eines Software-Systems zu identifizieren, welche für bestimmte Angelegenheiten, Aspekte und Aufgaben verantwortlich sind. Diese Teile werden dann als eigene Software-Bausteine gekapselt. Eine Zerteilung des Gesamtsystems in relativ unabhängige Einzelteile ermöglicht zudem noch die Verteilung von Verantwortlichkeiten für verschiedene Software-Bausteine. Auch das parallele Arbeiten an dem Software-System durch mehrere Entwickler wird dadurch ermöglicht.
 
-    Durch das Aufteilen des Software-Systems in relativ unabhängige Software-Bausteine, werden auch die Prinzipien lose Kopplung und hohe Kohäsion begünstigt.
+    Durch das Aufteilen des Software-Systems in relativ unabhängige Software-Bausteine werden auch die Prinzipien lose Kopplung und hohe Kohäsion begünstigt.
 
     \item[Information Hiding:]\hfill \\
     Das Prinzip Information Hiding sagt aus, dass man einem Klienten nur die für die Bearbeitung eines Problems notwendigen Informationen zeigen soll. Dies erleichtert die Gliederung und das Verständnis von komplexen Software-Systemen. Die restlichen Informationen sollen nach außen hin verborgen bleiben. Ermöglicht wird solch ein \glqq geheim halten\grqq{} von Informationen durch die Bereitstellung von definierten Schnittstellen, über welche nur bestimmte Informationen zu erreichen sind.
@@ -252,7 +252,7 @@ Für das Erstellen einer guten Software-Architektur wurden von Vogel \cite[S. 12
     \item[Abstraktion:]\hfill \\
     Als übergeordnetes Prinzip dient eine Abstraktion dazu, ein komplexes System verständlicher zu machen. Dazu werden wichtige Aspekte identifiziert und unwichtige Details vernachlässigt. Im Bereich der Software-Architektur gilt die Schnittstellenabstraktion als Teilprinzip der Abstraktion. Hierbei liegen die Schnittstellen im Fokus, welche für das Zustandekommen und die Qualität von Beziehungen verantwortlich sind.
 
-    Solch eine Schnittstellenabstraktion in einem Software-System ist eng verbunden mit dem Prinzip der losen Kopplung und dem Information Hiding. Ein Aspekt für den starken Zusammenhang zwischen der Abstraktion und dem Information Hiding ist die Portabilität von Software-Systemen. So sollte eine Architektur oder ihre Software-Bausteine auch in anderen Umgebungen verwendbar sein. Um solch eine Plattformunabhängigkeit sicherzustellen, werden Abstraktionen verwendet, die ein Information Hiding der Platform-Details leisten.
+    Solch eine Schnittstellenabstraktion in einem Software-System ist eng verbunden mit dem Prinzip der losen Kopplung und dem Information Hiding. Ein Aspekt für den starken Zusammenhang zwischen der Abstraktion und dem Information Hiding ist die Portabilität von Software-Systemen. So sollte eine Architektur oder ihre Software-Bausteine auch in anderen Umgebungen verwendbar sein. Um solch eine Plattformunabhängigkeit sicherzustellen, werden Abstraktionen verwendet, die ein Information Hiding der Plattformdetails leisten.
 
     \item[Modularität:]\hfill \\
     Das Modularitätsprinzip, welches bereits auch in den Beschreibungen der anderen Prinzipien vorkam, definiert die Aufteilung eines Systems in klar definierte Software-Bausteine mit abgegrenzten funktionalen Verantwortlichkeiten. Die Modularität ist dabei eine Kombination aus den Prinzipien Abstraktion, Separation of Concerns und Information Hiding, welche bei der Umsetzung der Prinzipien der losen Kopplung und der hohen Kohäsion kombiniert werden.
@@ -267,7 +267,7 @@ Bei der Neugestaltung von E-MES wird von einer monolithischen 3-Schichten-Archit
 
 In einer monolithischen Architektur wird die gesamte Architektur in nur einem Software-Baustein zusammengefasst. Dadurch erfolgt keine explizite Gliederung in Teilsysteme und Architektur-Prinzipien, wie lose Kopplung und Separation of Concerns sind nur schwer umsetzbar \cite[S. 216]{Vogel.2009}. Zu finden sind monolithische Architekturen oftmals in Altsystemen, welche oft über Jahrzehnte gewachsen sind. Aufgrund der mangelnden Modularisierung steigt die Komplexität des Systems. Die Wartung und Anpassung des Quellcodes wird erschwert \cite{Prof.Dr.AndreasFink.2012b}. Ein weiterer Nachteil der mangelnden Modularisierung ist die kaum mögliche nebenläufige Ausführung von Teilen des Systems auf verschiedenen Rechnern \cite{Prof.Dr.AndreasFink.2012b}. Somit kann eine horizontale Skalierung nicht ermöglicht werden, und eine effiziente, lastverteilende Programmausführung ist nicht gegeben.
 
-Die Architektur von MCC wird eine verteilte Struktur aufweisen. Hierbei werden Teile des Gesamtsystems in unterschiedliche Software-Bausteine aufgeteilt. Eine Modularisierung der Software ist dadurch möglich und Architekturen-Prinzipien, wie lose Kopplung und Separation of Concerns sind umsetzbar \cite{Vogel.2009}. Durch die strikte Aufteilung der Geschäftslogik kann auch die Komplexität aufgeteilt werden. Somit können die einzelnen Software-Bausteine mit wenig Aufwand angepasst oder erweitert werden. Durch die Modularisierung von verteilten Architekturen kann die Ausführung bestimmter Aufgaben auf redundanter Hardware nebenläufig erfolgen \cite{Prof.Dr.AndreasFink.2012}. Durch jene horizontale Skalierung kann eine effiziente und lastverteilende Programmausführung erfolgen, welche auch zur Ausfallsicherheit des Gesamtsystems beiträgt \cite{Prof.Dr.AndreasFink.2012}.
+Die Architektur von MCC wird eine verteilte Struktur aufweisen. Hierbei werden Teile des Gesamtsystems in unterschiedliche Software-Bausteine aufgeteilt. Eine Modularisierung der Software ist dadurch möglich, und Architekturen-Prinzipien, wie lose Kopplung und Separation of Concerns sind umsetzbar \cite{Vogel.2009}. Durch die strikte Aufteilung der Geschäftslogik kann auch die Komplexität aufgeteilt werden. Somit können die einzelnen Software-Bausteine mit wenig Aufwand angepasst oder erweitert werden. Durch die Modularisierung von verteilten Architekturen kann die Ausführung bestimmter Aufgaben auf redundanter Hardware nebenläufig erfolgen \cite{Prof.Dr.AndreasFink.2012}. Durch horizontale Skalierung kann eine effiziente und lastverteilende Programmausführung erfolgen, welche auch zur Ausfallsicherheit des Gesamtsystems beiträgt \cite{Prof.Dr.AndreasFink.2012}.
 
 \section{Microservice-Architektur\label{sec2.3:Unterpunkt-3}}
 
@@ -281,9 +281,9 @@ Neben den Vorteilen der horizontalen Skalierung ergeben sich aus der Aufteilung 
 
 Die Microservice-Architektur berücksichtigt die Architektur-Prinzipien Separation of Concerns, Information Hiding und Modularität und gewährleistet somit eine lose Kopplung zwischen den Microservices. Innerhalb der Microservices entsteht dadurch eine hohe Kohäsion.
 
-Da die jeweiligen Microservices repliziert auf verschiedenen Rechnern laufen können, ist die Kommunikation zwischen den Microservices schwieriger als bei einem monolithischen System. Auf die Kommunikation zwischen Microservices wird in \autoref{subsec2.2.1:Unterunterpunkt-1} näher eingegangen.
+Da die jeweiligen Microservices repliziert auf verschiedenen Rechnern laufen können, ist die Kommunikation zwischen den Microservices schwieriger als bei einem monolithischen System. Auf die Kommunikation zwischen Microservices wird in \autoref{subsec2.3.1:Unterunterpunkt-1} näher eingegangen.
 
-Eine Herausforderung bei der Konzeption einer Microservice-Architektur ist die Vermeidung von Abhängigkeiten, welche eine lose Kopplung der Microservices verhindern würden. Um solche monolithischen Seiteneffekte zu vermeiden, werden in \autoref{subsec2.2.2:Unterunterpunkt-2} die häufigsten Microservice-Anti-Pattern aufgezeigt.
+Eine Herausforderung bei der Konzeption einer Microservice-Architektur ist die Vermeidung von Abhängigkeiten, welche eine lose Kopplung der Microservices verhindern würden. Um solche monolithischen Seiteneffekte zu vermeiden, werden in \autoref{subsec2.3.2:Unterunterpunkt-2} die häufigsten Microservice-Anti-Pattern aufgezeigt.
 
 \subsection{Kommunikation zwischen Microservices\label{subsec2.3.1:Unterunterpunkt-1}}
 
@@ -293,11 +293,11 @@ Bei der Wahl der Kommunikation zwischen Microservices kann zwischen einer synchr
 
 \subsubsection*{Synchrone Kommunikation}
 
-Bei der synchronen Kommunikation handelt es sich um eine eins-zu-eins Kommunikation, bei der eine Anfrage geschickt und auf eine Antwort gewartet wird. Klassischerweise erfolgt die Kommunikation über HTTP mit einer REST-Schnittstelle. \gls{rest} ist hierbei eine Spezifikation, wie eine über HTTP kommunizierende API konzipiert werden soll \cite{MichaelSchwab.2019}. Eine solche API sollte demnach vordefinierte HTTP-Methoden implementiert haben. Unter anderem sind das Methoden wie GET, POST, PUT und DELETE. Bei einer GET-Anfrage werden hierbei Ressourcen angefragt. Soll ein neuer Datensatz übermittelt werden, wird die POST-Methode verwendet. Zur Änderung eines bestehenden Datensatzes gibt es die PUT-Methode und mit der DELETE-Methode kann ein Datensatz entfernt werden. Jeder Datensatz bekommt hierbei einen eigenen Endpunkt, und die jeweiligen Anfragen können mit URL-Parametern und Query-Parametern spezifiziert werden. Das Standard-Datenformat bei REST ist JSON.
+Bei der synchronen Kommunikation handelt es sich um eine eins-zu-eins Kommunikation, bei der eine Anfrage geschickt und auf eine Antwort gewartet wird. Klassischerweise erfolgt die Kommunikation über HTTP mit einer REST-Schnittstelle. \gls{rest} ist hierbei eine Spezifikation, wie eine über HTTP kommunizierende API konzipiert werden soll \cite{MichaelSchwab.2019}. Eine solche API sollte demnach vordefinierte HTTP-Methoden implementiert haben. Unter anderem sind das Methoden wie GET, POST, PUT und DELETE. Bei einer GET-Anfrage werden Ressourcen angefragt. Soll ein neuer Datensatz übermittelt werden, wird die POST-Methode verwendet. Zur Änderung eines bestehenden Datensatzes gibt es die PUT-Methode. Mit der DELETE-Methode kann ein Datensatz entfernt werden. Jeder Datensatz bekommt hierbei einen eigenen Endpunkt, und die jeweiligen Anfragen können mit URL-Parametern und Query-Parametern spezifiziert werden. Das Standard-Datenformat bei REST ist JSON.
 
 \label{service_discovery}Bei der Kommunikation von zwei Microservices über die jeweiligen REST-Schnittstellen muss die Adresse des anderen Microservice bekannt sein. Durch die Verteilung der Microservices auf unterschiedliche Rechner in Folge einer horizontalen Skalierung kann es während des Betriebes vorkommen, dass einzelne Microservices auf zum Beispiel Rechner A gestoppt und auf Rechner B wieder gestartet werden. Dadurch ändern sich auch die Adressen der Microservices. Da die Verwaltung der Adressen ab einer Vielzahl an Microservices nicht mehr trivial ist, wird in einer Microservice-Architektur eine sogenannte Service-Discovery eingesetzt. Die Service-Discovery ist eine Software, bei der sich alle neuen Microservices registrieren. Bei einem REST-Aufruf wird dann zuerst eine Liste mit allen verfügbaren Adressen abgerufen.
 
-Wie in \autoref{fig:service_discovery} dargestellt ist, wird bei einer Anfrage eines Services, jene Anfrage zunächst an einen Router-Service geleitet. Nach dem Abfragen der Adresse mithilfe der Service-Discovery wird gezielt der entsprechende Service beziehungsweise dessen Instanz mit einer REST-Anfrage angesprochen.
+Wie in \autoref{fig:service_discovery} dargestellt ist, wird bei einer Anfrage eines Services, diese zunächst an einen Router-Service geleitet. Nach dem Abfragen der Adresse mithilfe der Service-Discovery wird gezielt der entsprechende Service beziehungsweise dessen Instanz mit einer REST-Anfrage angesprochen.
 
 \begin{figure}[H]
     \centering
@@ -362,28 +362,13 @@ In diese Kategorie gehören Anti-Pattern, welche bereits in der architektonische
 
 \subsubsection*{Implementation Anti-Pattern}
 
-% Implementation Anti-Pattern entstehen aus der Art und Weise wie Microservices implementiert werden. Beispiele sind hierfür das \glqq Gemeinsame Bibliotheken\grqq{} - Anti-Pattern und das \glqq Festcodierte Endpunkte\grqq{} - Anti-Pattern.
-
 Implementation Anti-Pattern entstehen aus der Art und Weise wie Microservices implementiert werden. Beispiele sind hierfür das \glqq Festcodierte Endpunkte\grqq{} - Anti-Pattern.
 
 \begin{description}
-    % \item[Gemeinsame Bibliotheken:]\hfill \\
-    % Bei der Verwendung von Bibliotheken in einer Microservice-Umgebung gilt es zwischen den Prinzipien \glqq \gls{dry}\grqq{} und \glqq Lose Kopplung\grqq{} abzuwägen.
-
-    % Durch die gemeinsame Nutzung von Services, wird eine mehrfache Implementierung vermieden. Die Services werden dadurch aber stärker aneinander gekoppelt.
-
-    % Werden einzelne Bibliotheken von mehreren Services verwendet, vermeidet man eine mehrfache Implementierung. 
-
-    % Bei der Verwendung von gemeinsam genutzten Bibliotheken entstehen starke Abhängigkeiten, und die Bibliotheken stellen einen sogenannten \glqq Single point of failure\grqq{} dar.
-
-    % Um dieses Problem zu umgehen, kann jedem Microservice seine eigene Bibliothek zur Verfügung gestellt werden. Dieser Ansatz wiederum führt zu einer Komplexität bei der Wartbarkeit der Microservice.
-    
-    % Ein weiterer Ansatz wäre es, die Bibliotheken durch einen Bibliothek-Service zu abstrahieren. Die Microservices bleiben lose gekoppelt und die Komplexität bei der Wartung bleibt überschaubar.
-    
     \item[Festcodierte Endpunkte:]\hfill \\
     Bei der synchronen Kommunikation zwischen Microservices werden in der Regel Anfragen über REST APIs gestellt. Hierfür müssen die IP-Adresse und der Port des anderen Microservices bekannt sein. Ein Ansatz für schnelle Laufzeiten und eine einfache Implementierung ist es, die Endpunkte fest im Quellcode zu hinterlegen. Dieser Ansatz ist jedoch bei einer größeren Anzahl von Microservices nicht mehr wartbar. Sobald sich ein Endpunkt eines Microservice ändert, müssen alle abhängigen Microservices geändert und neu deployed werden.
 
-    Abhilfe bringt die Einführung einer Service-Discovery (Siehe auch \autoref{service_discovery}), bei welcher sich die einzelnen Services registrieren. Ein anfragender Service kann nun über diese Service-Discovery die aktuelle Adresse des anderen Services erhalten.
+    Abhilfe bringt die Einführung einer Service-Discovery (siehe auch \autoref{service_discovery}), bei welcher sich die einzelnen Services registrieren. Ein anfragender Service kann nun über diese Service-Discovery die aktuelle Adresse des anderen Services erhalten.
 
 \end{description}
 
@@ -393,7 +378,7 @@ Auch in der Bereitstellungsphase einer Microservice-Architektur können Fehler a
 
 \begin{description}
     \item[Manuelle Konfiguration:]\hfill \\
-    In einer Microservice-Architektur müssen aufgrund der Verteilung der Microservices auf unterschiedliche Rechner verschiedene Konfigurationen durchgeführt werden. Eine manuelle Konfiguration von jedem Microservice führt zu unzähligen Konfigurationsdateien und Abhängigkeiten zu Umgebungsvariablen. Mit wachsender Anzahl von Microservices führt die manuelle Konfiguration zu einer ansteigenden Komplexität bei der Wartung der Konfigurationen.
+    In einer Microservice-Architektur müssen aufgrund der Verteilung der Microservices auf unterschiedliche Rechner, verschiedene Konfigurationen durchgeführt werden. Eine manuelle Konfiguration von jedem Microservice führt zu unzähligen Konfigurationsdateien und Abhängigkeiten zu Umgebungsvariablen. Mit wachsender Anzahl von Microservices führt die manuelle Konfiguration zu einer ansteigenden Komplexität bei der Wartung der Konfigurationen.
 
     Durch die Einführung eines Konfigurations-Servers kann dieses Anti-Pattern vermieden werden. Durch geeignete Konfigurationsmanagement-Tools können sämtliche Konfigurationen zentral verwaltet werden.
     

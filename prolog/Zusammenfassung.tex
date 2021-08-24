@@ -7,12 +7,12 @@
     \textbf{\huge{}Zusammenfassung}{\huge\par}
 \par\end{flushleft}
 
-Die vorliegende Bachelorarbeit mit dem Titel \glqq Konzeption und prototypische Implementierung einer Search Engine in einer Microservice-Architektur\grqq{}, erläutert die verschiedenen Möglichkeiten für die Umsetzung einer Suchfunktionalität. 
+Die vorliegende Bachelorarbeit mit dem Titel \glqq Konzeption und prototypische Implementierung einer Search Engine in einer Microservice-Architektur\grqq{} erläutert die verschiedenen Möglichkeiten der Umsetzung einer Suchfunktionalität. 
 
 Die Suchfunktionalität soll in naher Zukunft in der MES-Software \glqq MCC\grqq{} eingesetzt werden. Hierbei ist \glqq MCC\grqq{} die Neugestaltung des aktuellen Produktionsleitsystems \glqq E-MES\grqq der Firma Enisco by Forcam GmbH. Bei der Neugestaltung wird von einer monolithisch betriebenen, modularen 3-Schichten-Architektur auf eine verteilte Microservice-Architektur gewechselt.
 
-Im Rahmen dieser Arbeit wird zunächst auf die verschiedenen Arten von Suchfunktionalitäten in modernen Informationssystemen eingegangen. Dabei wird die Volltextsuche, die facettierte Suche und die semantische Suche näher betrachtet. Der jeweilige Umfang der Sucharten wird anhand des Funktionsumfangs des Produktionsleitsystems \glqq MCC\grqq{} definiert. Hierfür erfolgt eine Erläuterung des Funktionsumfangs.
+Im Rahmen dieser Arbeit wird zunächst auf die verschiedenen Arten von Suchfunktionalitäten in modernen Informationssystemen eingegangen. Dabei werden die Volltextsuche, die facettierte Suche und die semantische Suche näher betrachtet. Der spätere Kontext der Sucharten wird anhand des Funktionsumfangs des Produktionsleitsystems \glqq MCC\grqq{} definiert. Hierfür erfolgt eine Erläuterung des Funktionsumfangs.
 
-Bei der Erstellung eines geeigneten Konzeptes werden gültige Architektur-Prinzipien beachtet, um monolithische Seiteneffekte bei der Einführung einer Suchfunktionalität zu vermeiden. Innerhalb des Konzeptes wird eine Auswahl bezüglich einer Search Engine und einer geeigneten Datenpipeline getroffen. Hierbei werden die Search Engines \glqq Apache Solr\grqq{} und \glqq Elasticsearch\grqq{} gegenübergestellt und bezüglich einer Datenpipeline werden die Umsetzungsmöglichkeiten \glqq Dual Write\grqq{}, \glqq Polling\grqq{} und \glqq Change-Data-Capture\grqq{} verglichen.
+Bei der Erstellung eines geeigneten Konzeptes werden gültige Architektur-Prinzipien beachtet, um monolithische Seiteneffekte bei der Einführung einer Suchfunktionalität zu vermeiden. Innerhalb des Konzeptes wird eine Auswahl einer Search Engine und einer geeigneten Datenpipeline getroffen. Hierbei werden die Search Engines \glqq Apache Solr\grqq{} und \glqq Elasticsearch\grqq{} gegenübergestellt. Bezüglich einer Datenpipeline werden die Umsetzungsmöglichkeiten \glqq Dual Write\grqq{}, \glqq Polling\grqq{} und \glqq Change-Data-Capture\grqq{} verglichen.
 
 Im Anschluss erfolgt eine prototypische Umsetzung der Change-Data-Capture - Datenpipeline in Verbindung mit der Search Engine \glqq Elasticsearch\grqq{}.
