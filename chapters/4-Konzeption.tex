@@ -350,7 +350,7 @@ Die technische Umsetzung einer Suchfunktionalität soll anhand einer Online-Bibl
 
 Das Gesamtkonzept für die prototypische Umsetzung ist in \autoref{fig:Gesamtkonzept} dargestellt. Der Benutzer des User Interfaces hat über geeignete REST-Schnittstellen die Möglichkeit, neben dem Book Service, auch mit dem Search Service zu interagieren.
 
-Beim Hinzufügen, Ändern oder Löschen von Büchern werden die Datenänderungen an den Entity Server von MCC weitergeleitet. Zum Zeitpunkt der Erstellung der vorliegenden Arbeit ist im Entity Server von MCC lediglich eine Datenbankabstraktion für MongoDb entwickelt worden. Aus diesem Grund wurde sich für die Datenbank MongoDB entschieden.
+Beim Hinzufügen, Ändern oder Löschen von Büchern werden die Datenänderungen an den Entity Server von MCC weitergeleitet. Zum Zeitpunkt der Erstellung der vorliegenden Arbeit ist im Entity Server von MCC lediglich eine Datenbankabstraktion für MongoDB entwickelt worden. Aus diesem Grund wurde sich für die Datenbank MongoDB entschieden.
 
 Durch die stetige Überwachung des Operation-Logs (kurz Oplog) von MongoDB kann der Debezium-Kafka-Konnektor die Änderungen registrieren und an den Message Broker \glqq Apache Kafka\grqq{} weiterleiten. Durch den Elasticsearch-Sink-Konnektor können die Nachrichten der einzelnen Kafka-Topics an die Elasticsearch-Instanzen weitergeleitet werden.
 
