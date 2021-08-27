@@ -72,8 +72,6 @@ Für den Kontext einer Suchfunktionalität sind die meisten Funktionalitäten au
 
 Geeignet für den Kontext einer Suchfunktionalität sind die Objekte und Informationen aus dem \glqq Security\grqq{} - Modul. Dabei kann zum Beispiel nach den unterschiedlichen Benutzerrollen, den damit verbundenen Rechtepaketen oder diversen Benutzerrechten gesucht werden. So kann durch die Suche nach einem Benutzernamen auch die jeweiligen Rechtepakete gefunden werden. Durch die Verwendung eines Sicherheitsaudits, können die sicherheitsrelevanten Aktivitäten nachverfolgt werden.
 
-% Soll die Online-Dokumentation mit in die Platform?
-
 \subsection{Core Services - Production\label{subsec3.1.2:Unterunterpunkt-2}}
 
 Aufbauend auf den Grundfunktionalitäten der \glqq MCC Platform\grqq{}, welche für den Betrieb einer auf Microservices basierenden Architektur benötigt werden, stellt die \glqq Core Services\grqq{} - Schicht die Grundfunktionen für die eigentliche Anwendung zur Verfügung. Im Umfeld von Produktionsanlagen werden Grundfunktionen für die anwendungsspezifischen Schichten \glqq PCS\grqq{} und \glqq SCADA\grqq{} definiert. Oftmals handelt es sich dabei um Funktionen, welche von mehreren darüber liegenden Schichten verwendet werden.
@@ -139,8 +137,6 @@ Für den Suchkontext einer Suchfunktionalität im SCADA-Umfeld, gibt es zwei mö
     Es ist hilfreich die Assets nach physikalischen Eigenschaften zu gruppieren. So können zum Beispiel verschiedene Antriebsmotoren und Sensoren als \glqq Rollenbahn\grqq{} zusammengefasst werden und dem Mitarbeiter als ein einzelnes Asset dargestellt werden. Die Gruppierung wird dabei solange weitergeführt, bis das Assest \glqq Produktionsanlage\grqq{} erreicht wird. So können mehrere \glqq Rollenbahnen\grqq{} Bestandteile einer \glqq Bearbeitungsstation\grqq{} sein. Und mehrere \glqq Bearbeitungsstationen\grqq{} können zu \glqq Anlagen-Bereichen\grqq{} gruppiert werden. Die dadurch entstehende Hierarchie von Assets kann den kompletten Aufbau der Produktionsanlage widerspiegeln.
 
     Neben streng hierarchischen Beziehungen zwischen Assets können auch logische Beziehungen von Relevanz sein. So ist es möglich, dass mehrere Geräte am selben Bedienfeld angeschlossen sind und darüber eine Beziehung zueinander haben. Auch eine Gruppierung über die Zugehörigkeit zu Not-Aus-Schaltern oder Schaltschränken für die Stromversorgung kann von Relevanz sein. Eine weitere Beziehung zwischen den Assets sind die Materialflüsse, welche beschreiben, wie Produktionseinheiten durch die Produktionsanlage bewegt werden.
-    
-    % Es gibt demnach verschiedene Arten von Beziehungen zwischen Assets, welche auf physikalischen Verbindungen, wie Zusammensetzung oder Stromversorgung oder auf logischen Verbindungen, wie Materialflüssen beruhen können.
 \end{description}
 
 Für den Kontext einer Suchfunktionalität finden sich im SCADA-Umfeld von MCC mehrere Objekte und Informationen, welche relevant für eine Suche sind.
@@ -148,14 +144,6 @@ Für den Kontext einer Suchfunktionalität finden sich im SCADA-Umfeld von MCC m
 Durch die hierarchische und logische Aufteilung der Produktionsanlage in verschiedene Assets ist eine Suche nach expliziten Assets ein relevanter Anwendungsfall und soll durch die Suchfunktionalität in MCC abgedeckt werden. So kann ein Mitarbeiter zum Beispiel nach den Begriffen \glqq Lackierbereich\grqq{}, \glqq Trockenofen\grqq{} oder \glqq Rollenbahn\grqq{} suchen und bekommt eine Auswahl an Funktionen angeboten, welche mit Bezug zu den Assets ausgeführt werden können. Sollte demnach ein Asset mit der Bezeichnung \glqq Rollenbahn\grqq{} im System zu finden sein, sollen dem Mitarbeiter Funktionalitäten, wie die Anzeige von Fehlermeldungen (Alarming) und Auswertung von Prozesswerten (Trending) angeboten werden. Auch die explizite Suche nach bestimmten Schaltschränken oder Pultbereichen kann durch die logische Hierarchie der Assets realisiert werden.
 
 Neben der Verwendung der Assets kann zusätzlich nach dem technischen Kennzeichnungssystem der Maschinen und Sensoren gesucht werden. So kann nach der Eingabe einer Kodierung durch den Benutzer eine Auflistung mit allen relevanten Attributen aufgelistet werden. Darunter zählt zum Beispiel die Zugehörigkeit der Maschine oder des Sensors zu Anlagenbereichen, Pultbereichen oder Schaltschränken.
-
-% Im Grund kann man nach folgenden Objekten suchen:
-% \begin{itemize}
-%     \item Maschinen/Sensoren (durch deren Codierung)
-%     \item Assets
-%     \item Pultbereiche
-%     \item Schaltschränke
-% \end{itemize}
 
 \subsection{PCS\label{subsec3.1.4:Unterunterpunkt-4}}
 
@@ -170,7 +158,7 @@ Bei einer \gls{pcs} - Software geht es um die Aufbereitung der Produktionsauftr�
     \label{fig:Ressourcenplanung}
 \end{figure}
 
-\footnotetext{Quelle aus dem Intranet (nicht öffentlich zugänglich) von der Enisco by Forcam GmbH}
+\footnotetext{Quelle aus dem Intranet (nicht öffentlich zugänglich) der Enisco by Forcam GmbH}
 
 Eine weitere Funktionalität von PCS ist das Erstellen einer digitalen Lebenslaufakte für die jeweiligen Produktionsaufträge. Eine Lebenslaufakte ist im Umfeld der digitalen Vernetzung ein Werkzeug zur lückenlosen Dokumentation des Produktlebenszyklus eines industriellen Produktes \cite{MaximilianAusterjost.2021}. Innerhalb einer solchen Akte werden alle anlagenbezogenen Informationen gesammelt und aktuell gehalten. Sie dient als Basis für industrielle Kollaborationen zwischen Anlagenherstellern und IT- und Servicedienstleistern und ist durch die Vielseitigkeit und Anpassungsfähigkeit in den unterschiedlichsten Produktlebenszyklen einsetzbar \cite{MaximilianAusterjost.2021}. Für die Standardisierung einer solchen Lebenslaufakte ist im September 2018 die Norm \glqq EN 77005-1\grqq{} in Kraft getreten. Innerhalb von MCC wird die Lebenslaufakte sowohl durch die Funktionalitäten der PCS-Schicht, als auch durch die Funktionalitäten der SCADA-Schicht aktuell gehalten. So können neben allgemeinen Informationen zum Produkt auch Werte gespeichert werden, welche bei den einzelnen Arbeitsschritten entstanden sind. So ist eine nachträgliche Auswertung der einzelnen Arbeitsschritte des jeweiligen Produktes möglich.
 
@@ -178,29 +166,39 @@ Für den Kontext einer Suchfunktionalität in MCC sind die Informationen aus den
 
 Neben gezielten Informationen zu einzelnen Produkten und den dazugehörigen digitalen Lebenslaufakten sind unter anderem auch Informationen zu den einzelnen Jobs und deren Arbeitsschritte von Relevanz. Hierfür besitzen die einzelnen Prozesse wiederum eindeutige Identifikationsnummern. Relevant ist zudem eine gezielte Suche nach den Ressourcen der Produktionsanlage. So kann ein Benutzer eine Identifikationsnummer eines Warenträgers eingeben und erhält alle relevanten Informationen bezüglich dem Warenträger.
 
-% Im Grund kann man nach folgenden Objekten suchen:
-% \begin{itemize}
-%     \item Bauteile
-%     \item Aufträge
-%     \item Warenträger
-%     \item Maschinen
-%     \item Arbeitsschritte
-% \end{itemize}
-
 \section{Umfang einer Volltextsuche\label{sec3.2:Unterunterpunkt-2}}
 
-Text
+Die Möglichkeit durch die Eingabe einer Suchphrase geeignete Suchtreffer zu erhalten, resultiert überwiegend aus der Verwendung einer Volltextsuche. Die Umsetzungsmöglichkeiten der facettierten Suche und der semantischen Suche bauen auf der Volltextsuche auf. So ergänzt die facettierte Suche die reine Volltextsuche um die Möglichkeit der Filterung nach Facetten. Bei der semantischen Suche, wird die Volltextsuche durch eine semantische Analyse der Suchphrase ergänzt.
 
-% Vom Benutzer eingegebene Freitexte => Schichtenlogbuch
+Eine reine Volltextsuche ist vor allem in den Bereichen und Funktionalitäten von Vorteil, wo durch die Eingabe von Freitexten große Textmengen entstehen. Solche Freitexte werden innerhalb von MCC vor allem in den unterschiedlichen Logbüchern angelegt. Benutzer haben zum Beispiel im Funktionsumfang der Schichtlogbücher die Möglichkeit einen Freitext einzugeben, welcher die Vorkommnisse der Schicht enthält. Zu einem späteren Zeitpunk können dann Suchphrasen, wie \glqq Beschädigung an Anlagenteil XY\grqq{}, gestellt werden. Eine Eingrenzung der Suchtreffer durch das Setzen von Filtern, ist hierbei nicht zielführend. Nach der Eingabe der Suchphrase können dem Benutzer dann die jeweiligen Logbücher angezeigt werden. Neben den Schichtlogbüchern können Freitexte auch in Qualitätsberichten auftreten.
 
 \section{Umfang einer facettierten Suche\label{sec3.3:Unterpunkt-3}}
 
-Text
+Während sich die reine Volltextsuche für große Textmengen eignet, wird die facettierte Suche üblicherweise im Umfeld von vordefinierten Entitäten verwendet.
 
-% 
+
+
+Bei einer Suchfunktionalität in einem Produktionsleitsystem, wäre ein Anwendungsfall
+
+Entitäten definieren in einem Produktionsleitsystem, wie MCC, die Objekte.
+
+Zu den Entitäten in einem Produktionsleitsystem zählen dabei 
+
+Für die spätere Integration einer Suchfunktionalität in MCC ist der mögliche Umfang die Verwendung einer facettierten Suche 
 
 \section{Umfang einer semantischen Suche\label{sec3.4:Unterpunkt-4}}
 
 Text
 
-% 
+% Im Grund kann man nach folgenden Objekten suchen:
+%     \item Maschinen/Sensoren (durch deren Codierung)
+%     \item Assets
+%     \item Pultbereiche
+%     \item Schaltschränke
+
+% Im Grund kann man nach folgenden Objekten suchen:
+%     \item Bauteile
+%     \item Aufträge
+%     \item Warenträger
+%     \item Maschinen
+%     \item Arbeitsschritte
