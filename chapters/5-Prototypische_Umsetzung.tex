@@ -1,14 +1,14 @@
 \chapter{Prototypische Umsetzung\label{chap5:Fuenftes-Kapitel}}
 
-Anschließend an die Konzeption der prototypischen Umsetzung, erfolgt in diesem Kapitel eine Erläuterung der technischen Umsetzung. Neben einer Einführung in den Funktionsumfang des Prototypen, wird das Gesamtkonzept aus \autoref{sec4.3:Unterpunkt-3} in verschiedene Komponenten unterteilt.
+Im folgenden Kapitel wird die Umsetzung des Prototypen vorgestellt. Neben einer Einführung in den Funktionsumfang des Prototypen, wird das Gesamtkonzept aus \autoref{sec4.3:Unterpunkt-3} in verschiedene Komponenten unterteilt.
 
 % ToDo more Text
 
 \section{Funktionsumfang\label{sec5.1:Unterpunkt-1}}
 
-Der Umfang des Prototypen soll eine Bibliothek darstellen, in welcher ein Benutzer die Möglichkeit besitzt, Bücher anzulegen und zu verwalten. Hierfür werden die allgemeinen CRUD-Operationen zur Verfügung gestellt. Der Benutzer hat demnach die Möglichkeit neue Bücher dem Bestand hinzuzufügen (Create), sich den aktuellen Bestand anzeigen zu lassen (Read), bestehende Bücher zu ändern (Update) oder Bücher aus dem Bestand zu entfernen.
+Der Umfang des Prototypen soll eine Bibliothek darstellen, in welcher ein Benutzer die Möglichkeit besitzt Bücher anzulegen und zu verwalten. Hierfür werden die allgemeinen CRUD-Operationen zur Verfügung gestellt. Der Benutzer hat demnach die Möglichkeit neue Bücher dem Bestand hinzuzufügen (Create), sich den aktuellen Bestand anzeigen zu lassen (Read), bestehende Bücher zu ändern (Update) oder Bücher aus dem Bestand zu entfernen.
 
-In \autoref{fig:UserInterface} ist die Benutzerschnittstelle abgebildet. Zu unterteilen ist die Ansicht in drei Bereiche \glqq Bücher hinzufügen/ändern\grqq{}, \glqq Aktueller Bestand\grqq{} und \glqq Suchfunktionalität\grqq{} untergliedert.
+In \autoref{fig:UserInterface} ist die Benutzerschnittstelle abgebildet.
 
 \begin{figure}[H]
     \centering
@@ -16,6 +16,8 @@ In \autoref{fig:UserInterface} ist die Benutzerschnittstelle abgebildet. Zu unte
     \caption{Benutzeransicht der prototypischen Umsetzung}
     \label{fig:UserInterface}
 \end{figure}
+
+Zu unterteilen ist die Ansicht in drei Bereiche \glqq Bücher hinzufügen/ändern\grqq{}, \glqq Aktueller Bestand\grqq{} und \glqq Suchfunktionalität\grqq{}.
 
 Im oberen Bereich haben die Benutzer die Möglichkeit neue Bücher dem Bestand hinzuzufügen. Durch Betätigung des Buttons \glqq Add\grqq{} werden die Informationen aus den darüberliegenden Feldern als neues Objekt in der Datenhaltung abgespeichert. Zusätzlich dient der obere Bereich der Bearbeitung bestehender Bücher. Hierfür wird im darunterliegenden Datenbestand das jeweilige Buch durch den Button \glqq Edit\grqq{} ausgewählt und die enthaltenen Informationen können anschließend bearbeitet und gespeichert werden. Durch Betätigung des Buttons \glqq Clear\grqq{} werden die Text- und Zahlenfelder geleert.
 
@@ -35,19 +37,18 @@ Unterteilt werden kann das Gesamtkonzept aus \autoref{sec4.3:Unterpunkt-3} in di
 
 Für das Anlegen und Verwalten der Bücher in der Bibliothek ist der Book Service zuständig. Umgesetzt wurde der Service mit der Programmiersprache Golang und der Datenbank MongoDB.
 
-Neben der Bereistellung einer REST API für das Anlegen und Verwalten von Büchern übernimmt der Book Service zusätzlich das Hosten der Website. Hierfür werden über eine zusätzliche REST API die Webinhalte für den Client zur Verfügung gestellt.
-Das interne Routing der eingehenden Anfragen übernimmt ein Go-Webserver. Dieser leitet eingehende Anfragen anhand von vordefinierten Routing-Pfaden an die Anwendung weiter.
+Neben der Bereitstellung einer REST API für das Anlegen und Verwalten von Büchern übernimmt der Book Service zusätzlich das Hosten der Website. Hierfür werden über eine zusätzliche REST API die Webinhalte für den Client zur Verfügung gestellt. Die interne Weiterleitung der eingehenden Anfragen übernimmt ein Go-Webserver. Dieser leitet eingehende Anfragen anhand von vordefinierten Routing-Pfaden an die Anwendung weiter.
 
 \autoref{fig:BookService} zeigt einen Ausschnitt des Book Services aus dem Gesamtkonzept.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\linewidth]{images/BookService.png}
+    \includegraphics[width=0.3\linewidth]{images/BookService.png}
     \caption{Teil des Gesamtkonzeptes: Book Service}
     \label{fig:BookService}
 \end{figure}
 
-Für die direkte Kommunikation mit der Datenhaltung wird das Software-Modul \glqq Entity Server\grqq{} von MCC verwendet. Für den Prototypen abstrahiert der Entitiy-Server die Kommunikation mit der Datenbank MongoDB. Neben der Abstraktion der Datenbank-Kommunikation bietet der Entitiy-Server die Möglichkeit, Entitäten über eine REST API in der Datenhaltung anzulegen und zu verwalten.
+Für die direkte Kommunikation mit der Datenhaltung wird das Software-Modul \glqq Entity Server\grqq{} von MCC verwendet. Für den Prototypen abstrahiert der Entity-Server die Kommunikation mit der Datenbank MongoDB. Neben der Abstraktion der Datenbank-Kommunikation bietet der Entity-Server die Möglichkeit, Entitäten über eine REST API in der Datenhaltung anzulegen und zu verwalten.
 
 Für die spätere Ankopplung an die CDC-Software Debezium muss die Datenbank MongoDB entweder als \glqq Replica Set\grqq{} oder \glqq Shared Cluster\grqq{} gestartet werden. Dies ist notwendig, da Debezium das Transaktionsprotokoll \glqq OpLog\grqq{} für die Erkennung der Datenänderungen benötigt. MongoDB verwendet dieses Transaktionsprotokoll für die Synchronisierung er einzelnen MongoDB-Instanzen innerhalb eines Replica Sets oder einem Shared Cluster.
 
@@ -59,7 +60,7 @@ Die REST API des Book Service wird unter dem Port 8080 veröffentlicht und beinh
     \item PUT - \glqq /book\grqq{} => Aktualisiere ein bestimmtes Buch
     \item DELETE - \glqq /book\grqq{} => Entferne ein bestimmtes Buch
     \item GET - \glqq /search/{searchString}\grqq{} => Gebe alle Ergebnisse für den Parameter zurück
-    \item GET - \glqq /MCC-Bibliothek\grqq{} => Gebe dem Cient die Webinhalte (HTML, CSS, JavaScript)
+    \item GET - \glqq /MCC-Bibliothek\grqq{} => Gebe dem Client die Webinhalte (HTML, CSS, JavaScript)
 \end{itemize}
 
 \subsection{CDC-Datenpipeline\label{sec5.2.2:Unterunterpunkt-2}}
@@ -70,7 +71,7 @@ Um die Datenaktualisierung zwischen den Datenhaltungsschichten und der Search En
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\linewidth]{images/CDC-Pipeline.png}
+    \includegraphics[width=0.7\linewidth]{images/CDC-Pipeline.png}
     \caption{Teil des Gesamtkonzeptes: CDC-Datenpipeline}
     \label{fig:CDC-Pipeline}
 \end{figure}
@@ -90,58 +91,62 @@ Kafka-Connect dient hierbei der Anbindung von Drittsystemen an Kafka. Innerhalb 
 
 Die Nachrichten innerhalb des Prototypen werden im Datenformat JSON weitergeleitet. Um die Kompatibilität der Konnektoren untereinander zu gewährleisten ist eine Transformation der Nachrichten notwendig. Aus diesem Grund wurde beim Prototypen eine Transformation der JSON-Nachrichten beim Source Konnektor durchgeführt.
 
-% https://tex.stackexchange.com/questions/83085/how-to-improve-listings-display-of-json-files
+%\begin{lstlisting}[language=json,firstnumber=1]
+%{
+%  "name": "mongo",
+%  "config": {
+%      "connector.class": "io.debezium.connector.mongodb.MongoDbConnector",
+%      "mongodb.hosts": "mongo:27017",
+%      "mongodb.name": "mongoconnector",
+%      "mongodb.user": "user",
+%      "mongodb.password": "pwd",
+%      "MongoDB.authsource": "admin",
+%      "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+%      "value.converter.schemas.enable": "false",
+%      "transforms": "unwrap",
+%      "transforms.unwrap.type": "io.debezium.connector.mongodb.transforms.ExtractNewDocumentState",
+%      "transforms.unwrap.drop.tombstones": "false",
+%      "transforms.unwrap.delete.handling.mode": "drop",
+%      "transforms.unwrap.operation.header": "true"
+%  }
+%}
+%\end{lstlisting}
 
-\begin{lstlisting}[language=json,firstnumber=1]
-{
-    "name": "mongo",
-    "config": {
-        "connector.class": "io.debezium.connector.mongodb.MongoDbConnector",
-        "mongodb.hosts": "mongo:27017",
-        "mongodb.name": "mongoconnector",
-        "mongodb.user": "user",
-        "mongodb.password": "pwd",
-        "MongoDB.authsource": "admin",
-        "value.converter": "org.apache.kafka.connect.json.JsonConverter",
-        "value.converter.schemas.enable": "false",
-        "transforms": "unwrap",
-        "transforms.unwrap.type": "io.debezium.connector.mongodb.transforms.ExtractNewDocumentState",
-        "transforms.unwrap.drop.tombstones": "false",
-        "transforms.unwrap.delete.handling.mode": "drop",
-        "transforms.unwrap.operation.header": "true"
-    }
-}
-\end{lstlisting}
-
-\begin{lstlisting}[language=json,firstnumber=1]
-{
-    "name": "elasticsearch",
-    "config": {
-        "connector.class": "io.confluent.connect.elasticsearch.ElasticsearchSinkConnector",
-        "connection.url": "http://elasticsearch:9200",
-        "tasks.max": "1",
-        "topics": "mongoconnector.mcc-bibliothek.books",
-        "type.name": "_doc",
-        "value.converter": "org.apache.kafka.connect.json.JsonConverter",
-        "value.converter.schemas.enable": "false",
-        "schema.ignore": "true",
-        "behavior.on.null.values": "IGNORE",
-        "transforms": "InsertKey, ExtractId",
-        "transforms.InsertKey.type": "org.apache.kafka.connect.transforms.ValueToKey",
-        "transforms.InsertKey.fields": "id",
-        "transforms.ExtractId.type": "org.apache.kafka.connect.transforms.ExtractField$Key",
-        "transforms.ExtractId.field": "id"
-    }
-}
-\end{lstlisting}
+%\begin{lstlisting}[language=json,firstnumber=1]
+%{
+%    "name": "elasticsearch",
+%    "config": {
+%        "connector.class": "io.confluent.connect.elasticsearch.ElasticsearchSinkConnector",
+%        "connection.url": "http://elasticsearch:9200",
+%        "tasks.max": "1",
+%        "topics": "mongoconnector.mcc-bibliothek.books",
+%        "type.name": "_doc",
+%        "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+%        "value.converter.schemas.enable": "false",
+%        "schema.ignore": "true",
+%        "behavior.on.null.values": "IGNORE",
+%        "transforms": "InsertKey, ExtractId",
+%        "transforms.InsertKey.type": "org.apache.kafka.connect.transforms.ValueToKey",
+%        "transforms.InsertKey.fields": "id",
+%        "transforms.ExtractId.type": "org.apache.kafka.connect.transforms.ExtractField$Key",
+%        "transforms.ExtractId.field": "id"
+%    }
+%}
+%\end{lstlisting}
 
 \subsection{Search Service\label{sec5.2.3:Unterunterpunkt-3}}
 
-Inhalt
+Ein weiterer Bestandteil des Prototypen ist der Search Service, welcher die eigentliche Search Engine beinhaltet. Aufgrund der Kompatibilität mit dem Message Broker Kafka und dem Vorliegen eines Kafka-Konnektoren, wurde sich für die Search Engine Elasticsearch entschieden.
+
+\autoref{fig:SearchService} zeigt einen Ausschnitt des Search Services aus dem Gesamtkonzept.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\linewidth]{images/SearchService.png}
+    \includegraphics[width=0.3\linewidth]{images/SearchService.png}
     \caption{Teil des Gesamtkonzeptes: Search Service}
     \label{fig:SearchService}
 \end{figure}
+
+Durch die Verwendung der REST API, welche von Elasticsearch zur Verfügung gestellt wird, ist es möglich neue Datenänderungen für die Indexierung zu übergeben. Zudem wird eine Schnittstelle für das Stellen einer Suchanfrage zur Verfügung gestellt. Die interne Erstellung und Verwaltung des invertierten Indexes wird hierbei komplett von Elasticsearch übernommen.
+
+Für die Umsetzung des Prototypen wurden die Standard-Konfigurationen von Elasticsearch verwendet. Die zahlreichen Konfigurationsmöglichkeiten für die Indexierung und für die verschiedenen Transformationsschritte, gilt es in weiterführenden Untersuchungen zu erläutern.

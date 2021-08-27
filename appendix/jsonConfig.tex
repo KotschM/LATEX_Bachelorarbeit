@@ -1,0 +1,50 @@
+\chapter{Konfiguration der Konnektoren}
+
+Für die Erstellung der jeweiligen Konnektoren, müssen folgende Konfigurationen an Kafka-Connect übergeben werden.
+
+Konfiguration für den Debezium-MongoDB-Connector:
+
+\begin{lstlisting}[language=json,firstnumber=1]
+{
+  "name": "mongo",
+  "config": {
+      "connector.class": "io.debezium.connector.mongodb.MongoDbConnector",
+      "mongodb.hosts": "mongo:27017",
+      "mongodb.name": "mongoconnector",
+      "mongodb.user": "user",
+      "mongodb.password": "pwd",
+      "MongoDB.authsource": "admin",
+      "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+      "value.converter.schemas.enable": "false",
+      "transforms": "unwrap",
+      "transforms.unwrap.type": "io.debezium.connector.mongodb.transforms.ExtractNewDocumentState",
+      "transforms.unwrap.drop.tombstones": "false",
+      "transforms.unwrap.delete.handling.mode": "drop",
+      "transforms.unwrap.operation.header": "true"
+  }
+}
+\end{lstlisting}
+
+Konfiguration für den Elasticsearch-Sink-Connector:
+
+\begin{lstlisting}[language=json,firstnumber=1]
+{
+    "name": "elasticsearch",
+    "config": {
+        "connector.class": "io.confluent.connect.elasticsearch.ElasticsearchSinkConnector",
+        "connection.url": "http://elasticsearch:9200",
+        "tasks.max": "1",
+        "topics": "mongoconnector.mcc-bibliothek.books",
+        "type.name": "_doc",
+        "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+        "value.converter.schemas.enable": "false",
+        "schema.ignore": "true",
+        "behavior.on.null.values": "IGNORE",
+        "transforms": "InsertKey, ExtractId",
+        "transforms.InsertKey.type": "org.apache.kafka.connect.transforms.ValueToKey",
+        "transforms.InsertKey.fields": "id",
+        "transforms.ExtractId.type": "org.apache.kafka.connect.transforms.ExtractField$Key",
+        "transforms.ExtractId.field": "id"
+    }
+}
+\end{lstlisting}
